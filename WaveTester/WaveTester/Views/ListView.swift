@@ -16,9 +16,15 @@ struct ListView: View {
     ]
     var body: some View {
         List {
-            ListRowView(title: "First item")
+            ForEach(items, id: \.self) {
+                item in ListRowView(title: item)
+            }
         }
-        .navigationTitle("Wordrobe 👔")
+        .navigationTitle("Wordrobe 👔")        .navigationBarItems(
+            leading: EditButton(),
+            trailing:
+                NavigationLink("Add", destination: AddView())
+        )
     }
 }
 
