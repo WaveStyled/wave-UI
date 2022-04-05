@@ -19,7 +19,7 @@ struct AddView: View {
                     //.background("grey")
                     .cornerRadius(10)
                 Button(action: {
-                    
+
                 }, label: {
                     Text("Save")
                         .foregroundColor(.white)

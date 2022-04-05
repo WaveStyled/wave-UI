@@ -9,16 +9,19 @@ import SwiftUI
 
 struct ListView: View {
     
-    @State var items: [String] = [
-        "First Item",
-        "2nd",
-        "3rd"
+    @State var items: [ItemModel] = [
+      ItemModel(name: "Nike Sweatpants", type: "SWTP", warnRecent: true),
+      ItemModel(name: "Bape Hoodie", type: "HOOT", warnRecent: false),
+      ItemModel(name: "Adidas T-shirt", type: "STES", warnRecent: true)
+
     ]
     var body: some View {
         List {
-            ForEach(items, id: \.self) {
-                item in ListRowView(title: item)
-            }
+            ForEach(items) {
+                item in
+                ListRowView(item: item)
+                //ListRowView(title: item)
+            }.onDelete(perform: deleteItem)
         }
         .navigationTitle("Wordrobe 👔")        .navigationBarItems(
             leading: EditButton(),
@@ -26,7 +29,11 @@ struct ListView: View {
                 NavigationLink("Add", destination: AddView())
         )
     }
+    func deleteItem(indexSet: IndexSet) {
+        items.remove(atOffsets: indexSet)
+    }
 }
+
 
 struct ListView_Previews: PreviewProvider {
     static var previews: some View {

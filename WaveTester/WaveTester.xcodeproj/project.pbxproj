@@ -13,6 +13,8 @@
 		88E9CD4F27FA5B24004C30B8 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E9CD4E27FA5B24004C30B8 /* ListView.swift */; };
 		88E9CD5127FA5CF0004C30B8 /* ListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E9CD5027FA5CF0004C30B8 /* ListRowView.swift */; };
 		88E9CD5327FBAE04004C30B8 /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E9CD5227FBAE04004C30B8 /* AddView.swift */; };
+		88E9CD5627FBCC11004C30B8 /* ItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E9CD5527FBCC11004C30B8 /* ItemModel.swift */; };
+		88E9CD5927FC016D004C30B8 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E9CD5827FC016D004C30B8 /* ListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +25,8 @@
 		88E9CD4E27FA5B24004C30B8 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		88E9CD5027FA5CF0004C30B8 /* ListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowView.swift; sourceTree = "<group>"; };
 		88E9CD5227FBAE04004C30B8 /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
+		88E9CD5527FBCC11004C30B8 /* ItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemModel.swift; sourceTree = "<group>"; };
+		88E9CD5827FC016D004C30B8 /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +59,8 @@
 		88E9CD3E27FA512A004C30B8 /* WaveTester */ = {
 			isa = PBXGroup;
 			children = (
+				88E9CD5427FBCBF9004C30B8 /* Models */,
+				88E9CD5727FC013E004C30B8 /* ViewModels */,
 				88E9CD4D27FA5B05004C30B8 /* Views */,
 				88E9CD3F27FA512A004C30B8 /* WaveTesterApp.swift */,
 				88E9CD4327FA512B004C30B8 /* Assets.xcassets */,
@@ -79,6 +85,22 @@
 				88E9CD5227FBAE04004C30B8 /* AddView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		88E9CD5427FBCBF9004C30B8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				88E9CD5527FBCC11004C30B8 /* ItemModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		88E9CD5727FC013E004C30B8 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				88E9CD5827FC016D004C30B8 /* ListViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,7 +173,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88E9CD5627FBCC11004C30B8 /* ItemModel.swift in Sources */,
 				88E9CD5327FBAE04004C30B8 /* AddView.swift in Sources */,
+				88E9CD5927FC016D004C30B8 /* ListViewModel.swift in Sources */,
 				88E9CD4027FA512A004C30B8 /* WaveTesterApp.swift in Sources */,
 				88E9CD4F27FA5B24004C30B8 /* ListView.swift in Sources */,
 				88E9CD5127FA5CF0004C30B8 /* ListRowView.swift in Sources */,
