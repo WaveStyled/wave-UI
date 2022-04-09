@@ -28,7 +28,16 @@ struct AddView: View {
                         .background(Color.accentColor)
                         .cornerRadius(10)
                 })
+                    .navigationBarItems(
+                        trailing:
+                            NavigationLink("Next", destination: CheckListView())
+
+                    )
+                
+                    
+                   
             }.padding(14)
+                
         }
         .navigationTitle("Add Clothing 👕")
     }
