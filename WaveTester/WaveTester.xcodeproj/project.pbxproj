@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38EA08DD28016E91001A409E /* ClothDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EA08DC28016E91001A409E /* ClothDataView.swift */; };
 		88E9CD4027FA512A004C30B8 /* WaveTesterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E9CD3F27FA512A004C30B8 /* WaveTesterApp.swift */; };
 		88E9CD4427FA512B004C30B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88E9CD4327FA512B004C30B8 /* Assets.xcassets */; };
 		88E9CD4727FA512B004C30B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88E9CD4627FA512B004C30B8 /* Preview Assets.xcassets */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		38EA08DC28016E91001A409E /* ClothDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothDataView.swift; sourceTree = "<group>"; };
 		88E9CD3C27FA512A004C30B8 /* WaveTester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaveTester.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88E9CD3F27FA512A004C30B8 /* WaveTesterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveTesterApp.swift; sourceTree = "<group>"; };
 		88E9CD4327FA512B004C30B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				88E9CD4E27FA5B24004C30B8 /* ListView.swift */,
 				88E9CD5027FA5CF0004C30B8 /* ListRowView.swift */,
 				88E9CD5227FBAE04004C30B8 /* AddView.swift */,
+				38EA08DC28016E91001A409E /* ClothDataView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -174,6 +177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88E9CD5627FBCC11004C30B8 /* ItemModel.swift in Sources */,
+				38EA08DD28016E91001A409E /* ClothDataView.swift in Sources */,
 				88E9CD5327FBAE04004C30B8 /* AddView.swift in Sources */,
 				88E9CD5927FC016D004C30B8 /* ListViewModel.swift in Sources */,
 				88E9CD4027FA512A004C30B8 /* WaveTesterApp.swift in Sources */,
