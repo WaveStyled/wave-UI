@@ -31,6 +31,14 @@ class ListViewModel:ObservableObject {
         items.append(newItem)
     }
     
+    func updateItem(item: ItemModel) {
+        if let index = items.firstIndex { (existingItem) -> Bool in
+            return existingItem.id == item.id
+        } {
+            items[index] = item.updateWarn()
+        }
+    }
+    
     func getWardrobe() {
         guard let url = URL(string: "http://localhost:5001/wardrobe") else {
             fatalError("Invalid GET URL")

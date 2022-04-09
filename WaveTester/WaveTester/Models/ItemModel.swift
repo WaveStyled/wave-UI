@@ -8,13 +8,23 @@
 import Foundation
 
 struct ItemModel: Identifiable {
-    let id:String = UUID().uuidString
+    let id:String
     let name: String
     let type: String
     let warnRecent: Bool
     
+    init(id: String = UUID().uuidString, name: String, type: String, warnRecent: Bool) {
+        self.id = id
+        self.name = name
+        self.type = type
+        self.warnRecent = warnRecent
+    }
     
+    func updateWarn () -> ItemModel {
+        return ItemModel(id: id, name: name, type: type, warnRecent: !warnRecent)
+    }
 }
+
 struct Clothes: Identifiable {
     let id:Int
     let R_COLOR:Int
