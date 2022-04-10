@@ -27,9 +27,10 @@ struct ItemModel: Identifiable {
 
 struct Clothes: Identifiable {
     let id:UUID
-    let R_COLOR:Int
-    let G_COLOR:Int
-    let B_COLOR:Int
+//    let R_COLOR:Int
+//    let G_COLOR:Int
+//    let B_COLOR:Int
+    let COLOR:String
     let TYPE:String
     let RECENT_DATE_WORN:String
     let TIMES_WORN:Int
@@ -43,6 +44,7 @@ struct Clothes: Identifiable {
     let WE_COLD:Int
     let WE_HOT:Int
     let WE_RAINY:Int
+    let WE_SUNNY:Int
     let WE_SNOWY:Int
     let WE_AVG_TMP:Int
     

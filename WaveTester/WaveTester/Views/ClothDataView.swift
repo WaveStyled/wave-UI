@@ -12,7 +12,7 @@ struct ClothDataView: View {
     @EnvironmentObject var listViewModel:ListViewModel
    
     @State var textFieldText: String = ""
-    @State var color_sample: String = ""
+
     var ratingOptions = ["1","2","3","4","5","6","7","8","9","10"]
     var typeOptions = ["Shirts", "OverTops", "Pants", "Shorts", "Shoes", "Hat", "Misc"]
     var shirtOptions = ["Tank Tops", "Button Up", "Tee", "Polo Shirt", "Graphic", "Athletic", "Long Sleeve Button Up", "Long Sleeve Polo", "Long Sleeve Tee", "Long Sleeve Graphic", "Long Sleeve Athletics", "Flannel "]
@@ -36,6 +36,8 @@ struct ClothDataView: View {
     @State private var ctype = "cloth type"
     @State private var previewIndex = 0
     @State private var rating = 0
+    @State private var num_times = ""
+    @State private var color_str = ""
     @State private var color = Color.blue
     @State private var recent_date = Date()
     @State private var occasion = ""
@@ -114,11 +116,11 @@ struct ClothDataView: View {
 
                         }
                         Section(header: Text("\(ctype) Color")) {
-//                            Picker(selection: $previewIndex, label: Text("Tap to Choose")) {
-//                                ForEach(0 ..< colorOptions.count) {
-//                                    Text(self.colorOptions[$0])
-//                                }
-//                            }
+                            Picker(selection: $color_str, label: Text("Tap to Choose")) {
+                                ForEach(0 ..< colorOptions.count) {
+                                    Text(self.colorOptions[$0])
+                                }
+                            }
                             ColorPicker("", selection: $color)
                                       .frame(maxWidth: .infinity, maxHeight: .infinity)
                                       .background(color)
@@ -128,7 +130,7 @@ struct ClothDataView: View {
                             DatePicker("", selection: $recent_date)
                         }
                         Section(header: Text("Number of Times Worn")) {
-                            TextField("Ex: 3", text: $color_sample)
+                            TextField("Ex: 3", text: $num_times)
                         }
                         
                         Section(header: Text("Choose rating from 1-10(10 being highest rank)")) {
@@ -157,18 +159,45 @@ struct ClothDataView: View {
                         
                         
 
-
+                        Button(action: saveButtonPressed, label: {
+                            Text("Submit")
+                                .foregroundColor(.white)
+                                .frame(height: 55)
+                                .frame(maxWidth: .infinity)
+                                .background(Color.accentColor)
+                                .cornerRadius(10)
+                        })
                         
                     }
                     .navigationBarTitle("Item Details")
-            
+//                    .navigationBarItems(
+//                        trailing:
+//                            NavigationLink("Submit", destination: ListView())
+//
+//                    )
+//
 //            let formatter1 = DateFormatter()
 //            formatter1.dateStyle = .short
 //            let formatter2 = DateFormatter()
 //            formatter2.timeStyle = .medium
      
+            let ocf:Int = occasion == "Formal" ? 1 : 0
+            let ocsf:Int = occasion == "Semi Formal" ? 1 : 0
+            let occ:Int = occasion == "Casual" ? 1 : 0
+            let ocw:Int = occasion == "Workout" ? 1 : 0
+            let oco:Int = occasion == "Beach Day/Outdoors" ? 1 : 0
+            let occom:Int = occasion == "Comfy/Lazy" ? 1 : 0
+            let tcold :Int = weather == "Cold" ? 1 : 0
+            //["Cold", "Hot", "Rainy", "Sunny", "Snowy", "Typical"]
+            let thot:Int = weather == "Hot" ? 1 : 0
+            let train:Int = weather == "Rainy" ? 1 : 0
+            let tsun:Int = weather == "Sunny" ? 1 : 0
+            let tsnow :Int = weather == "Snowy" ? 1 : 0
+            let tavg :Int = weather == "Typical" ? 1 : 0
+      
+            let inttimes = Int(num_times) ?? 0
             
-            var cloth_entry = Clothes(id: UUID(), R_COLOR:0, G_COLOR:0, B_COLOR:0, TYPE: cloth,RECENT_DATE_WORN: "10/2", TIMES_WORN: 0,RATING:0,OC_FORMAL:0,OC_SEMI_FORMAL:0,OC_CASUAL:0,OC_WORKOUT:0, OC_OUTDOORS:0, OC_COMFY:0,WE_COLD:0,WE_HOT:0,WE_RAINY:0,WE_SNOWY: 0,WE_AVG_TMP:0)
+            var cloth_entry = Clothes(id: UUID(), COLOR: color_str, TYPE: cloth,RECENT_DATE_WORN: "10/2", TIMES_WORN:  inttimes ,RATING:rating,OC_FORMAL:ocf,OC_SEMI_FORMAL:ocsf,OC_CASUAL:occ,OC_WORKOUT:ocw, OC_OUTDOORS:oco, OC_COMFY:occom,WE_COLD:tcold,WE_HOT:thot,WE_RAINY:train, WE_SUNNY: tsun, WE_SNOWY: tsnow, WE_AVG_TMP:tavg)
                    
                                     }
           }
@@ -176,6 +205,7 @@ struct ClothDataView: View {
         listViewModel.addItem(title: textFieldText)
         presentationMode.wrappedValue.dismiss()
     }
+        
 }
 
 struct ClothDataView_Previews: PreviewProvider {
