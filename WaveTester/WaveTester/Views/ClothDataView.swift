@@ -10,7 +10,7 @@ import Foundation
 struct ClothDataView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var listViewModel:ListViewModel
-
+   
     @State var textFieldText: String = ""
     @State var color_sample: String = ""
     var ratingOptions = ["1","2","3","4","5","6","7","8","9","10"]
@@ -38,7 +38,9 @@ struct ClothDataView: View {
     @State private var rating = 0
     @State private var color = Color.blue
     @State private var recent_date = Date()
-    @State private var current_date = Date()
+    @State private var occasion = ""
+    @State private var weather = ""
+    
     var body: some View {
         NavigationView {
                     Form {
@@ -138,16 +140,16 @@ struct ClothDataView: View {
                         }
                        
                         Section(header: Text("Occasion")) {
-                            Picker(selection: $previewIndex, label: Text("Tap to Choose")) {
-                                ForEach(0 ..< occasionOptions.count) {
-                                    Text(self.occasionOptions[$0])
+                            Picker(selection: $occasion, label: Text("Tap to Choose")) {
+                                ForEach(occasionOptions, id: \.self ) {
+                                    Text($0)
                                 }
                             }
                         }
                         Section(header: Text("Weather")) {
-                            Picker(selection: $previewIndex, label: Text("Tap to Choose")) {
-                                ForEach(0 ..< wheatherOptions.count) {
-                                    Text(self.wheatherOptions[$0])
+                            Picker(selection: $weather, label: Text("Tap to Choose")) {
+                                ForEach(wheatherOptions, id: \.self) {
+                                    Text($0)
                                 }
                             }
                         }
@@ -159,7 +161,14 @@ struct ClothDataView: View {
                         
                     }
                     .navigationBarTitle("Item Details")
-            var cloth_entry = Clothes(id:0, R_COLOR:0, G_COLOR:0, B_COLOR:0, TYPE: "N/A",RECENT_DATE_WORN:"N/A", TIMES_WORN: 0,RATING:0,OC_FORMAL:0,OC_SEMI_FORMAL:0,OC_CASUAL:0,OC_WORKOUT:0, OC_OUTDOORS:0, OC_COMFY:0,WE_COLD:0,WE_HOT:0,WE_RAINY:0,WE_SNOWY: 0,WE_AVG_TMP:0)
+            
+//            let formatter1 = DateFormatter()
+//            formatter1.dateStyle = .short
+//            let formatter2 = DateFormatter()
+//            formatter2.timeStyle = .medium
+     
+            
+            var cloth_entry = Clothes(id: UUID(), R_COLOR:0, G_COLOR:0, B_COLOR:0, TYPE: cloth,RECENT_DATE_WORN: "10/2", TIMES_WORN: 0,RATING:0,OC_FORMAL:0,OC_SEMI_FORMAL:0,OC_CASUAL:0,OC_WORKOUT:0, OC_OUTDOORS:0, OC_COMFY:0,WE_COLD:0,WE_HOT:0,WE_RAINY:0,WE_SNOWY: 0,WE_AVG_TMP:0)
                    
                                     }
           }
