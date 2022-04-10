@@ -10,6 +10,7 @@ import SwiftUI
 struct ClothDataView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var listViewModel:ListViewModel
+    var cloth_entry = Clothes(id:0, R_COLOR:0, G_COLOR:0, B_COLOR:0, TYPE: "N/A",RECENT_DATE_WORN:"N/A", TIMES_WORN: 0,RATING:0,OC_FORMAL:0,OC_SEMI_FORMAL:0,OC_CASUAL:0,OC_WORKOUT:0, OC_OUTDOORS:0, OC_COMFY:0,WE_COLD:0,WE_HOT:0,WE_RAINY:0,WE_SNOWY: 0,WE_AVG_TMP:0)
     @State var textFieldText: String = ""
     @State var color_sample: String = ""
     var typeOptions = ["Shirts", "OverTops", "Pants", "Shorts", "Shoes", "Hat", "Misc"]
@@ -33,6 +34,7 @@ struct ClothDataView: View {
     @State private var cloth = ""
     @State private var ctype = "cloth type"
     @State private var previewIndex = 0
+    @State private var color = Color.blue
     var body: some View {
         NavigationView {
                     Form {
@@ -105,12 +107,15 @@ struct ClothDataView: View {
                             }
 
                         }
-                        Section(header: Text("Color")) {
-                            Picker(selection: $previewIndex, label: Text("Tap to Choose")) {
-                                ForEach(0 ..< colorOptions.count) {
-                                    Text(self.colorOptions[$0])
-                                }
-                            }
+                        Section(header: Text("\(cloth) Color")) {
+//                            Picker(selection: $previewIndex, label: Text("Tap to Choose")) {
+//                                ForEach(0 ..< colorOptions.count) {
+//                                    Text(self.colorOptions[$0])
+//                                }
+//                            }
+                            ColorPicker("", selection: $color)
+                                      .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                      .background(color)
 
                         }
                         Section(header: Text("Number of Times Worn")) {
