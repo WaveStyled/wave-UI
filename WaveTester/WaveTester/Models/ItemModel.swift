@@ -26,6 +26,7 @@ struct ItemModel: Identifiable {
 }
 
 struct Clothes: Identifiable {
+  
     let id:UUID
 //    let R_COLOR:Int
 //    let G_COLOR:Int

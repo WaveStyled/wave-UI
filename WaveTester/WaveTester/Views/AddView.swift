@@ -120,8 +120,8 @@ struct AddView: View {
                         }
                         Section(header: Text("\(ctype) Color")) {
                             Picker(selection: $color_str, label: Text("Tap to Choose")) {
-                                ForEach(0 ..< colorOptions.count) {
-                                    Text(self.colorOptions[$0])
+                                ForEach(colorOptions, id: \.self) {
+                                    Text($0)
                                 }
                             }
                             ColorPicker("", selection: $color)
@@ -172,7 +172,7 @@ struct AddView: View {
                         })
                         
                     }
-                    .navigationBarTitle("Item Details")
+                    .navigationBarTitle("Add Clothing 👕")
 //                    .navigationBarItems(
 //                        trailing:
 //                            NavigationLink("Submit", destination: ListView())
@@ -206,6 +206,22 @@ struct AddView: View {
           }
     func saveButtonPressed() {
         listViewModel.addItem(title: textFieldText)
+        let ocf:Int = occasion == "Formal" ? 1 : 0
+        let ocsf:Int = occasion == "Semi Formal" ? 1 : 0
+        let occ:Int = occasion == "Casual" ? 1 : 0
+        let ocw:Int = occasion == "Workout" ? 1 : 0
+        let oco:Int = occasion == "Beach Day/Outdoors" ? 1 : 0
+        let occom:Int = occasion == "Comfy/Lazy" ? 1 : 0
+        let tcold :Int = weather == "Cold" ? 1 : 0
+        //["Cold", "Hot", "Rainy", "Sunny", "Snowy", "Typical"]
+        let thot:Int = weather == "Hot" ? 1 : 0
+        let train:Int = weather == "Rainy" ? 1 : 0
+        let tsun:Int = weather == "Sunny" ? 1 : 0
+        let tsnow :Int = weather == "Snowy" ? 1 : 0
+        let tavg :Int = weather == "Typical" ? 1 : 0
+  
+        let inttimes = Int(num_times) ?? 0
+        listViewModel.details.append(Clothes(id: UUID(), COLOR: color_str, TYPE: cloth,RECENT_DATE_WORN: "10/2", TIMES_WORN:  inttimes ,RATING:rating,OC_FORMAL:ocf,OC_SEMI_FORMAL:ocsf,OC_CASUAL:occ,OC_WORKOUT:ocw, OC_OUTDOORS:oco, OC_COMFY:occom,WE_COLD:tcold,WE_HOT:thot,WE_RAINY:train, WE_SUNNY: tsun, WE_SNOWY: tsnow, WE_AVG_TMP:tavg))
         presentationMode.wrappedValue.dismiss()
     }
         

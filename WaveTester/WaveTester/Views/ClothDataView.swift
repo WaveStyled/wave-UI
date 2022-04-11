@@ -117,13 +117,13 @@ struct ClothDataView: View {
                         }
                         Section(header: Text("\(ctype) Color")) {
                             Picker(selection: $color_str, label: Text("Tap to Choose")) {
-                                ForEach(0 ..< colorOptions.count) {
-                                    Text(self.colorOptions[$0])
+                                ForEach(colorOptions, id: \.self) {
+                                    Text($0)
                                 }
                             }
-                            ColorPicker("", selection: $color)
-                                      .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                      .background(color)
+//                            ColorPicker("", selection: $color)
+//                                      .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                                      .background(color)
 
                         }
                         Section(header: Text("Most recent date worn")) {
@@ -170,16 +170,7 @@ struct ClothDataView: View {
                         
                     }
                     .navigationBarTitle("Item Details")
-//                    .navigationBarItems(
-//                        trailing:
-//                            NavigationLink("Submit", destination: ListView())
-//
-//                    )
-//
-//            let formatter1 = DateFormatter()
-//            formatter1.dateStyle = .short
-//            let formatter2 = DateFormatter()
-//            formatter2.timeStyle = .medium
+
      
             let ocf:Int = occasion == "Formal" ? 1 : 0
             let ocsf:Int = occasion == "Semi Formal" ? 1 : 0
