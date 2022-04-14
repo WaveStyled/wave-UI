@@ -1,5 +1,7 @@
 import React from 'react';
 
+
+let clothes;
 /**
  * Simple component with no state.
  *
@@ -7,15 +9,20 @@ import React from 'react';
  */
 function getDummy(setDummy) {
   // fetch('http://localhost:3010/v0/dummy')
-  fetch('/wardrobe')
+  //fetch('/wardrobe')
+  fetch('http://localhost:5000/wardrobe')
     .then((response) => {
       if (!response.ok) {
         throw response;
       }
+      console.log("RUNNIGN!!!\n");
+      console.log(response);
       return response.json();
     })
     .then((json) => {
-      setDummy(json.message);
+        clothes = json;
+        console.log(json);
+        setDummy(json.message);
     })
     .catch((error) => {
       setDummy(`ERROR: ${error.toString()}`);

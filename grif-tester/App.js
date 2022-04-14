@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
+import Dummy from './Dummy';
 
 const clothes = [
   {
@@ -83,6 +84,7 @@ const App = () => {
         keyExtractor={(item) => item.pieceid}
         extraData={selectedId}
       />
+      <Dummy/>
     </SafeAreaView>
   );
 };
