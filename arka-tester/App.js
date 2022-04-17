@@ -3,11 +3,14 @@ import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpaci
 import Cloth from './components/Cloth';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import uuid from 'react-native-uuid';
+import { Picker } from '@react-native-picker/picker';
+// import HomeScreen from './HomeScreen';
+import DetailsScreen from './DetailsScreen';
 
 const clothes = [
   {
-    pieceid: 1,
+    pieceid: uuid.v4(),
     name: 'Bape Hoddie',
     type: 'STES',
     color: 'brown',
@@ -24,7 +27,7 @@ const clothes = [
     we_typical: 1
   },
   {
-    pieceid: 2,
+    pieceid: uuid.v4(),
     type: 'STES',
     name: "Levi Jeans",
     color: 'light_blue',
@@ -41,7 +44,7 @@ const clothes = [
     we_typical: 1
   },
   {
-    pieceid: 3,
+    pieceid: uuid.v4(),
     type: 'STES',
     name: "YoungLA Shirt",
     color: 'light_blue',
@@ -98,8 +101,10 @@ function HomeScreen({navigation}){
         <Text style={styles.sectionTitle}>Clothing Items</Text>
         <View style={styles.items}>
           {/* This is where the cloths will go! */}
+          <TouchableOpacity onPress={() => handleAddCloth()}>
           <Cloth text={clothes[0].name} /> 
           <Cloth text={clothes[1].name} /> 
+          </TouchableOpacity>
           {
             
             clothItems.map((item, index) => {
@@ -136,13 +141,34 @@ function HomeScreen({navigation}){
 
 }
 
-function DetailsScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Details Screen</Text>
-    </View>
-  );
-}
+// function DetailsScreen() {
+//   const [currency, setCurrency] = useState('US Dollar');
+//   return (
+//     <View >
+//       <Text > Demo Form </Text>
+//       <View>
+//         <TextInput 
+//           placeholder="Email" />
+//         <TextInput
+//           secureTextEntry={true}
+//           placeholder="Password"
+//         />
+//         <Picker
+//           selectedValue={currency}
+//           onValueChange={currentCurrency => setCurrency(currentCurrency)}>
+//           <Picker.Item label="USD" value="US Dollars" />
+//           <Picker.Item label="EUR" value="Euro" />
+//           <Picker.Item label="NGN" value="Naira" />
+//         </Picker>
+//         <Text>
+//           Selected: {currency}
+//         </Text>
+//       </View>
+//     </View>
+//   );
+// }
+
+
 
 const Stack = createNativeStackNavigator();
 export default function App() {
