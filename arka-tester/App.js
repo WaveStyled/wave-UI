@@ -59,7 +59,7 @@ const clothes = [
   },
 ];
 
-function HomeScreen(){
+function HomeScreen({navigation}){
   const [cloth, setCloth] = useState();
   const [clothItems, setClothItems] = useState([]);
 
@@ -105,7 +105,7 @@ function HomeScreen(){
             clothItems.map((item, index) => {
               return (
               
-                <TouchableOpacity key={index}  onPress={() => completeCloth(index)}>
+                <TouchableOpacity key={index}  onPress={() => navigation.navigate('Details')}>
                  
                   <Cloth text={item} /> 
                 </TouchableOpacity>
