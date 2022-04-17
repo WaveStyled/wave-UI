@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Text, View, Button } from 'react-native';
 
 
-let clothes;
+let c;
 /**
  * Simple component with no state.
  *
@@ -11,6 +12,7 @@ function getDummy(setDummy) {
   // fetch('http://localhost:3010/v0/dummy')
   //fetch('/wardrobe')
   fetch('http://localhost:5000/wardrobe')
+  // fetch('http://169.233.242.120/wardrobe')
     .then((response) => {
       if (!response.ok) {
         throw response;
@@ -20,41 +22,36 @@ function getDummy(setDummy) {
       return response.json();
     })
     .then((json) => {
-        clothes = json;
+        c = json;
         console.log(json);
-        setDummy(json.message);
+        setDummy(json);
     })
     .catch((error) => {
       setDummy(`ERROR: ${error.toString()}`);
     });
 }
 
+
 /**
  * Simple component with one state variable.
  *
  * @return {object} JSX
  */
-function Dummy() {
-  const [dummy, setDummy] = React.useState('Click the button!');
+function Dummy(props) {
+  const buttonClickHandler = () => {
+    getDummy(setDummy);
+    props.passData(dummy);
+}
+
+  const [dummy, setDummy] = useState({});
   return (
-    <div>
-      <h3>
-        Click button to connect to the Backend dummy endpoint</h3>
-      <button
-        aria-label='get dummy'
-        onClick={(event) => {
-          getDummy(setDummy);
-        }}
-      >
-        Get Dummy
-      </button>
-      <p/>
-      <label
-        aria-label='dummy message'
-      >
-        {dummy}
-      </label>
-    </div>
+    <Text>
+      <Text>Click button to connect to the Backend dummy endpoint</Text>
+      <Button
+        onPress={buttonClickHandler}
+        title="Get Dummy">
+      </Button>
+    </Text>
   );
 }
 

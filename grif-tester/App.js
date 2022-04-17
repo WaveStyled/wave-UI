@@ -3,54 +3,54 @@ import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity }
 import Dummy from './Dummy';
 
 const clothes = [
-  {
-    pieceid: 1,
-    type: 'STES',
-    color: 'brown',
-    oc_formal: 0,
-    oc_semi_formal: 0,
-    oc_casual: 1,
-    oc_workout: 0,
-    oc_outdoors: 1,
-    oc_comfy: 0,
-    we_cold: 1,
-    we_hot: 1,
-    we_rainy: 1,
-    we_snowy: 0,
-    we_typical: 1
-  },
-  {
-    pieceid: 2,
-    type: 'STES',
-    color: 'light_blue',
-    oc_formal: 0,
-    oc_semi_formal: 1,
-    oc_casual: 1,
-    oc_workout: 0,
-    oc_outdoors: 1,
-    oc_comfy: 0,
-    we_cold: 1,
-    we_hot: 1,
-    we_rainy: 1,
-    we_snowy: 0,
-    we_typical: 1
-  },
-  {
-    pieceid: 3,
-    type: 'STES',
-    color: 'light_blue',
-    oc_formal: 0,
-    oc_semi_formal: 1,
-    oc_casual: 1,
-    oc_workout: 0,
-    oc_outdoors: 1,
-    oc_comfy: 1,
-    we_cold: 1,
-    we_hot: 1,
-    we_rainy: 1,
-    we_snowy: 0,
-    we_typical: 1
-  },
+  // {
+  //   pieceid: 1,
+  //   type: 'STES',
+  //   color: 'brown',
+  //   oc_formal: 0,
+  //   oc_semi_formal: 0,
+  //   oc_casual: 1,
+  //   oc_workout: 0,
+  //   oc_outdoors: 1,
+  //   oc_comfy: 0,
+  //   we_cold: 1,
+  //   we_hot: 1,
+  //   we_rainy: 1,
+  //   we_snowy: 0,
+  //   we_typical: 1
+  // },
+  // {
+  //   pieceid: 2,
+  //   type: 'STES',
+  //   color: 'light_blue',
+  //   oc_formal: 0,
+  //   oc_semi_formal: 1,
+  //   oc_casual: 1,
+  //   oc_workout: 0,
+  //   oc_outdoors: 1,
+  //   oc_comfy: 0,
+  //   we_cold: 1,
+  //   we_hot: 1,
+  //   we_rainy: 1,
+  //   we_snowy: 0,
+  //   we_typical: 1
+  // },
+  // {
+  //   pieceid: 3,
+  //   type: 'STES',
+  //   color: 'light_blue',
+  //   oc_formal: 0,
+  //   oc_semi_formal: 1,
+  //   oc_casual: 1,
+  //   oc_workout: 0,
+  //   oc_outdoors: 1,
+  //   oc_comfy: 1,
+  //   we_cold: 1,
+  //   we_hot: 1,
+  //   we_rainy: 1,
+  //   we_snowy: 0,
+  //   we_typical: 1
+  // },
 ];
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
@@ -60,6 +60,11 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 );
 
 const App = () => {
+  const [clothes, setChildData] = useState({});
+
+  const passData = (data) => {
+    setChildData(data);
+  };
   const [selectedId, setSelectedId] = useState(null);
 
   const renderItem = ({ item }) => {
@@ -84,7 +89,7 @@ const App = () => {
         keyExtractor={(item) => item.pieceid}
         extraData={selectedId}
       />
-      <Dummy/>
+      <Dummy passData={passData}/>
     </SafeAreaView>
   );
 };
