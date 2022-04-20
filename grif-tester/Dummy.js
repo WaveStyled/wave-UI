@@ -11,14 +11,15 @@ let c;
 function getDummy(setDummy) {
   // fetch('http://localhost:3010/v0/dummy')
   //fetch('/wardrobe')
-  fetch('http://localhost:5000/wardrobe')
+  //fetch('http://localhost:5000/wardrobe')
   // fetch('http://169.233.242.120/wardrobe')
+  fetch('http://10.0.0.85:5000/wardrobe')
     .then((response) => {
       if (!response.ok) {
         throw response;
       }
-      console.log("RUNNIGN!!!\n");
-      console.log(response);
+      //console.log("RUNNIGN!!!\n");
+      //console.log(response);
       return response.json();
     })
     .then((json) => {
