@@ -34,17 +34,25 @@ function MainContainer() {
             } else if (rn === settingsName) {
               iconName = focused ? 'settings' : 'settings-outline';
             }
+            opts = {
+              "tabBarActiveTintColor": "tomato",
+              "tabBarInactiveTintColor": "grey",
+              "tabBarLabelStyle": {
+                "paddingBottom": 10,
+                "fontSize": 10
+              },
+              "tabBarStyle": [
+                {
+                  "display": "flex"
+                },
+                null
+              ]
+            }
 
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-        })}
-        tabBarOptions={{
-          activeTintColor: 'tomato',
-          inactiveTintColor: 'grey',
-          labelStyle: { paddingBottom: 10, fontSize: 10 },
-          style: { padding: 10, height: 70}
-        }}>
+        })}>
 
         <Tab.Screen name={homeName} component={HomeScreen} />
         <Tab.Screen name={detailsName} component={DetailsScreen} />
