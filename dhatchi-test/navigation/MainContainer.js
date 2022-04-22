@@ -19,6 +19,7 @@ function MainContainer() {
   return (
     <NavigationContainer>
       <Tab.Navigator
+        
         initialRouteName={homeName}
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -27,6 +28,7 @@ function MainContainer() {
 
             if (rn === homeName) {
               iconName = focused ? 'home' : 'home-outline';
+              
 
             } else if (rn === detailsName) {
               iconName = focused ? 'list' : 'list-outline';
@@ -38,14 +40,13 @@ function MainContainer() {
               "tabBarActiveTintColor": "tomato",
               "tabBarInactiveTintColor": "grey",
               "tabBarLabelStyle": {
-                "paddingBottom": 10,
+                "paddingBottom": 5,
                 "fontSize": 10
               },
               "tabBarStyle": [
                 {
                   "display": "flex"
                 },
-                null
               ]
             }
 
@@ -54,9 +55,9 @@ function MainContainer() {
           },
         })}>
 
-        <Tab.Screen name={homeName} component={HomeScreen} />
-        <Tab.Screen name={detailsName} component={DetailsScreen} />
-        <Tab.Screen name={settingsName} component={SettingsScreen} />
+        <Tab.Screen name={homeName} component={HomeScreen} options = {{headerShown : false,}}/>
+        <Tab.Screen name={detailsName} component={DetailsScreen} options = {{headerShown : false,}}/>
+        <Tab.Screen name={settingsName} component={SettingsScreen} options = {{headerShown : false,}}/>
 
       </Tab.Navigator>
     </NavigationContainer>
