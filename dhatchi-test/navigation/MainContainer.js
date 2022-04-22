@@ -57,7 +57,14 @@ function MainContainer() {
 
         <Tab.Screen name={homeName} component={HomeScreen} options = {{headerShown : false,}}/>
         <Tab.Screen name={detailsName} component={DetailsScreen} options = {{headerShown : false,}}/>
-        <Tab.Screen name={settingsName} component={SettingsScreen} options = {{headerShown : false,}}/>
+        <Tab.Screen name={settingsName} component={SettingsScreen} options = {{headerTitle: (props) => <LogoTitle {...props} />,
+            headerRight: () => (
+              <Button
+                onPress={() => alert('This is a button!')}
+                title="Info"
+                color="#00cc00"
+              />
+            ),}}/>
 
       </Tab.Navigator>
     </NavigationContainer>
