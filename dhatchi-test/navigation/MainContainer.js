@@ -28,7 +28,7 @@ function getWardrobe(){
       throw response;
     }
     
-    return response.json()
+     return response.json()
     //return response.json();
   })
   .then((json)=> {
