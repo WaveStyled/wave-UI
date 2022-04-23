@@ -2,14 +2,19 @@ import * as React from 'react';
 import MainContainer from './navigation/MainContainer';
 
 function App() {
-  fetch('http://localhost:5000/wardrobe')
+  const requestOptions = {
+    method: 'GET',
+  };
+  fetch('http://192.168.1.185:5000/wardrobe')
     .then((response) => {
       if (!response.ok) {
         throw response;
       }
-      console.log("RUNNIGN!!!\n");
-      console.log(response.json());
+      return response.json()
       //return response.json();
+    })
+    .then((json)=> {
+      console.log(json);
     })
   return (
     <MainContainer/>

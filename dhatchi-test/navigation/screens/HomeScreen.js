@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
 import ClothingItem from './../../components/ClothingItem';
+import AddScreen from './AddScreen'
 
 
-const clothes = [
+var clothes = [
     {
       pieceid: 0,
       name: 'Bape Hoddie',
@@ -57,7 +58,19 @@ const clothes = [
     },
   ];
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation, route }) {
+   const wardrobe = route.params.wardrobe;
+   console.log("here")
+   console.log(wardrobe);
+   
+   navigation.setOptions({headerRight: () =>(
+    <Button 
+         
+        onPress={ () => navigation.navigate(AddScreen) } title = "add"                
+    />
+   
+   )})
+
     return (
         <View style={styles.container}>
         <ScrollView
@@ -71,8 +84,7 @@ export default function HomeScreen({ navigation }) {
           {/* This is where the cloths will go! */}
 
           <ClothingItem text={clothes[0].name} /> 
-          <ClothingItem text={clothes[1].name} /> 
-          
+          <ClothingItem text={clothes[1].name} />   
       
           {/*
             
