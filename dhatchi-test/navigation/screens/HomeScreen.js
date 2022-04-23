@@ -59,17 +59,8 @@ var clothes = [
   ];
 
 export default function HomeScreen({ navigation, route }) {
-   const wardrobe = route.params.wardrobe;
-   console.log("here")
-   console.log(wardrobe);
-   
-   navigation.setOptions({headerRight: () =>(
-    <Button 
-         
-        onPress={ () => navigation.navigate(AddScreen) } title = "add"                
-    />
-   
-   )})
+   const wardrobe = route.params;
+   console.log(wardrobe)
 
     return (
         <View style={styles.container}>

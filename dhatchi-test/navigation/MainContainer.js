@@ -1,8 +1,10 @@
-import * as React from 'react';
+//import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Button } from 'react-native';
+import axios from "axios";
+import { useState, useEffect } from 'react';
 // Screens
 import HomeScreen from './screens/HomeScreen';
 import DetailsScreen from './screens/DetailsScreen';
@@ -15,30 +17,29 @@ const settingsName = "Settings";
 const addName = "Add";
 
 const Tab = createBottomTabNavigator();
-var wd;
 
-function getWardrobe(){
-  const requestOptions = {
-    method: 'GET',
-  };
 
-  fetch('http://192.168.1.185:5000/wardrobe')
-  .then((response) => {
-    if (!response.ok) {
-      throw response;
-    }
+//console.log(wd)
+
+
+
+function MainContainer({route, navigation}) {
+  const [data,setData] = useState([])
+  
+
+  const fetchApiCall = async() => {
+    const res = await fetch("http://192.168.1.185:5000/wardrobe", {
+      "method": "GET",
+    });
+    const w = await res.json()
+    setData(w);
     
-     return response.json()
-    //return response.json();
-  })
-  .then((json)=> {
-  })
-}
-wd = getWardrobe();
-
-
-
-function MainContainer() {
+    //const data = await res.json();
+  }
+  useEffect(()=> {
+    fetchApiCall()
+  },[])
+  console.log(data)
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -50,8 +51,7 @@ function MainContainer() {
             let rn = route.name;
 
             if (rn === homeName) {
-              iconName = focused ? 'home' : 'home-outline';
-              params 
+              iconName = focused ? 'home' : 'home-outline'; 
 
             } else if (rn === detailsName) {
               iconName = focused ? 'list' : 'list-outline';
@@ -78,8 +78,8 @@ function MainContainer() {
           },
         })}>
 
-        <Tab.Screen name={homeName} component={HomeScreen}  initialParams = {{wardrobe : wd}}/>
-        <Tab.Screen name={detailsName} component={DetailsScreen} options = {{headerShown : false,}}/>
+      <Tab.Screen name={homeName} component={HomeScreen} initialParams = {{wd : data}}/>
+        <Tab.Screen name={detailsName} component={DetailsScreen} options = {{headerShown : false }}/>
         <Tab.Screen name={settingsName} component={SettingsScreen} options = {{headerShown : false}}/>
 
       </Tab.Navigator>
