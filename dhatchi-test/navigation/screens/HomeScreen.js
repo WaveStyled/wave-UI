@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
 import ClothingItem from './../../components/ClothingItem';
 import AddScreen from './AddScreen'
-
+import { ClothesContext } from '../MainContainer';
 
 var clothes = [
     {
@@ -59,8 +59,23 @@ var clothes = [
   ];
 
 export default function HomeScreen({ navigation, route }) {
-   const wardrobe = route.params;
-   console.log(wardrobe)
+   const value = React.useContext(ClothesContext);
+   
+   let list;
+   if (Object.keys(value).length !== 0) {
+     console.log(value[0]);
+      list = value.map((clothes) =>
+     <ClothingItem text={clothes.type + ' ' + clothes.color}/> 
+  );
+   }
+
+ //  navigation.setOptions({headerRight: () =>(
+ //   <Button 
+         
+ //       onPress={ () => navigation.navigate(AddScreen) } title = "add"                
+  //  />
+   
+ //  )})
 
     return (
         <View style={styles.container}>
@@ -72,10 +87,11 @@ export default function HomeScreen({ navigation, route }) {
         >
             <View style={styles.clothsWrapper}>
         <View style={styles.items}>
+        {list != null ? list: "t"}
           {/* This is where the cloths will go! */}
 
-          <ClothingItem text={clothes[0].name} /> 
-          <ClothingItem text={clothes[1].name} />   
+           {/*<ClothingItem text={clothes[0].name} /> 
+          <ClothingItem text={clothes[1].name} />   */}
       
           {/*
             

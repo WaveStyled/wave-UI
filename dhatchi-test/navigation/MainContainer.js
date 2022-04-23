@@ -1,15 +1,16 @@
-//import * as React from 'react';
+import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Button } from 'react-native';
 import axios from "axios";
-import { useState, useEffect } from 'react';
+//import { useState, useEffect } from 'react';
 // Screens
 import HomeScreen from './screens/HomeScreen';
 import DetailsScreen from './screens/DetailsScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import AddScreen from './screens/AddScreen'
+
 //Screen names
 const homeName = "Home";
 const detailsName = "Calibrate";
@@ -17,30 +18,39 @@ const settingsName = "Settings";
 const addName = "Add";
 
 const Tab = createBottomTabNavigator();
-
+export const ClothesContext = React.createContext("Hello");
 
 //console.log(wd)
+
+function getWardrobe(set){
+  const requestOptions = {
+    method: 'GET',
+  };
+  fetch('http://192.168.1.185:5000/wardrobe',requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw response;
+      }
+      
+      return response.json();
+      //return response.json();
+    })
+    .then((json)=> {
+      set(json);
+    })
+}
+
 
 
 
 function MainContainer({route, navigation}) {
-  const [data,setData] = useState([])
+  const [wd,setWd] = React.useState({})
+  React.useEffect(()=> {
+   getWardrobe(setWd);
+  },[]);
   
-
-  const fetchApiCall = async() => {
-    const res = await fetch("http://192.168.1.185:5000/wardrobe", {
-      "method": "GET",
-    });
-    const w = await res.json()
-    setData(w);
-    
-    //const data = await res.json();
-  }
-  useEffect(()=> {
-    fetchApiCall()
-  },[])
-  console.log(data)
   return (
+    <ClothesContext.Provider value={wd}>
     <NavigationContainer>
       <Tab.Navigator
         
@@ -77,13 +87,15 @@ function MainContainer({route, navigation}) {
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}>
-
-      <Tab.Screen name={homeName} component={HomeScreen} initialParams = {{wd : data}}/>
+    
+      <Tab.Screen name={homeName} component={HomeScreen} />
+      
         <Tab.Screen name={detailsName} component={DetailsScreen} options = {{headerShown : false }}/>
         <Tab.Screen name={settingsName} component={SettingsScreen} options = {{headerShown : false}}/>
-
+        
       </Tab.Navigator>
     </NavigationContainer>
+    </ClothesContext.Provider>
   );
 }
 
