@@ -36,12 +36,12 @@ const ClothingItem = (props) => {
 const styles = StyleSheet.create({
   item: {
     backgroundColor: '#FFF',
-    padding: 15,
-    borderRadius: 10,
+    padding: 10,
+    borderRadius: 7,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   itemLeft: {
     flexDirection: 'row',
@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap'
   },
   square: {
-    width: 24,
-    height: 24,
+    width: 100,
+    height: 100,
     backgroundColor: '#55BCF6',
     opacity: 0.4,
     borderRadius: 5,
