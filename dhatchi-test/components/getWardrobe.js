@@ -4,7 +4,7 @@ function get(set){
     const requestOptions = {
       method: 'GET',
     };
-    fetch('http://192.168.1.185:5000/wardrobe',requestOptions)
+    fetch('http://169.233.168.244:5000/wardrobe',requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw response;

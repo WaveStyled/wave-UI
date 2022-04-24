@@ -5,6 +5,7 @@ import ClothingItem from './../../components/ClothingItem';
 import AddScreen from './AddScreen'
 //import { ClothesContext} from '../../App';
 import Wardrobe from '../../components/getWardrobe'
+
 var clothes = [
    
   ];
@@ -29,7 +30,7 @@ export default function HomeScreen({ navigation, route }) {
    let list;
    if (Object.keys(value).length !== 0) {
       list = value.map((clothes) =>
-     <ClothingItem key = {clothes.pieceid} text={clothes.type + ' ' + clothes.color}/> 
+     <ClothingItem key = {clothes.pieceid} text={clothes.type + ' ' + clothes.color} l  = {value}/> 
   );
    }
    

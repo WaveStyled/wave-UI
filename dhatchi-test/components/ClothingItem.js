@@ -4,8 +4,9 @@ import 'react-native-gesture-handler';
 import { Swipeable, TouchableHighlight } from 'react-native-gesture-handler';
 
 
-const rightActions = () => {
-   
+
+function rightActions(list)  {
+  
   return(
     //<View
     //  style = {styles.delSquare}>
@@ -34,9 +35,9 @@ const rightActions = () => {
 }
 
 const ClothingItem = (props) => {
-
+  
   return (
-    <Swipeable renderRightActions ={rightActions}>
+    <Swipeable renderRightActions = {() =>rightActions(props.l)}>
     <View style={styles.item}>
       
       <View style={styles.itemLeft}>
