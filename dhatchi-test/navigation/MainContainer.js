@@ -18,39 +18,20 @@ const settingsName = "Settings";
 const addName = "Add";
 
 const Tab = createBottomTabNavigator();
-export const ClothesContext = React.createContext("Hello");
+
 
 //console.log(wd)
 
-function getWardrobe(set){
-  const requestOptions = {
-    method: 'GET',
-  };
-  fetch('http://192.168.1.185:5000/wardrobe',requestOptions)
-    .then((response) => {
-      if (!response.ok) {
-        throw response;
-      }
-      
-      return response.json();
-      //return response.json();
-    })
-    .then((json)=> {
-      set(json);
-    })
-}
+
 
 
 
 
 function MainContainer({route, navigation}) {
-  const [wd,setWd] = React.useState({})
-  React.useEffect(()=> {
-   getWardrobe(setWd);
-  },[]);
+  
   
   return (
-    <ClothesContext.Provider value={wd}>
+    
     <NavigationContainer>
       <Tab.Navigator
         
@@ -83,7 +64,7 @@ function MainContainer({route, navigation}) {
               ]
             }
 
-            // You can return any component that you like here!
+            
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}>
@@ -95,7 +76,7 @@ function MainContainer({route, navigation}) {
         
       </Tab.Navigator>
     </NavigationContainer>
-    </ClothesContext.Provider>
+    
   );
 }
 
