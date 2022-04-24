@@ -1,13 +1,35 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity,Animated } from 'react-native';
 import 'react-native-gesture-handler';
 import { Swipeable, TouchableHighlight } from 'react-native-gesture-handler';
 
+
 const rightActions = () => {
+   
   return(
-    <View>
-    <Text>Delete</Text>
+    //<View
+    //  style = {styles.delSquare}>
+    //    <Text style = {{color: '#1b1a17',paddingHorizontal: 10, fontWeight: '600',paddingVertical: 20}}>
+    //      Delete
+    //    </Text>
+    //</View>
+    <>
+    <TouchableOpacity onPress={() => alert('Delete button pressed')}>
+    <View
+      style={styles.delSquare}>
+      <Animated.Text
+        style={{
+          color: 'white',
+          paddingHorizontal: 10,
+          fontWeight: '600',
+          paddingVertical:50,
+          
+        }}>
+        Delete
+      </Animated.Text>
     </View>
+  </TouchableOpacity>
+  </>
   )
 }
 
@@ -48,8 +70,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexWrap: 'wrap'
   },
+  delSquare: {
+    flexDirection: 'row',
+    
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 7,
+    marginBottom: 10,
+
+  },
   square: {
-    width: 100,
+    width: 80,
     height: 100,
     backgroundColor: '#55BCF6',
     opacity: 0.4,

@@ -50,23 +50,30 @@ function MainContainer({route, navigation}) {
             } else if (rn === settingsName) {
               iconName = focused ? 'settings' : 'settings-outline';
             }
-            opts = {
-              "tabBarActiveTintColor": "tomato",
-              "tabBarInactiveTintColor": "grey",
-              "tabBarLabelStyle": {
-                "paddingBottom": 5,
-                "fontSize": 10
-              },
-              "tabBarStyle": [
-                {
-                  "display": "flex"
-                },
-              ]
-            }
+           // opts = {
+            // "tabBarActiveTintColor": "tomato",
+            //  "tabBarInactiveTintColor": "grey",
+            //  "tabBarLabelStyle": {
+             //   "paddingBottom": 5,
+              //  "fontSize": 10
+              //},
+              //"tabBarStyle": [
+               // {
+               //  "display": "flex"
+               // },
+             // ]
+            //}
 
             
             return <Ionicons name={iconName} size={size} color={color} />;
           },
+       
+          tabBarInactiveTintColor: "grey",
+          tabBarStyle: [
+             {
+              display: "flex"
+             }]
+
         })}>
     
       <Tab.Screen name={homeName} component={HomeScreen} />

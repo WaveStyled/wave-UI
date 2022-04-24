@@ -32,7 +32,7 @@ export default function HomeScreen({ navigation, route }) {
      <ClothingItem key = {clothes.pieceid} text={clothes.type + ' ' + clothes.color}/> 
   );
    }
-
+   
   
 
     return (

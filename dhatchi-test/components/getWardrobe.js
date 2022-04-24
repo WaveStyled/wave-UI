@@ -17,8 +17,9 @@ function get(set){
         set(json);
       })
   }
+  
 function Wardrobe(){
-const [wd,setWd] = React.useState({})
+  const [wd,setWd] = React.useState({})
   React.useEffect(()=> {
    get(setWd);
   },[]);
