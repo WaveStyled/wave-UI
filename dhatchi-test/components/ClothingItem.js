@@ -1,19 +1,35 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import 'react-native-gesture-handler';
+import { Swipeable, TouchableHighlight } from 'react-native-gesture-handler';
 
-
+const rightActions = () => {
+  return(
+    <View>
+    <Text>Delete</Text>
+    </View>
+  )
+}
 
 const ClothingItem = (props) => {
 
   return (
+    <Swipeable renderRightActions ={rightActions}>
     <View style={styles.item}>
+      
       <View style={styles.itemLeft}>
+      
         <View style={styles.square}></View>
+        
         <Text style={styles.itemText}>{props.text}</Text>
+       
       </View>
+      
       <View style={styles.circular}></View>
+      
     </View>
+    </Swipeable>
+    
   )
 }
 

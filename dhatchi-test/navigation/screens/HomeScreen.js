@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
+
 import ClothingItem from './../../components/ClothingItem';
 import AddScreen from './AddScreen'
 //import { ClothesContext} from '../../App';
@@ -8,28 +9,35 @@ var clothes = [
    
   ];
 
+function addHeaderButton(navigation){
+  React.useLayoutEffect(() => {navigation.setOptions({headerRight: () =>(
+    <Button 
+        
+          onPress={ () => 0 } title = "add"               
+      />
+     
+     )})
+  });
+}
+  
+
+
 export default function HomeScreen({ navigation, route }) {
   
   const value = Wardrobe();
-   
+  addHeaderButton(navigation)
    let list;
    if (Object.keys(value).length !== 0) {
-     console.log(value[0]);
       list = value.map((clothes) =>
      <ClothingItem key = {clothes.pieceid} text={clothes.type + ' ' + clothes.color}/> 
   );
    }
 
-  //navigation.setOptions({headerRight: () =>(
-  // <Button 
-      
-   //     onPress={ () => navigation.navigate(AddScreen) } title = "add"               
-   // />
-   
-  // )})
+  
 
     return (
         <View style={styles.container}>
+         
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1
@@ -37,11 +45,16 @@ export default function HomeScreen({ navigation, route }) {
           keyboardShouldPersistTaps='handled'
         >
             <View style={styles.clothsWrapper}>
+            
         <View style={styles.items}>
+        
            {list != null ? list: true}
+        
         </View>
+       
       </View>
             </ScrollView>
+            
         </View>
     );
 }
