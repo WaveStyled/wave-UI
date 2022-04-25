@@ -90,7 +90,7 @@ function MainContainer({route, navigation}) {
 
         })}>
     
-      <Tab.Screen name={homeName} component={HomeContainerScreen} />
+      <Tab.Screen name={homeName} component={HomeContainerScreen} options = {{headerShown : false }} />
       
         <Tab.Screen name={detailsName} component={DetailsScreen} options = {{headerShown : false }}/>
         <Tab.Screen name={settingsName} component={SettingsScreen} options = {{headerShown : false}}/>

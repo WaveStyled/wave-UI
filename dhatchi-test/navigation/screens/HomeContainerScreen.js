@@ -9,11 +9,18 @@ import axios from "axios";
 import HomeScreen from './HomeScreenComponents/HomeScreen';
 import AddScreen from './HomeScreenComponents/AddScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 function HomeContainerScreen({route, navigation}) {
   
   const Stack = createNativeStackNavigator();
+  const tabHiddenRoutes = ["Add"];
+
+if(tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))){
+  navigation.setOptions({tabBarVisible: false});
+ }else{
+ navigation.setOptions({tabBarVisible: true});
+}
     return (
         // <NavigationContainer>
         <Stack.Navigator>
