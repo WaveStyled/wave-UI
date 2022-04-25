@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
 
-import ClothingItem from './../../components/ClothingItem';
+import ClothingItem from '../../../components/ClothingItem';
 import AddScreen from './AddScreen'
 //import { ClothesContext} from '../../App';
-import Wardrobe from '../../components/getWardrobe'
+import Wardrobe from '../../../components/getWardrobe'
 
 var clothes = [
    
@@ -14,7 +14,7 @@ function addHeaderButton(navigation){
   React.useLayoutEffect(() => {navigation.setOptions({headerRight: () =>(
     <Button 
         
-          onPress={ () => 0 } title = "add"               
+          onPress={ ()=>navigation.navigate('Add')}  title = "add"              
       />
      
      )})
