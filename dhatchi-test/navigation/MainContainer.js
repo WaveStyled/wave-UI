@@ -54,7 +54,9 @@ function MainContainer({route, navigation}) {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             let rn = route.name;
-
+            // if(rn == "Add"){
+            //   return;
+            // }
             if (rn === homeName) {
               iconName = focused ? 'home' : 'home-outline'; 
 
@@ -90,7 +92,7 @@ function MainContainer({route, navigation}) {
 
         })}>
     
-      <Tab.Screen name={homeName} component={HomeContainerScreen} options = {{headerShown : false }} />
+      <Tab.Screen name={homeName} component={HomeContainerScreen} options = {{headerShown : false, Tab: false}} />
       
         <Tab.Screen name={detailsName} component={DetailsScreen} options = {{headerShown : false }}/>
         <Tab.Screen name={settingsName} component={SettingsScreen} options = {{headerShown : false}}/>

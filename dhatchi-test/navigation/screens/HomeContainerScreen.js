@@ -25,7 +25,7 @@ if(tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))){
         // <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Add" component={AddScreen} />
+          <Stack.Screen name="Add" component={AddScreen}  options = {{tabBarVisible: false }} />
         </Stack.Navigator>
       // </NavigationContainer>
 

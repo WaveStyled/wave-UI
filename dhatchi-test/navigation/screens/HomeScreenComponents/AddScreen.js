@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
 import {Picker, Text, StyleSheet, View, TextInput, Button} from 'react-native';
 import RNPickerSelect from "react-native-picker-select";
+import Itemtype_Picker from './AddComponents/Itemtype_Picker';
+
+const clothTypes = [{ name: "shirts" }, { name: "Overtops" }];
 const AddScreen = () => {
   const [currency, setCurrency] = useState('US Dollar');
   return (
+    
     <View style={styles.container}>
       <Text style={styles.formLabel}> Name </Text>
       <View>
@@ -15,30 +19,7 @@ const AddScreen = () => {
           style={styles.inputStyle}
         />
          <Text style={styles.formLabel}> Cloth Type </Text>
-        <Picker
-          selectedValue={currency}
-          onValueChange={currentCurrency => setCurrency(currentCurrency)}>
-          <Picker.Item label="Shirts" value="" />
-          <Picker.Item label="OverTops" value="" />
-          <Picker.Item label="Pants" value="" />
-          <Picker.Item label="Shorts" value="" />
-          <Picker.Item label="Shoes" value="" />
-          <Picker.Item label="Hat" value="" />
-          <Picker.Item label="Misc" value="" />
-        </Picker>
-
-        {/* <RNPickerSelect
-                onValueChange={(language) => setLanguage(language)}
-                items={[
-                    { label: "JavaScript", value: "JavaScript" },
-                    { label: "TypeScript", value: "TypeScript" },
-                    { label: "Python", value: "Python" },
-                    { label: "Java", value: "Java" },
-                    { label: "C++", value: "C++" },
-                    { label: "C", value: "C" },
-                ]}
-              style={pickerSelectStyles}
-            /> */}
+        <Itemtype_Picker items = {clothTypes}/>
         { <Button
           title="Submit"
           color="#fff"
