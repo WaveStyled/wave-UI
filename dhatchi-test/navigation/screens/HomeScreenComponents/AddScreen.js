@@ -2,7 +2,11 @@ import React, {useState} from 'react';
 import {Picker, Text, StyleSheet, View, TextInput, Button} from 'react-native';
 import RNPickerSelect from "react-native-picker-select";
 import Itemtype_Picker from './AddComponents/Itemtype_Picker';
-
+// import { ColorWheel } from 'react-native-color-wheel';
+import ColorWheel_modified from './AddComponents/ColorWheel_modified';
+import Rating_Picker from './AddComponents/Rating_Picker';
+import Weather_Picker from './AddComponents/Weather_Picker';
+import Occasion_Picker from './AddComponents/Occasion_Picker';
 const clothTypes = [{ name: "shirts" }, { name: "Overtops" }];
 const AddScreen = () => {
   const [currency, setCurrency] = useState('US Dollar');
@@ -14,12 +18,23 @@ const AddScreen = () => {
         <TextInput placeholder="Ex: Bape Hoodie" style={styles.inputStyle} />
         <Text style={styles.formLabel}> Color </Text>
         <TextInput
-          secureTextEntry={true}
           placeholder="Ex: Blue"
+          style={styles.inputStyle}
+        />
+        {/* <ColorWheel_modified/> */}
+        <Text style={styles.formLabel}> Number of Times Worn </Text>
+        <TextInput
+          placeholder="Ex: 3"
           style={styles.inputStyle}
         />
          <Text style={styles.formLabel}> Cloth Type </Text>
         <Itemtype_Picker items = {clothTypes}/>
+        <Text style={styles.formLabel}> Give Rating From 1-10</Text>
+        <Rating_Picker items = {clothTypes}/>
+        <Text style={styles.formLabel}> Weather</Text>
+        <Weather_Picker items = {clothTypes}/>
+        <Text style={styles.formLabel}> Occasion </Text>
+        <Occasion_Picker items = {clothTypes}/>
         { <Button
           title="Submit"
           color="#fff"
