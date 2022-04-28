@@ -7,8 +7,8 @@ import axios from "axios";
 //import { useState, useEffect } from 'react';
 // Screens
 
-import DetailsScreen from './screens/DetailsScreen';
-import SettingsScreen from './screens/SettingsScreen';
+import RecommendScreen from './screens/RecommendScreen';
+import CalibrateScreen from './screens/CalibrateScreen';
 import AddScreen from './screens/HomeScreenComponents/AddScreen';
 //import HomeScreen from './screens/HomeScreen';
 import HomeContainerScreen from './screens/HomeContainerScreen';
@@ -16,8 +16,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //Screen names
 const homeName = "Home";
-const detailsName = "Calibrate";
-const settingsName = "Settings";
+const RecommendName = "Recommend";
+const CalibrateName = "Calibrate";
 const addName = "Add";
 
 const Tab = createBottomTabNavigator();
@@ -60,11 +60,11 @@ function MainContainer({route, navigation}) {
             if (rn === homeName) {
               iconName = focused ? 'home' : 'home-outline'; 
 
-            } else if (rn === detailsName) {
-              iconName = focused ? 'list' : 'list-outline';
+            } else if (rn === RecommendName) {
+              iconName = focused ? 'list' : 'shirt-outline';
 
-            } else if (rn === settingsName) {
-              iconName = focused ? 'settings' : 'settings-outline';
+            } else if (rn === CalibrateName) {
+              iconName = focused ? 'settings' : 'heart-outline';
             }
            // opts = {
             // "tabBarActiveTintColor": "tomato",
@@ -94,8 +94,8 @@ function MainContainer({route, navigation}) {
     
       <Tab.Screen name={homeName} component={HomeContainerScreen} options = {{headerShown : false, Tab: false}} />
       
-        <Tab.Screen name={detailsName} component={DetailsScreen} options = {{headerShown : false }}/>
-        <Tab.Screen name={settingsName} component={SettingsScreen} options = {{headerShown : false}}/>
+        <Tab.Screen name={RecommendName} component={RecommendScreen} options = {{headerShown : false }}/>
+        <Tab.Screen name={CalibrateName} component={CalibrateScreen} options = {{headerShown : false}}/>
         
       </Tab.Navigator>
       <Stack.Screen name="Add" component={AddScreen} />
