@@ -61,10 +61,10 @@ function MainContainer({route, navigation}) {
               iconName = focused ? 'home' : 'home-outline'; 
 
             } else if (rn === RecommendName) {
-              iconName = focused ? 'list' : 'shirt-outline';
+              iconName = focused ? 'shirt' : 'shirt-outline';
 
             } else if (rn === CalibrateName) {
-              iconName = focused ? 'settings' : 'heart-outline';
+              iconName = focused ? 'heart' : 'heart-outline';
             }
            // opts = {
             // "tabBarActiveTintColor": "tomato",
