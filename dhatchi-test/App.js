@@ -5,18 +5,37 @@ import AddScreen from "./navigation/screens/HomeScreenComponents/AddScreen";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import AuthScreen from './navigation/screens/AuthScreen';
+import { StyleSheet, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+
 const Stack = createNativeStackNavigator();
-function App() {
+
+export default function App() {
   
   return (
-    <MainContainer/>
-  //   <NavigationContainer>
-  //   <Stack.Navigator>
-  //     <Stack.Screen name="Home" component={HomeScreen} />
-  //     <Stack.Screen name="Add" component={AddScreen} />
-  //   </Stack.Navigator>
-  // </NavigationContainer>
+    <NavigationContainer >
+      <Stack.Navigator>
+        <Stack.Screen
+          name = "LogIn"
+          component = {AuthScreen}
+          coptions= {{headerShown : false}}
+        />
+        <Stack.Screen
+          name = "MainApp"
+          component={MainContainer}
+          options={{headerShown : false, gestureEnabled : false}}
+        />  
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
-export default App;

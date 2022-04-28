@@ -11,24 +11,20 @@ import AddScreen from './HomeScreenComponents/AddScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
-function HomeContainerScreen({route, navigation}) {
-  
-  const Stack = createNativeStackNavigator();
-  const tabHiddenRoutes = ["Add"];
+function HomeTabs(){
 
-if(tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))){
-  navigation.setOptions({tabBarVisible: false});
- }else{
- navigation.setOptions({tabBarVisible: true});
 }
-    return (
-        // <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Add" component={AddScreen}  options = {{tabBarVisible: false }} />
-        </Stack.Navigator>
-      // </NavigationContainer>
 
+
+
+function HomeContainerScreen({route, navigation}) {
+  const Stack = createNativeStackNavigator();
+
+    return (
+        <Stack.Navigator>
+          <Stack.Screen name="Wardrobe" component={HomeScreen} />
+          <Stack.Screen name="Add" component={AddScreen}  options = {{tabBarStyle: {display : 'none'} }} />
+        </Stack.Navigator>
     ); 
 }
 export default HomeContainerScreen;
