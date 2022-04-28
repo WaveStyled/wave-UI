@@ -1,14 +1,44 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
 
-import ClothingItem from '../../../components/ClothingItem';
+
 import AddScreen from './AddScreen'
 //import { ClothesContext} from '../../App';
-import Wardrobe from '../../../components/getWardrobe'
-
+import ClothingItem from '../../../components/ClothingItem'
 var clothes = [
    
-  ];
+];
+
+
+function get(set){
+    const requestOptions = {
+      method: 'GET',
+    };
+    fetch('http://192.168.1.237:5000/wardrobe',requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        
+        return response.json();
+        
+      })
+      .then((json)=> {
+        set(json)
+      })
+  }
+
+
+  function update(json){
+    var list;
+    
+      list = json.map((clothes) =>
+     <ClothingItem key = {clothes.pieceid} text={clothes.type + ' ' + clothes.color}/> 
+  );
+    return list
+  }
+
+
 
 function addHeaderButton(navigation){
   React.useLayoutEffect(() => {navigation.setOptions({headerRight: () =>(
@@ -24,18 +54,24 @@ function addHeaderButton(navigation){
 
 
 export default function HomeScreen({ navigation, route }) {
+  const [wd,setWd] = React.useState({})
   
-  const value = Wardrobe();
-  addHeaderButton(navigation)
-   let list;
-   if (Object.keys(value).length !== 0) {
-      list = value.map((clothes) =>
-     <ClothingItem key = {clothes.pieceid} text={clothes.type + ' ' + clothes.color} l  = {value}/> 
-  );
-   }
+  //const updateWD = 
+    //React.useCallback(val => {
+    //  setWd(val);
+    //},[setWd])
+  
+  
+  
+  React.useEffect(()=> {
+    get(setWd)
    
+  },[]);
   
-
+  const value = update(wd);
+  console.log(value)
+  addHeaderButton(navigation)
+  
     return (
         <View style={styles.container}>
          
@@ -48,9 +84,9 @@ export default function HomeScreen({ navigation, route }) {
             <View style={styles.clothsWrapper}>
             
         <View style={styles.items}>
+           {value != null ? value: true}
         
-           {list != null ? list: true}
-        
+
         </View>
        
       </View>

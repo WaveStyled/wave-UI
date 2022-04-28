@@ -3,9 +3,71 @@ import { View, Text, StyleSheet, TouchableOpacity,Animated } from 'react-native'
 import 'react-native-gesture-handler';
 import { Swipeable, TouchableHighlight } from 'react-native-gesture-handler';
 
+//import { ClothesContext } from '../navigation/screens/HomeScreen';
+
+//function get(set){
+  //const requestOptions = {
+  //  method: 'GET',
+  //};
+  //fetch('http://169.233.168.244:5000/wardrobe/',requestOptions)
+   // .then((response) => {
+    //  if (!response.ok) {
+     //   throw response;
+     // }
+      
+      //return response.json();
+      
+   // })
+   // .then((json)=> {
+   //   React.useEffect(()=> {
+    //    set(json);
+    //   },[]);
+    //})
+//}
+ 
+function deleteItem(key){
+ console.log("hello")
+  {/*  const requestOptions = {
+    method: 'DELETE',
+  };
+  fetch('http://192.168.1.237:5000/delete/999/'+key,requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw response;
+      }
+      
+      return response.json();
+      
+    })
+    .then((json)=> {
+    })
+    fetch('http://192.168.1.237:5000/wardrobe/',{method: 'GET'})
+  .then((response) => {
+    if (!response.ok) {
+      throw response;
+    }
+    
+    return response.json();
+    
+  })
+  .then((json)=> {
+    
+    updateWD(set,json)
+  })
+   */}
+  }
+function updateWD(set,data){
+  var list;
+  list = data.map((clothes) =>
+  <ClothingItem key = {clothes.pieceid} text={clothes.type + ' ' + clothes.color} id = {clothes.pieceid} data = {data} up = {set}/>)
+React.useEffect(() => {
+  set(list)
+},[]);
+
+}
 
 
-function rightActions(list)  {
+function rightActions(key)  {
   
   return(
     //<View
@@ -15,7 +77,7 @@ function rightActions(list)  {
     //    </Text>
     //</View>
     <>
-    <TouchableOpacity onPress={() => alert('Delete button pressed')}>
+    <TouchableOpacity onPress={() => deleteItem(key)}>
     <View
       style={styles.delSquare}>
       <Animated.Text
@@ -37,7 +99,7 @@ function rightActions(list)  {
 const ClothingItem = (props) => {
   
   return (
-    <Swipeable renderRightActions = {() =>rightActions(props.l)}>
+    <Swipeable renderRightActions = {() =>rightActions(props.id)}>
     <View style={styles.item}>
       
       <View style={styles.itemLeft}>

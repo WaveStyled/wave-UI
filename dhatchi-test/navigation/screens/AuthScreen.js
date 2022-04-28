@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, Button} from 'react-native';
 
-const API_URL = 'http://10.0.0.171:5000';
+const API_URL = 'http://192.168.1.237:5000';
 
 function AuthScreen ({route, navigation}) {
 
