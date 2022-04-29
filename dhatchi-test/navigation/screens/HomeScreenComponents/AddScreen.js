@@ -8,7 +8,16 @@ import Rating_Picker from './AddComponents/Rating_Picker';
 import Weather_Picker from './AddComponents/Weather_Picker';
 import Occasion_Picker from './AddComponents/Occasion_Picker';
 const clothTypes = [{ name: "shirts" }, { name: "Overtops" }];
-const AddScreen = () => {
+import HomeScreen from './HomeScreen';
+
+
+function  AddScreen ({navigation}) {
+
+  const submit_handler = () => {
+     navigation.navigate("Wardrobe")
+  }
+
+
   const [currency, setCurrency] = useState('US Dollar');
   return (
     
@@ -38,7 +47,7 @@ const AddScreen = () => {
         { <Button
           title="Submit"
           color="#fff"
-          onPress={() => alert('Simple Button pressed')}
+          onPress={submit_handler}
         /> }
       </View>
     </View>
