@@ -29,11 +29,11 @@ function get(set){
   }
 
 
-  function update(json){
+  function update(json,set){
     var list;
     if(Object.keys(json).length !== 0){
       list = json.map((clothes) =>
-      <ClothingItem key = {clothes.pieceid} text={clothes.type + ' ' + clothes.color}/> 
+      <ClothingItem key = {clothes.pieceid} id = {clothes.pieceid} text={clothes.type + ' ' + clothes.color} update = {set}/> 
     
      
   );
@@ -58,21 +58,18 @@ function addHeaderButton(navigation){
 
 export default function HomeScreen({ navigation, route }) {
   const [wd,setWd] = React.useState(1)
-  
-  //const updateWD = 
-    //React.useCallback(val => {
-    //  setWd(val);
-    //},[setWd])
-  
-  
-  
+   
   React.useEffect(()=> {
     get(setWd)
    
   },[]);
   const x = wd;
-  const value = update(x);
-  console.log(value)
+  const updateWD = 
+  React.useCallback(val => {
+    setWd(val)
+    update(wd,updateWD)
+  },[])
+  const value = update(x,updateWD);
   addHeaderButton(navigation)
   
     return (

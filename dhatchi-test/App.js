@@ -19,7 +19,7 @@ export default function App() {
         <Stack.Screen
           name = "LogIn"
           component = {AuthScreen}
-          coptions= {{headerShown : false}}
+          options= {{headerShown : false}}
         />
         <Stack.Screen
           name = "MainApp"

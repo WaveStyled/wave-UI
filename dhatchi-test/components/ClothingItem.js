@@ -3,33 +3,15 @@ import { View, Text, StyleSheet, TouchableOpacity,Animated } from 'react-native'
 import 'react-native-gesture-handler';
 import { Swipeable, TouchableHighlight } from 'react-native-gesture-handler';
 
-//import { ClothesContext } from '../navigation/screens/HomeScreen';
 
-//function get(set){
-  //const requestOptions = {
-  //  method: 'GET',
-  //};
-  //fetch('http://169.233.168.244:5000/wardrobe/',requestOptions)
-   // .then((response) => {
-    //  if (!response.ok) {
-     //   throw response;
-     // }
-      
-      //return response.json();
-      
-   // })
-   // .then((json)=> {
-   //   React.useEffect(()=> {
-    //    set(json);
-    //   },[]);
-    //})
-//}
- 
-function deleteItem(key){
- console.log("hello")
-  {/*  const requestOptions = {
-    method: 'DELETE',
+var clothes = [
+   
+];
+function deleteItem(key,set){
+    const requestOptions = {
+    method: 'POST',
   };
+  
   fetch('http://192.168.1.237:5000/delete/999/'+key,requestOptions)
     .then((response) => {
       if (!response.ok) {
@@ -40,44 +22,20 @@ function deleteItem(key){
       
     })
     .then((json)=> {
+      set(json)
     })
-    fetch('http://192.168.1.237:5000/wardrobe/',{method: 'GET'})
-  .then((response) => {
-    if (!response.ok) {
-      throw response;
-    }
-    
-    return response.json();
-    
-  })
-  .then((json)=> {
-    
-    updateWD(set,json)
-  })
-   */}
+  
+    return true
+
   }
-function updateWD(set,data){
-  var list;
-  list = data.map((clothes) =>
-  <ClothingItem key = {clothes.pieceid} text={clothes.type + ' ' + clothes.color} id = {clothes.pieceid} data = {data} up = {set}/>)
-React.useEffect(() => {
-  set(list)
-},[]);
-
-}
 
 
-function rightActions(key)  {
+function rightActions(key,set)  {
   
   return(
-    //<View
-    //  style = {styles.delSquare}>
-    //    <Text style = {{color: '#1b1a17',paddingHorizontal: 10, fontWeight: '600',paddingVertical: 20}}>
-    //      Delete
-    //    </Text>
-    //</View>
+   
     <>
-    <TouchableOpacity onPress={() => deleteItem(key)}>
+    <TouchableOpacity onPress={() => deleteItem(key,set)}>
     <View
       style={styles.delSquare}>
       <Animated.Text
@@ -99,7 +57,7 @@ function rightActions(key)  {
 const ClothingItem = (props) => {
   
   return (
-    <Swipeable renderRightActions = {() =>rightActions(props.id)}>
+    <Swipeable renderRightActions = {() =>rightActions(props.id, props.update)}>
     <View style={styles.item}>
       
       <View style={styles.itemLeft}>
