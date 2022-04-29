@@ -5,7 +5,7 @@ import AddScreen from "./navigation/screens/HomeScreenComponents/AddScreen";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import AuthScreen from './navigation/screens/AuthScreen';
+import AuthScreen from './navigation/screens/login/AuthScreen';
 import { StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 

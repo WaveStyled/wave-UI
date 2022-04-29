@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, Button} from 'react-native';
+import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, Button, ScrollView} from 'react-native';
+//import Input from '../../components/Input.js'
 
-const API_URL = 'http://192.168.1.237:5000';
+const API_URL = 'http://10.0.0.171:5000';
 
 function AuthScreen ({route, navigation}) {
 
@@ -83,9 +84,21 @@ function AuthScreen ({route, navigation}) {
 
     return (
         <View style={styles.image}>
- 
             <View style={styles.card}>
-                <Text style={styles.heading}>{isLogin ? 'Login' : 'Signup'}</Text>
+                <ScrollView
+                    contentContainerStyle={{paddingTop: 50, paddingHorizontal: 20}}>
+                    <Text style={styles.heading} > {isLogin ? 'Login' : 'Signup'} </Text>
+                    <View style={{marginVertical: 20}}>
+                    <Button
+                                onPress={() => navigation.navigate('MainApp')}
+                                title="TestButtons"
+                            />
+                    </View>
+
+                </ScrollView>
+                
+
+                {/* <Text style={styles.heading}>{isLogin ? 'Login' : 'Signup'}</Text>
                 <View style={styles.form}>
                     <View style={styles.inputs}>
                         <TextInput style={styles.input} placeholder="Email" autoCapitalize="none" onChangeText={setEmail}></TextInput>
@@ -104,10 +117,9 @@ function AuthScreen ({route, navigation}) {
                             />
                     </View>    
                     
-                </View>
+                </View> */}
                 
-            </View>
-                   
+            </View>          
         </View>
     );
 };
@@ -117,6 +129,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         alignItems: 'center',
+        backgroundColor: 'rgba(0,0,238,0.5)'
     },  
     card: {
         flex: 1,
@@ -124,7 +137,7 @@ const styles = StyleSheet.create({
         width: '80%',
         marginTop: '40%',
         borderRadius: 20,
-        maxHeight: 380,
+        maxHeight: 500,
         paddingBottom: '30%',
     },
     heading: {

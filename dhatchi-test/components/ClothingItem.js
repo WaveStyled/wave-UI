@@ -1,39 +1,46 @@
+
+// expo install expo-image-picker
+
+
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,Animated } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, Image } from 'react-native';
 import 'react-native-gesture-handler';
 import { Swipeable, TouchableHighlight } from 'react-native-gesture-handler';
 
+var num_elements = Array.from({length: 10}, (_, i) => i + 1);
+// var path = num_elements.map((num) => (
+//   {id : num, require : require(`../assets/`)}
+// ));
+//var paths = num_elements.map((num) => `../assets/${num}.jpeg`);
 
-var clothes = [
-   
-];
-function deleteItem(key,set){
+
+
+function createItemPaths(num){
+
+
+}
+
+function deleteItem(key, set){
     const requestOptions = {
     method: 'POST',
   };
   
-  fetch('http://192.168.1.237:5000/delete/999/'+key,requestOptions)
+  fetch('http://10.0.0.171:5000/delete/999/'+key,requestOptions)
     .then((response) => {
       if (!response.ok) {
         throw response;
       }
-      
       return response.json();
-      
     })
     .then((json)=> {
       set(json)
     })
-  
     return true
-
-  }
+}
 
 
 function rightActions(key,set)  {
-  
   return(
-   
     <>
     <TouchableOpacity onPress={() => deleteItem(key,set)}>
     <View
@@ -54,25 +61,30 @@ function rightActions(key,set)  {
   )
 }
 
+const imgpaths = {
+  "1" : require("../assets/1.jpeg"),
+  "2" : require("../assets/2.jpeg"),
+  "3" : require("../assets/3.jpeg"),
+};
+
+
+
 const ClothingItem = (props) => {
-  
+  var z = imgpaths["1"]
   return (
     <Swipeable renderRightActions = {() =>rightActions(props.id, props.update)}>
     <View style={styles.item}>
-      
       <View style={styles.itemLeft}>
-      
-        <View style={styles.square}></View>
-        
-        <Text style={styles.itemText}>{props.text}</Text>
-       
-      </View>
-      
-      <View style={styles.circular}></View>
-      
+        <View style={styles.container}>
+          <Image
+            style={{width: 80, height: 100}}
+            source={(props.id % 2 === 0) ? z : require('../assets/2.jpeg')}/>
+        </View>
+        <Text style={styles.itemText}>{props.text}</Text>      
+      </View>    
+      <View style={styles.circular}></View>    
     </View>
     </Swipeable>
-    
   )
 }
 

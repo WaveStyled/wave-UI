@@ -8,9 +8,14 @@ export default function ItemType_Picker (labels) {
   return (
     
     <View style={styles.inputStyle}>
-       
         <RNPickerSelect
             onValueChange={(value) => console.log(value)}
+            placeholder={{
+              label: 'Select a color...',
+              value: null,
+              color:'red',
+            }}
+            itemStyle={{ backgroundColor: "grey", color: "blue", fontFamily:"Ebrima", fontSize:17 }}
             items={[
                 { label: clothingItems[0], value: clothingItems[0] },
                 { label: clothingItems[1], value: clothingItems[1] },
@@ -19,7 +24,6 @@ export default function ItemType_Picker (labels) {
                 { label: clothingItems[4], value: clothingItems[4] },
                 { label: clothingItems[5], value: clothingItems[5] },
             ]}
-            
         />
     </View>
   );
@@ -28,17 +32,16 @@ export default function ItemType_Picker (labels) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#356859',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#fdf5e2',
   },
   inputStyle: {
-    marginTop: 20,
-    width: 300,
+    width: '80%',
     height: 40,
     paddingHorizontal: 10,
     borderRadius: 50,
-    backgroundColor: '#b9e4c9',
+    backgroundColor: '#cfe2f3',
+    alignItems : 'center',
+    fontSize : 200
   }
 });
 

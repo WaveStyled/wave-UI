@@ -11,6 +11,11 @@ export default function Occasion_Picker (labels) {
        
         <RNPickerSelect
             onValueChange={(value) => console.log(value)}
+            placeholder={{
+              label: 'What\'s the occasion?',
+              value: null,
+              color:'red',
+            }}
             items={[
                 { label: clothingItems[0], value: clothingItems[0] },
                 { label: clothingItems[1], value: clothingItems[1] },
@@ -29,16 +34,17 @@ export default function Occasion_Picker (labels) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#356859',
+    backgroundColor: '#fdf5e2',
     alignItems: 'center',
     justifyContent: 'center',
   },
   inputStyle: {
-    marginTop: 20,
-    width: 300,
+    width: '80%',
     height: 40,
     paddingHorizontal: 10,
     borderRadius: 50,
-    backgroundColor: '#b9e4c9',
+    backgroundColor: '#cfe2f3',
+    alignItems : 'center',
+    fontSize : 200
   }
 });

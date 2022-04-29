@@ -23,7 +23,7 @@ function HomeContainerScreen({route, navigation}) {
     return (
         <Stack.Navigator>
           <Stack.Screen name="Wardrobe" component={HomeScreen} />
-          <Stack.Screen name="Add" component={AddScreen}  options = {{tabBarStyle: {display : 'none'} }} />
+          <Stack.Screen name="Add" component={AddScreen}  options = {{headerShown : false}} />
         </Stack.Navigator>
     ); 
 }

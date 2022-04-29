@@ -8,7 +8,7 @@ export default function Rating_Picker (labels) {
   return (
     
     <View style={styles.inputStyle}>
-       
+        <Text> Hello!</Text>
         <RNPickerSelect
             onValueChange={(value) => console.log(value)}
             items={[
@@ -33,17 +33,18 @@ export default function Rating_Picker (labels) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#356859',
+    backgroundColor: '#fdf5e2',
     alignItems: 'center',
     justifyContent: 'center',
   },
   inputStyle: {
-    marginTop: 20,
-    width: 300,
+    width: '80%',
     height: 40,
     paddingHorizontal: 10,
     borderRadius: 50,
-    backgroundColor: '#b9e4c9',
+    backgroundColor: '#cfe2f3',
+    alignItems : 'center',
+    fontSize : 200
   }
 });
 
