@@ -8,9 +8,13 @@ export default function Rating_Picker (labels) {
   return (
     
     <View style={styles.inputStyle}>
-        <Text> Hello!</Text>
         <RNPickerSelect
             onValueChange={(value) => console.log(value)}
+            placeholder={{
+              label: 'Rate from 1-10...',
+              value: null,
+              color:'red',
+            }}
             items={[
                 { label: clothingItems[0], value: clothingItems[0] },
                 { label: clothingItems[1], value: clothingItems[1] },
@@ -29,6 +33,7 @@ export default function Rating_Picker (labels) {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

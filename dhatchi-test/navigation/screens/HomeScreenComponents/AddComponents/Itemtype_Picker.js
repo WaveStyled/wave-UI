@@ -11,7 +11,7 @@ export default function ItemType_Picker (labels) {
         <RNPickerSelect
             onValueChange={(value) => console.log(value)}
             placeholder={{
-              label: 'Select a color...',
+              label: 'Select the type of clothing item...',
               value: null,
               color:'red',
             }}

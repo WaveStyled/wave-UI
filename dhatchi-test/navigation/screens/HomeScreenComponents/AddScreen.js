@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler'
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, ImageBackground, TextInput, StyleSheet, Picker} from 'react-native';
+import {View, ScrollView, Text, TouchableOpacity, ImageBackground, TextInput, StyleSheet, Picker} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -113,6 +113,7 @@ function  AddScreen ({navigation}) {
 
 
   return (
+    
     <View style={styles.container}>
       <BottomSheet
         ref={this.bs}
@@ -165,11 +166,24 @@ function  AddScreen ({navigation}) {
               </ImageBackground>
             </View>
           </TouchableOpacity>
-          <Text style={{marginTop: 10, fontSize: 18, fontWeight: 'bold'}}>
+          <Text style={{marginTop: 15, fontSize: 18, fontWeight: 'bold'}}>
             Add Item to Wardrobe
           </Text>
         </View>
-
+        <ScrollView>
+        <View style={styles.action}>
+        <TextInput
+            placeholder="Name"
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            style={[
+              styles.textInput,
+              {
+                color: colors.text,
+              },
+            ]}
+          />
+        </View>
         <View style={styles.action}>
           <Ionicons  name="shirt-outline" color={colors.text} size={26} />
           {/* <TextInput
@@ -234,6 +248,11 @@ function  AddScreen ({navigation}) {
           <Occasion_Picker items = {clothTypes}/>
         </View>
         <View style={styles.action}>
+        <Ionicons  name="ios-checkmark-outline" color={colors.text} size={26} />
+        <Rating_Picker items = {clothTypes}/>
+        </View>
+        <View style={styles.action}>
+        
         <Ionicons  name="eye-off-outline" color={colors.text} size={26} />
           <TextInput
               placeholder="Dirty? (Y/N)"
@@ -248,11 +267,13 @@ function  AddScreen ({navigation}) {
               ]}
             />
         </View>
+        </ScrollView> 
         <TouchableOpacity style={styles.commandButton} onPress={submit_handler}>
           <Text style={styles.panelButtonTitle}>Submit</Text>
         </TouchableOpacity>
         </View>
     </View>
+   
   );
 };
 
