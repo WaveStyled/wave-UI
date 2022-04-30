@@ -2,33 +2,34 @@ import React from "react";
 import RNPickerSelect from "react-native-picker-select";
 import { StyleSheet, Text, View } from "react-native";
 
+const weather = ["Cold", "Hot", "Rainy", "Sunny", "Snowy", "Typical"]
+export default weather;
 
-export default function Weather_Picker (labels) {
-  const clothingItems = ["Cold", "Hot", "Rainy", "Sunny", "Snowy", "Typical"]
-  return (
+// export default function Weather_Picker (labels) {
+//   return (
     
-    <View style={styles.inputStyle}>
+//     <View style={styles.inputStyle}>
        
-        <RNPickerSelect
-            onValueChange={(value) => console.log(value)}
-            placeholder={{
-              label: 'How\'s the weather today?...',
-              value: null,
-              color:'red',
-            }}
-            items={[
-                { label: clothingItems[0], value: clothingItems[0] },
-                { label: clothingItems[1], value: clothingItems[1] },
-                { label: clothingItems[2], value: clothingItems[2] },
-                { label: clothingItems[3], value: clothingItems[3] },
-                { label: clothingItems[4], value: clothingItems[4] },
+//         <RNPickerSelect
+//             onValueChange={(value) => console.log(value)}
+//             placeholder={{
+//               label: 'How\'s the weather today?...',
+//               value: null,
+//               color:'red',
+//             }}
+//             items={[
+//                 { label: clothingItems[0], value: clothingItems[0] },
+//                 { label: clothingItems[1], value: clothingItems[1] },
+//                 { label: clothingItems[2], value: clothingItems[2] },
+//                 { label: clothingItems[3], value: clothingItems[3] },
+//                 { label: clothingItems[4], value: clothingItems[4] },
 
-            ]}
+//             ]}
             
-        />
-    </View>
-  );
-}
+//         />
+//     </View>
+//   );
+// }
 
 const styles = StyleSheet.create({
   container: {

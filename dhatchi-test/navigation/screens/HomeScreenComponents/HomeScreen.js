@@ -20,49 +20,37 @@ function get(set){
         if (!response.ok) {
           throw response;
         }
-        
         return response.json();
-        
       })
       .then((json)=> {
         set(json)
       })
-  }
+}
 
-
-  function update(json,set){
-    var list;
-    if(Object.keys(json).length !== 0){
-      list = json.map((clothes) =>
-      <ClothingItem key = {clothes.pieceid} id = {clothes.pieceid} text={clothes.type + ' ' + clothes.color} update = {set}/> 
-    
-     
+function update(json,set){
+  var list;
+  if(Object.keys(json).length !== 0){
+    list = json.map((clothes) =>
+    <ClothingItem key = {clothes.pieceid} id = {clothes.pieceid} text={clothes.type + ' ' + clothes.color} update = {set}/> 
   );
-    return list
-    }
+  return list
   }
-
-
+}
 
 function addHeaderButton(navigation){
   React.useLayoutEffect(() => {navigation.setOptions({headerRight: () =>(
     <Button 
-        
           onPress={ ()=>navigation.navigate('Add')}  title = "add"              
       />
-     
      )})
   });
 }
-  
-
 
 export default function HomeScreen({ navigation, route }) {
   const [wd,setWd] = React.useState(1)
   const route_actual = useRoute();
   React.useEffect(()=> {
-    get(setWd)
-   
+    get(setWd) 
   },[]);
   const x = wd;
   const updateWD = 

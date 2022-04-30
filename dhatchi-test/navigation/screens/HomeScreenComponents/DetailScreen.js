@@ -10,7 +10,7 @@ export default function  DetailScreen ({navigation}) {
     const route = useRoute();
     return (
         <View>
-        <Text style={{marginTop: 15, fontSize: 18, fontWeight: 'bold'}}>
+        <Text style={{marginTop: 15, fontSize: 18, fontWeight: 'bold', paddingVertical: '30%'}}>
         {route.params.name} Details
         </Text>
         <Text>ClothItem Type: {route.params.type}</Text>

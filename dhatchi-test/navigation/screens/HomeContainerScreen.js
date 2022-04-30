@@ -12,11 +12,6 @@ import DetailScreen from './HomeScreenComponents/DetailScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
-function HomeTabs(){
-
-}
-
-
 
 function HomeContainerScreen({route, navigation}) {
   const Stack = createNativeStackNavigator();
