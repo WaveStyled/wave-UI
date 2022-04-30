@@ -5,6 +5,7 @@ import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
 import AddScreen from './AddScreen'
 //import { ClothesContext} from '../../App';
 import ClothingItem from '../../../components/ClothingItem'
+import { useRoute } from '@react-navigation/native';
 var clothes = [
    
 ];
@@ -58,7 +59,7 @@ function addHeaderButton(navigation){
 
 export default function HomeScreen({ navigation, route }) {
   const [wd,setWd] = React.useState(1)
-   
+  const route_actual = useRoute();
   React.useEffect(()=> {
     get(setWd)
    
@@ -82,11 +83,12 @@ export default function HomeScreen({ navigation, route }) {
           keyboardShouldPersistTaps='handled'
         >
             <View style={styles.clothsWrapper}>
-            
+        
         <View style={styles.items}>
            {value != null ? value: true}
-        
-
+            {/* CHECK: this line causes code raises undefined error */}
+           {/* <Text> {route_actual.params.name}</Text> */}
+       
         </View>
        
       </View>

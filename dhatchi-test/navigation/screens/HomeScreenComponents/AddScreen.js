@@ -28,7 +28,16 @@ import Occasion_Picker from './AddComponents/Occasion_Picker';
 function  AddScreen ({navigation}) {
 
 //   const [image, setImage] = useState('https://api.adorable.io/avatars/80/abott@adorable.png');
+   
+//CHECK: useState to declare variables to store user inputs
    const {colors} = useTheme();
+   const [type, setType] = useState();
+   const [clothName, setClothName] = useState();
+   const [color, setColor] = useState();
+   const [weather, setWeather] = useState();
+   const [occasion, setOccasion] = useState();
+
+
    const [image, setImage, isDirty, setDirty] = useState(image);
    const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
    console.log(status);
@@ -108,7 +117,13 @@ function  AddScreen ({navigation}) {
   var fall = new Animated.Value(1);
 
   const submit_handler = () => {
-    navigation.navigate("Wardrobe")
+    navigation.navigate("Wardrobe", {name: clothName})
+  }
+
+  //CHECK: when the save button is clicked, it navigates to the detail screen, and the name/color attribute entered
+  // on the form are displayed on a details screen. Not able to transfer data from pickers yet
+  const save_handler = () => {
+    navigation.navigate("Details", {name: clothName, type: type,  color: color, weather: weather, occasion: occasion})
   }
 
 
@@ -182,6 +197,8 @@ function  AddScreen ({navigation}) {
                 color: colors.text,
               },
             ]}
+            //CHECK: how userinput is stored in a variable
+            value={clothName} onChangeText={text => setClothName(text)}
           />
         </View>
         <View style={styles.action}>
@@ -196,7 +213,7 @@ function  AddScreen ({navigation}) {
                 color: colors.text,
               },
             ]} />*/}
-            <Itemtype_Picker items = {clothTypes}/>
+            <Itemtype_Picker items = {clothTypes}  value={type} onChangeText={text => setType(text)}/>
           
         </View>
         <View style={styles.action}>
@@ -211,6 +228,7 @@ function  AddScreen ({navigation}) {
                 color: colors.text,
               },
             ]}
+            value={color} onChangeText={text => setColor(text)}
           />
         </View>
         {/* <View style={styles.action}>
@@ -241,11 +259,15 @@ function  AddScreen ({navigation}) {
               },
             ]}
           /> */}
-          <Weather_Picker items = {clothTypes}/>
+          <Weather_Picker items = {clothTypes}
+           value={weather} onChangeText={text => setWeather(text)}
+          />
         </View>
         <View style={styles.action}>
         <Ionicons  name="wine-outline" color={colors.text} size={26} />
-          <Occasion_Picker items = {clothTypes}/>
+          <Occasion_Picker items = {clothTypes}
+          value={occasion} onChangeText={text => setOccasion(text)}
+          />
         </View>
         <View style={styles.action}>
         <Ionicons  name="ios-checkmark-outline" color={colors.text} size={26} />
@@ -270,6 +292,9 @@ function  AddScreen ({navigation}) {
         </ScrollView> 
         <TouchableOpacity style={styles.commandButton} onPress={submit_handler}>
           <Text style={styles.panelButtonTitle}>Submit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.commandButton} onPress={save_handler}>
+          <Text style={styles.panelButtonTitle}>Save</Text>
         </TouchableOpacity>
         </View>
     </View>

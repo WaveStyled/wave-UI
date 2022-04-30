@@ -9,6 +9,7 @@ export default function Rating_Picker (labels) {
     
     <View style={styles.inputStyle}>
         <RNPickerSelect
+           
             onValueChange={(value) => console.log(value)}
             placeholder={{
               label: 'Rate from 1-10...',

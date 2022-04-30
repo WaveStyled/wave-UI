@@ -1,15 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
 import RNPickerSelect from "react-native-picker-select";
 import { StyleSheet, Text, View } from "react-native";
 
 
 export default function ItemType_Picker (labels) {
  const clothingItems = ["Shirts", "OverTops", "Pants", "Shorts", "Shoes", "Hat", "Misc"];
+ const [type, setType] = useState();
   return (
     
     <View style={styles.inputStyle}>
         <RNPickerSelect
+           
             onValueChange={(value) => console.log(value)}
+            value={type} onChangeText={text => setType(text)}
             placeholder={{
               label: 'Select the type of clothing item...',
               value: null,

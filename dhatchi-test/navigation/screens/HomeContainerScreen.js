@@ -8,6 +8,7 @@ import axios from "axios";
 // Screens
 import HomeScreen from './HomeScreenComponents/HomeScreen';
 import AddScreen from './HomeScreenComponents/AddScreen';
+import DetailScreen from './HomeScreenComponents/DetailScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
@@ -24,6 +25,7 @@ function HomeContainerScreen({route, navigation}) {
         <Stack.Navigator>
           <Stack.Screen name="Wardrobe" component={HomeScreen} />
           <Stack.Screen name="Add" component={AddScreen}  options = {{headerShown : false}} />
+          <Stack.Screen name="Details" component={DetailScreen}  options = {{headerShown : false}} />
         </Stack.Navigator>
     ); 
 }
