@@ -19,6 +19,8 @@ import ColorWheel_modified from './AddComponents/ColorWheel_modified';
 import ratings from './AddComponents/Rating_Picker';
 import weathers from './AddComponents/Weather_Picker';
 import occasions from './AddComponents/Occasion_Picker';
+import { ClothesContext } from '../../../App';
+import { NavigationContainerRefContext } from '@react-navigation/native';
 
 function update(json,set){  // maybe this could work?
   var list;
@@ -37,7 +39,7 @@ function addItem(props){
     headers : {'Content-Type': 'application/json'},
     body : JSON.stringify(props)
   };
-  fetch('http://10.0.0.171:5000/add/999/',requestOptions)
+  fetch('http://192.168.1.70:5000/add/999/',requestOptions)
     .then((response) => {
     if (!response.ok) {
       throw response;
@@ -59,6 +61,13 @@ function  AddScreen ({navigation}) {
    const [rating, setRating] = useState();
    const [item, setClothingItem] = useState();
    console.log(item);
+
+   const a = React.useContext(ClothesContext);
+
+   React.useCallback(val => {
+    setWd(val)
+    update(wd,updateWD)
+  },[])
 
    const [image, setImage, isDirty, setDirty] = useState(image);
    const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -144,12 +153,26 @@ function  AddScreen ({navigation}) {
   //CHECK: when the save button is clicked, it navigates to the detail screen, and the name/color attribute entered
   // on the form are displayed on a details screen. Not able to transfer data from pickers yet
   const save_handler = () => {
-    addItem({PIECEID: 200, COLOR: color, TYPE: type, 
-                    RECENT_DATE_WORN:null, TIMES_WORN: null,
-                    RATING: null, OC_FORMAL: 0, OC_SEMI_FORMAL:0,
-                    OC_CASUAL: 0, OC_WORKOUT : 0, OC_OUTDOORS : 1, OC_COMFY : 0,
-                    WE_COLD : 0, WE_HOT : 0, WE_RAINY: 0, WE_SNOWY:0,
-                    WE_TYPICAL: 0, DIRTY : 1});
+    // addItem({PIECEID: 200, COLOR: color, TYPE: type, 
+    //                 RECENT_DATE_WORN:null, TIMES_WORN: null,
+    //                 RATING: null, OC_FORMAL: 0, OC_SEMI_FORMAL:0,
+    //                 OC_CASUAL: 0, OC_WORKOUT : 0, OC_OUTDOORS : 1, OC_COMFY : 0,
+    //                 WE_COLD : 0, WE_HOT : 0, WE_RAINY: 0, WE_SNOWY:0,
+    //                 WE_TYPICAL: 0, DIRTY : 1});
+    console.log(a.length);
+
+    toadd = {PIECEID: a.length+1, COLOR: color, TYPE: type, 
+                      RECENT_DATE_WORN:null, TIMES_WORN: null,
+                      RATING: null, OC_FORMAL: 0, OC_SEMI_FORMAL:0,
+                      OC_CASUAL: 0, OC_WORKOUT : 0, OC_OUTDOORS : 1, OC_COMFY : 0,
+                      WE_COLD : 0, WE_HOT : 0, WE_RAINY: 0, WE_SNOWY:0,
+                      WE_TYPICAL: 0, DIRTY : 1};
+    addItem(toadd);
+    a.push(toadd);
+    navigation.navigate("Wardrobe", {name: clothName})
+    
+
+   // navigation.navigate("Details", {name: clothName, type: type,  color: color, weather: weather, occasion: occasion})
     
     //navigation.navigate("Details", {name: clothName, type: type,  color: color, weather: weather, occasion: occasion})
   }
