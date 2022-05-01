@@ -22,6 +22,9 @@ import occasions from './AddComponents/Occasion_Picker';
 import { ClothesContext } from '../../../App';
 import { NavigationContainerRefContext } from '@react-navigation/native';
 import MultiSelect from 'react-native-multiple-select';
+
+
+
 const weat = [{
   id: '92iijs7yta',
   name: 'cold'
@@ -68,7 +71,6 @@ function addItem(props){
 //import ImageCropPicker from 'react-native-image-crop-picker';
 
 function  AddScreen ({navigation}) {   
-//CHECK: useState to declare variables to store user inputs
    const {colors} = useTheme();
    const [type, setType] = useState();
    const [clothName, setClothName] = useState();
@@ -77,8 +79,12 @@ function  AddScreen ({navigation}) {
    const [occasion, setOccasion] = useState();
    const [rating, setRating] = useState();
    const [item, setClothingItem] = useState();
-   console.log(item);
+   const [selectedItem, setSelectedItem] = useState([]);
 
+   onselectedItemChange = (selectedItem) => {
+     setSelectedItem(selectedItem);
+     console.log("selected item: ", selectedItem.name)
+   }
    const a = React.useContext(ClothesContext);
 
   React.useCallback(val => {
@@ -303,7 +309,6 @@ function  AddScreen ({navigation}) {
                 ]}
         />
     </View>
-            
         </View>
         <View style={styles.action}>
           <Ionicons  name="images-outline" color={colors.text} size={26} />
@@ -320,45 +325,27 @@ function  AddScreen ({navigation}) {
             value={color} onChangeText={color => setColor(color)}
           />
         </View>
-        {/* <View style={styles.action}>
-        <Ionicons  name="heart-outline" color={colors.text} size={26} />
-          <TextInput
-            placeholder="KEYPAD EXAMPLE"
-            placeholderTextColor="#666666"
-            keyboardType="number-pad"
-            autoCorrect={false}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          />
-        </View> */}
         <View style={styles.action}>
         <Ionicons  name="rainy-outline" color={colors.text} size={26} />
         <View style={styles2.inputStyle}>
-        {/* <MultiSelect
-          hideTags
-          items={weat}
-          uniqueKey="id"
-          onSelectedItemsChange={(value) => setWeather(value)}
-          selectText="Pick Items"
-          searchInputPlaceholderText="Search Items..."
-          onChangeInput={ (text)=> console.log(text)}
-          tagRemoveIconColor="#CCC"
-          tagBorderColor="#CCC"
-          tagTextColor="#CCC"
-          selectedItemTextColor="#CCC"
-          selectedItemIconColor="#CCC"
-          itemTextColor="#000"
-          displayKey="name"
-          searchInputStyle={{ color: '#CCC' }}
-          submitButtonColor="#CCC"
-          submitButtonText="Submit"
-          /> */}
+       
+          <RNPickerSelect
+              onValueChange={(value) => setWeather(value)}
+              placeholder={{
+                label: 'How\'s the weather today?...',
+                value: null,
+                color:'red',
+              }}
+              items={[
+                  { label: weathers[0], value: weathers[0] },
+                  { label: weathers[1], value: weathers[1] },
+                  { label: weathers[2], value: weathers[2] },
+                  { label: weathers[3], value: weathers[3] },
+                  { label: weathers[4], value: weathers[4] },
+              ]}
+          />
+   </View>
         </View>
-      </View>
       <View style={styles.action}>
       <Ionicons  name="wine-outline" color={colors.text} size={26} />
         <View style={styles2.inputStyle}>
@@ -548,6 +535,20 @@ const styles = StyleSheet.create({
     color: '#05375a',
   },
 });
+
+const styles_multi = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF'
+  }, 
+  multiSelectContainer :{
+    height:400,
+    width: '80%'
+  }
+});
+
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
