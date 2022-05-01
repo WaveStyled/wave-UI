@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler'
 import React, {useState} from 'react';
-import {View, ScrollView, Text, TouchableOpacity, ImageBackground, TextInput, StyleSheet, Picker} from 'react-native';
+import {View, ScrollView, Text, Image, TouchableOpacity, ImageBackground, TextInput, StyleSheet, Picker} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -21,6 +21,23 @@ import weathers from './AddComponents/Weather_Picker';
 import occasions from './AddComponents/Occasion_Picker';
 import { ClothesContext } from '../../../App';
 import { NavigationContainerRefContext } from '@react-navigation/native';
+import MultiSelect from 'react-native-multiple-select';
+const weat = [{
+  id: '92iijs7yta',
+  name: 'cold'
+}, {
+  id: 'a0s0a8ssbsd',
+  name: 'hot'
+}, {
+  id: '16hbajsabsd',
+  name: 'rainy'
+}, {
+  id: 'nahs75a5sg',
+  name: 'snowy'
+}, {
+  id: '667atsas',
+  name: 'typical'
+}];
 
 function update(json,set){  // maybe this could work?
   var list;
@@ -39,7 +56,7 @@ function addItem(props){
     headers : {'Content-Type': 'application/json'},
     body : JSON.stringify(props)
   };
-  fetch('http://192.168.1.70:5000/add/999/',requestOptions)
+  fetch('http://10.0.0.30:5000/add/999/',requestOptions)
     .then((response) => {
     if (!response.ok) {
       throw response;
@@ -64,7 +81,7 @@ function  AddScreen ({navigation}) {
 
    const a = React.useContext(ClothesContext);
 
-   React.useCallback(val => {
+  React.useCallback(val => {
     setWd(val)
     update(wd,updateWD)
   },[])
@@ -143,6 +160,17 @@ function  AddScreen ({navigation}) {
     </View>
   );
 
+  const renderLabel = (label, style) => {
+    return (
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Image style={{width: 42, height: 42}} source={{uri: 'https://dummyimage.com/100x100/52c25a/fff&text=S'}} />
+        <View style={{marginLeft: 10}}>
+          <Text style={style}>{label}</Text>
+        </View>
+      </View>
+    )
+  }
+
   bs = React.createRef();
   var fall = new Animated.Value(1);
 
@@ -153,12 +181,7 @@ function  AddScreen ({navigation}) {
   //CHECK: when the save button is clicked, it navigates to the detail screen, and the name/color attribute entered
   // on the form are displayed on a details screen. Not able to transfer data from pickers yet
   const save_handler = () => {
-    // addItem({PIECEID: 200, COLOR: color, TYPE: type, 
-    //                 RECENT_DATE_WORN:null, TIMES_WORN: null,
-    //                 RATING: null, OC_FORMAL: 0, OC_SEMI_FORMAL:0,
-    //                 OC_CASUAL: 0, OC_WORKOUT : 0, OC_OUTDOORS : 1, OC_COMFY : 0,
-    //                 WE_COLD : 0, WE_HOT : 0, WE_RAINY: 0, WE_SNOWY:0,
-    //                 WE_TYPICAL: 0, DIRTY : 1});
+
     console.log(a.length);
 
     toadd = {PIECEID: a.length+1, COLOR: color, TYPE: type, 
@@ -168,14 +191,17 @@ function  AddScreen ({navigation}) {
                       WE_COLD : 0, WE_HOT : 0, WE_RAINY: 0, WE_SNOWY:0,
                       WE_TYPICAL: 0, DIRTY : 1};
     addItem(toadd);
-    a.push(toadd);
-    navigation.navigate("Wardrobe", {name: clothName})
-    
 
-   // navigation.navigate("Details", {name: clothName, type: type,  color: color, weather: weather, occasion: occasion})
-    
-    //navigation.navigate("Details", {name: clothName, type: type,  color: color, weather: weather, occasion: occasion})
+    topush = {pieceid: a.length+1, color: color, type: type, 
+      recent_date_worn:null, times_worn: null,
+      rating: null, oc_formal: 0, oc_semi_formal:0,
+      oc_casual: 0, oc_workout : 0, oc_outdoors : 1, oc_comfy : 0,
+      we_cold : 0, we_hot : 0, we_rainy: 0, we_snowy:0,
+      we_typical: 0, dirty : 1};
+    a.push(topush);
+    navigation.navigate("Wardrobe", {name: clothName})
   }
+
 
 
   return (
@@ -312,29 +338,32 @@ function  AddScreen ({navigation}) {
         <View style={styles.action}>
         <Ionicons  name="rainy-outline" color={colors.text} size={26} />
         <View style={styles2.inputStyle}>
-       
-          <RNPickerSelect
-              onValueChange={(value) => setWeather(value)}
-              placeholder={{
-                label: 'How\'s the weather today?...',
-                value: null,
-                color:'red',
-              }}
-              items={[
-                  { label: weathers[0], value: weathers[0] },
-                  { label: weathers[1], value: weathers[1] },
-                  { label: weathers[2], value: weathers[2] },
-                  { label: weathers[3], value: weathers[3] },
-                  { label: weathers[4], value: weathers[4] },
-              ]}
-          />
-   </View>
+        {/* <MultiSelect
+          hideTags
+          items={weat}
+          uniqueKey="id"
+          onSelectedItemsChange={(value) => setWeather(value)}
+          selectText="Pick Items"
+          searchInputPlaceholderText="Search Items..."
+          onChangeInput={ (text)=> console.log(text)}
+          tagRemoveIconColor="#CCC"
+          tagBorderColor="#CCC"
+          tagTextColor="#CCC"
+          selectedItemTextColor="#CCC"
+          selectedItemIconColor="#CCC"
+          itemTextColor="#000"
+          displayKey="name"
+          searchInputStyle={{ color: '#CCC' }}
+          submitButtonColor="#CCC"
+          submitButtonText="Submit"
+          /> */}
         </View>
-        <View style={styles.action}>
-        <Ionicons  name="wine-outline" color={colors.text} size={26} />
+      </View>
+      <View style={styles.action}>
+      <Ionicons  name="wine-outline" color={colors.text} size={26} />
         <View style={styles2.inputStyle}>
        
-       <RNPickerSelect
+        <RNPickerSelect
            onValueChange={(value) => setOccasion(value)}
            placeholder={{
              label: 'What\'s the occasion?',
@@ -356,7 +385,6 @@ function  AddScreen ({navigation}) {
         <Ionicons  name="ios-checkmark-outline" color={colors.text} size={26} />
         <View style={styles2.inputStyle}>
             <RNPickerSelect
-              
                 onValueChange={(value) => console.log(value)}
                 placeholder={{
                   label: 'Rate from 1-10...',
@@ -377,8 +405,8 @@ function  AddScreen ({navigation}) {
                 ]} 
             />
         </View>
-        </View>
-        <View style={styles.action}>
+      </View>
+      <View style={styles.action}>
         
         <Ionicons  name="eye-off-outline" color={colors.text} size={26} />
           <TextInput
