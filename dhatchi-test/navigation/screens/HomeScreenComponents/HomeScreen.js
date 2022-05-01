@@ -6,6 +6,9 @@ import AddScreen from './AddScreen'
 //import { ClothesContext} from '../../App';
 import ClothingItem from '../../../components/ClothingItem'
 import { useRoute } from '@react-navigation/native';
+import { set } from 'react-native-reanimated';
+import { ClothesContext } from '../../../App';
+
 var clothes = [
    
 ];
@@ -47,11 +50,12 @@ function addHeaderButton(navigation){
 }
 
 export default function HomeScreen({ navigation, route }) {
-  const [wd,setWd] = React.useState(1)
+  const [wd,setWd] = React.useState(React.useContext(ClothesContext));
   const route_actual = useRoute();
-  React.useEffect(()=> {
-    get(setWd) 
-  },[]);
+  // React.useEffect(()=> {
+  //   get(setWd) 
+  // },[]);
+  //setWd(con);
   const x = wd;
   const updateWD = 
   React.useCallback(val => {

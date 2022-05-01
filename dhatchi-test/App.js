@@ -10,10 +10,32 @@ import { StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 const Stack = createNativeStackNavigator();
-
+export const ClothesContext = React.createContext("Hello");
+function getWardrobe(set){
+  const requestOptions = {
+    method: 'GET',
+  };
+  fetch('http://192.168.1.19:5000/wardrobe', requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw response;
+      }
+      return response.json();
+      //return response.json();
+    })
+    .then((json)=> {
+      //console.log(json);
+      set(json);
+    })
+}
 export default function App() {
-  
+  const [dummy, setDummy] = React.useState({});
+  React.useEffect(() => {
+    getWardrobe(setDummy);
+  }, []);
   return (
+    <ClothesContext.Provider value={dummy}>
+
     <NavigationContainer >
       <Stack.Navigator>
         <Stack.Screen
@@ -28,6 +50,8 @@ export default function App() {
         />  
       </Stack.Navigator>
     </NavigationContainer>
+    </ClothesContext.Provider>
+
   );
 }
 const styles = StyleSheet.create({
