@@ -25,6 +25,7 @@
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-color-wheel": "^0.1.7",
+    "react-native-dropdown-picker": "^5.4.0",
     "react-native-gesture-handler": "~2.1.0",
     "react-native-image-crop-picker": "^0.37.3",
     "react-native-multiple-select": "^0.5.7",

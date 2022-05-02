@@ -1,54 +1,272 @@
-import React, {useState} from "react";
-import RNPickerSelect from "react-native-picker-select";
-import { StyleSheet, Text, View } from "react-native";
-
-
-const clothingItems = ["SHRT", "OVTP", "PNTS", "SHOT", "SHOE", "HATT", "MISC"];
-export default clothingItems;
-
-
-// export default function ItemType_Picker (labels) {
-//  const clothingItems = ["Shirts", "OverTops", "Pants", "Shorts", "Shoes", "Hat", "Misc"];
-//  const [type, setType] = useState();
-//   return (
-    
-//     <View style={styles.inputStyle}>
-//         <RNPickerSelect
-//             onValueChange={(value) => setType(value)}
-//             value={type} onChangeText={text => setType(text)}
-//             placeholder={{
-//               label: 'Select the type of clothing item...',
-//               value: null,
-//               color:'red',
-//             }}
-//             itemStyle={{ backgroundColor: "grey", color: "blue", fontFamily:"Ebrima", fontSize:17 }}
-//             items={[
-//                 { label: clothingItems[0], value: clothingItems[0] },
-//                 { label: clothingItems[1], value: clothingItems[1] },
-//                 { label: clothingItems[2], value: clothingItems[2] },
-//                 { label: clothingItems[3], value: clothingItems[3] },
-//                 { label: clothingItems[4], value: clothingItems[4] },
-//                 { label: clothingItems[5], value: clothingItems[5] },
-//             ]}
-//         />
-//     </View>
-//   );
-// }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fdf5e2',
+const clothingItems = [
+  {
+    label: "Shirts",
+    value: "S"
   },
-  inputStyle: {
-    width: '80%',
-    height: 40,
-    paddingHorizontal: 10,
-    borderRadius: 50,
-    backgroundColor: '#cfe2f3',
-    alignItems : 'center',
-    fontSize : 200
+  {
+    label : "Tank Top",
+    value : "TATS",
+    parent : "S"
+  },
+  {
+    label : "Button Up",
+    value : "SBUS",
+    parent : "S"
+  },
+  {
+    label : 'Tee',
+    value : "STES",
+    parent : "S"
+  },
+  {
+    label : "Polo Shirt",
+    value : "SPOS",
+    parent : "S"
+  },
+  {
+    label : "Graphic",
+    value : "SGRS",
+    parent : "S"
+  },
+  {
+    label : "Athletic",
+    value : "SATS",
+    parent : "S"
+  },
+  {
+    label : "Long Sleeve Button Up",
+    value : "LBUS",
+    parent : "S"
+  },
+  {
+    label : "Long Sleeve Polo",
+    value : "LPOS",
+    parent : "S"
+  },
+  {
+    label : "Long Sleeve Tee",
+    value : "LTES",
+    parent : "S"
+  },
+  {
+    label : "Long Sleeve Graphic",
+    value : "LGRS",
+    parent : "S"
+  },
+  {
+    label : "Long Sleeve Athletic",
+    value : "LATS",
+    parent : "S"
+  },
+  {
+    label : "Flannel",
+    value : "FLAS",
+    parent : "S"
+  },
+  {
+    label : "Overtops",
+    value : "T",
+  },
+  {
+    label : "Sweatshirt",
+    value : "SWST",
+    parent : "T"
+  },
+  {
+    label: "Hoodie",
+    value: "HOOT",
+    parent: "T"
+  },
+  {
+    label : "Blazer",
+    value : "BLZT",
+    parent : "T"
+  },
+  {
+    label : "Jackets",
+    value : "C",
+  },
+  {
+    label: "Regular Jacket",
+    value: "JAKC",
+    parent: "C"
+  },
+  {
+    label : "Coat",
+    value : "COAC",
+    parent : "C"
+  },
+  {
+    label : "Vest",
+    value : "VESC",
+    parent : "C"
+  },
+  {
+    label : "Puffer Jacket",
+    value : "PUFC",
+    parent : "C"
+  },
+  {
+    label : "Pants",
+    value : "P",
+  },
+  {
+    label: "Skirt",
+    value : "SKIP",
+    parent: "P"
+  },
+  {
+    label: "Yoga Pants",
+    value : "YOGP",
+    parent: "P"
+  },
+  {
+    label: "Cargo Pants",
+    value : "CARP",
+    parent: "P"
+  },
+  {
+    label: "Jeans",
+    value : "JEAP",
+    parent: "P"
+  },
+  {
+    label: "Sweatpants",
+    value : "SWTP",
+    parent: "P"
+  },
+  {
+    label: "Track Pants",
+    value : "TRAP",
+    parent: "P"
+  },
+  {
+    label: "Dress Pants",
+    value : "DRSP",
+    parent: "P"
+  },
+  {
+    label: "Pajamas",
+    value : "PJMT",
+    parent: "P"
+  },
+  {
+    label: "Shorts",
+    value : "H",
+  },
+  {
+    label: "Regular",
+    value : "RGSH",
+    parent: "H"
+  },
+  {
+    label: "Swimshorts",
+    value : "SWMH",
+    parent: "H"
+  },
+  {
+    label: "Sweatshorts",
+    value : "SWSH",
+    parent: "H"
+  },
+  {
+    label: "Athletic Shorts",
+    value : "ATSH",
+    parent: "H"
+  },
+  {
+    label: "Shoes",
+    value : "O",
+  },
+  {
+    label: "Sneakers",
+    value : "SNEO",
+    parent: "O"
+  },
+  {
+    label: "Runners",
+    value : "RUNO",
+    parent: "O"
+  },
+  {
+    label: "Boots",
+    value : "BOTO",
+    parent: "O"
+  },
+  {
+    label: "Dress",
+    value : "DRSO",
+    parent: "O"
+  },
+  {
+    label: "Sandals",
+    value : "SNDO",
+    parent: "O"
+  },
+  {
+    label: "Flip-Flops",
+    value : "FLIO",
+    parent: "O"
+  },
+  {
+    label: "Heels",
+    value : "HELO",
+    parent: "O"
+  },
+  {
+    label: "Flats",
+    value : "FLTO",
+    parent: "O"
+  },
+  {
+    label: "Hats",
+    value : "A",
+  },
+  {
+    label: "Beanie",
+    value : "BENA",
+    parent: "A"
+  },
+  {
+    label: "Baseball",
+    value : "BASA",
+    parent: "A"
+  },
+  {
+    label: "Snapback",
+    value : "SNPA",
+    parent: "A"
+  },
+  {
+    label: "Bucket",
+    value : "BCKA",
+    parent: "A"
+  },
+  {
+    label: "Visor",
+    value : "VIZA",
+    parent: "A"
+  },
+  {
+    label: "Regular Hat",
+    value : "HATA",
+    parent: "A"
+  },
+  {
+    label: "Miscellaneous",
+    value : "X",
+  },
+  {
+    label: "Dress",
+    value : "DREX",
+    parent: "X"
+  },
+  {
+    label: "Tuxedo",
+    value : "TUXX",
+    parent: "X"
   }
-});
+]
 
-// export default ItemType_Picker;
+
+export default clothingItems;

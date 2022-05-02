@@ -9,6 +9,7 @@ import axios from "axios";
 
 import RecommendScreen from './screens/RecommendScreen';
 import CalibrateScreen from './screens/CalibrateScreen';
+import AddScreen from './screens/HomeScreenComponents/AddScreen';
 //import HomeScreen from './screens/HomeScreen';
 import HomeContainerScreen from './screens/HomeContainerScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';

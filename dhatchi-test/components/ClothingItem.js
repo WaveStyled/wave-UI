@@ -8,17 +8,6 @@ import 'react-native-gesture-handler';
 import { Swipeable, TouchableHighlight } from 'react-native-gesture-handler';
 
 var num_elements = Array.from({length: 10}, (_, i) => i + 1);
-// var path = num_elements.map((num) => (
-//   {id : num, require : require(`../assets/`)}
-// ));
-//var paths = num_elements.map((num) => `../assets/${num}.jpeg`);
-
-
-
-function createItemPaths(num){
-
-
-}
 
 function deleteItem(key, set){
     const requestOptions = {
@@ -37,7 +26,6 @@ function deleteItem(key, set){
     })
     return true
 }
-
 
 function rightActions(key,set)  {
   return(
