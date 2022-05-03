@@ -51,11 +51,7 @@ function addHeaderButton(navigation) {
 
 export default function HomeScreen({ navigation, route }) {
   const [wd, setWd] = React.useState(React.useContext(ClothesContext));
-  const route_actual = useRoute();
-  // React.useEffect(()=> {
-  //   get(setWd)
-  // },[]);
-  //setWd(con);
+
   const x = wd;
   const updateWD = React.useCallback((val) => {
     setWd(val);

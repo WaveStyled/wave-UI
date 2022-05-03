@@ -10,45 +10,8 @@ import {
 import "react-native-gesture-handler";
 import { Swipeable } from "react-native-gesture-handler";
 import { API, NODEPORT } from "../context/API";
+import { ClothesContext } from "../context/AppContext";
 
-function deleteItem(key, set) {
-  const requestOptions = {
-    method: "POST",
-  };
-
-  fetch(`http://${API}:${NODEPORT}/delete/999/` + key, requestOptions)
-    .then((response) => {
-      if (!response.ok) {
-        throw response;
-      }
-      return response.json();
-    })
-    .then((json) => {
-      set(json);
-    });
-  return true;
-}
-
-function rightActions(key, set) {
-  return (
-    <>
-      <TouchableOpacity onPress={() => deleteItem(key, set)}>
-        <View style={styles.delSquare}>
-          <Animated.Text
-            style={{
-              color: "white",
-              paddingHorizontal: 10,
-              fontWeight: "600",
-              paddingVertical: 50,
-            }}
-          >
-            Delete
-          </Animated.Text>
-        </View>
-      </TouchableOpacity>
-    </>
-  );
-}
 
 const imgpaths = {
   1: require("../assets/1.jpeg"),
@@ -58,6 +21,52 @@ const imgpaths = {
 
 const ClothingItem = (props) => {
   var z = imgpaths["1"];
+  const a = React.useContext(ClothesContext);
+
+
+  const deleteItem = (key, set) => {
+    to_del = a.findIndex(item => item.pieceid === key);
+    a.splice(to_del, 1);
+    to_del = a.findIndex(item => item.pieceid === key);
+    const requestOptions = {
+      method: "POST",
+    };
+  
+    fetch(`http://${API}:${NODEPORT}/delete/999/` + key, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        return response.json();
+      })
+      .then((json) => {
+        set(json);
+      });
+    return true;
+  }
+
+
+  const rightActions = (key, set) => {
+    return (
+      <>
+        <TouchableOpacity onPress={() => deleteItem(key, set)}>
+          <View style={styles.delSquare}>
+            <Animated.Text
+              style={{
+                color: "white",
+                paddingHorizontal: 10,
+                fontWeight: "600",
+                paddingVertical: 50,
+              }}
+            >
+              Delete
+            </Animated.Text>
+          </View>
+        </TouchableOpacity>
+      </>
+    );
+  };
+
   return (
     <Swipeable renderRightActions={() => rightActions(props.id, props.update)}>
       <View style={styles.item}>

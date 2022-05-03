@@ -29,7 +29,6 @@ import DropDownPicker from "react-native-dropdown-picker";
 import {ClothesContext} from "../../../context/AppContext";
 import {API, NODEPORT} from "../../../context/API"
 
-
 occasion_mapping = {
   FF: 0,
   SF: 1,
@@ -106,8 +105,6 @@ function AddScreen({ navigation }) {
   console.log(type);
 
   const a = React.useContext(ClothesContext);
-
-
 
   const [image, setImage, isDirty, setDirty] = useState(image);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -209,7 +206,8 @@ function AddScreen({ navigation }) {
   const save_handler = () => {
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
-
+    console.log(a[a.length - 1]);
+    
     toadd = {
       PIECEID: a[a.length - 1].pieceid + 1,
       COLOR: color,
