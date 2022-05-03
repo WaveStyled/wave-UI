@@ -73,7 +73,7 @@ const requestOptions = {
   headers : {'Content-Type': 'application/json'},
   body : JSON.stringify(props)
 };
-fetch('http://10.0.0.30:5000/add/999/',requestOptions)
+fetch('http://63.249.96.165:5000/add/999/',requestOptions)
   .then((response) => {
   if (!response.ok) {
     throw response;

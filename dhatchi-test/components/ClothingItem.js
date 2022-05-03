@@ -14,7 +14,7 @@ function deleteItem(key, set){
     method: 'POST',
   };
   
-  fetch('http://10.0.0.30:5000/delete/999/'+key,requestOptions)
+  fetch('http://63.249.96.165:5000/delete/999/'+key,requestOptions)
     .then((response) => {
       if (!response.ok) {
         throw response;
