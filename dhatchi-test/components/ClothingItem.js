@@ -12,7 +12,6 @@ import { Swipeable } from "react-native-gesture-handler";
 import { API, NODEPORT } from "../context/API";
 import { ClothesContext } from "../context/AppContext";
 
-
 const imgpaths = {
   1: require("../assets/1.jpeg"),
   2: require("../assets/2.jpeg"),
@@ -27,6 +26,7 @@ const ClothingItem = (props) => {
   const deleteItem = (key, set) => {
     to_del = a.findIndex(item => item.pieceid === key);
     a.splice(to_del, 1);
+
     const requestOptions = {
       method: "POST",
     };

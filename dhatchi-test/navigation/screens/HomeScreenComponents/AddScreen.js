@@ -9,6 +9,7 @@ import {
   ImageBackground,
   TextInput,
   StyleSheet,
+  Switch,
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -26,8 +27,8 @@ import ratings from "../../../components/Ratings";
 import weather from "../../../components/Weathers";
 import occasion from "../../../components/Occasions";
 import DropDownPicker from "react-native-dropdown-picker";
-import {ClothesContext} from "../../../context/AppContext";
-import {API, NODEPORT} from "../../../context/API"
+import { ClothesContext } from "../../../context/AppContext";
+import { API, NODEPORT } from "../../../context/API";
 
 occasion_mapping = {
   FF: 0,
@@ -99,10 +100,14 @@ function AddScreen({ navigation }) {
   const [type, setType] = useState();
   const [type_open, setClothPickerOpen] = useState(false);
 
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+
   console.log("######");
   console.log(weatherSelected);
   console.log(occasionSelected);
   console.log(type);
+  console.log("Dirty? ", isEnabled);
 
   const a = React.useContext(ClothesContext);
 
@@ -206,8 +211,7 @@ function AddScreen({ navigation }) {
   const save_handler = () => {
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
-    //console.log(a[a.length - 1]);
-    
+
     toadd = {
       PIECEID: a[a.length - 1].pieceid + 1,
       COLOR: color,
@@ -226,7 +230,7 @@ function AddScreen({ navigation }) {
       WE_RAINY: ws[2],
       WE_SNOWY: ws[3],
       WE_TYPICAL: ws[4],
-      DIRTY: 0,
+      DIRTY: isEnabled ? 1 : 0,
     };
     addItem(toadd);
 
@@ -248,7 +252,7 @@ function AddScreen({ navigation }) {
       we_rainy: ws[2],
       we_snowy: ws[3],
       we_typical: ws[4],
-      dirty: 1,
+      dirty: isEnabled ? 1 : 0,
     };
 
     a.push(topush);
@@ -454,18 +458,17 @@ function AddScreen({ navigation }) {
           </View>
           <View style={styles.action}>
             <Ionicons name="eye-off-outline" color={colors.text} size={26} />
-            <TextInput
-              placeholder="Dirty? (Y/N)"
-              placeholderTextColor="#666666"
-              maxlength="1"
-              autoCorrect={false}
-              style={[
-                styles.textInput,
-                {
-                  color: colors.text,
-                },
-              ]}
-            />
+            <View style={styles.action2}>
+              <Text style={styles.dirtyTitle}>Dirty?</Text>
+
+              <Switch
+                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={isEnabled}
+              />
+            </View>
           </View>
         </ScrollView>
         <TouchableOpacity style={styles.commandButton} onPress={save_handler}>
@@ -566,6 +569,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
+  dirtyTitle: {
+    fontSize: 17,
+    fontWeight: "bold",
+    color: "#df4e4f",
+  },
   action: {
     flexDirection: "row",
     marginTop: 10,
@@ -574,6 +582,18 @@ const styles = StyleSheet.create({
     borderBottomColor: "#f2f2f2",
     paddingBottom: 5,
     paddingTop: 20,
+    paddingHorizontal: 10,
+    alignItems: "center",
+    marginLeft: 15,
+  },
+  action2: {
+    flexDirection: "row",
+    borderBottomColor: "#f2f2f2",
+    alignItems: "center",
+    marginLeft: 15,
+    justifyContent: "center",
+    paddingHorizontal: 30,
+    color: "red",
   },
   actionError: {
     flexDirection: "row",
