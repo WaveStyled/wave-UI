@@ -27,7 +27,6 @@ const ClothingItem = (props) => {
   const deleteItem = (key, set) => {
     to_del = a.findIndex(item => item.pieceid === key);
     a.splice(to_del, 1);
-    to_del = a.findIndex(item => item.pieceid === key);
     const requestOptions = {
       method: "POST",
     };

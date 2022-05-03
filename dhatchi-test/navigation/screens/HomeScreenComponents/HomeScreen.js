@@ -50,14 +50,35 @@ function addHeaderButton(navigation) {
 }
 
 export default function HomeScreen({ navigation, route }) {
-  const [wd, setWd] = React.useState(React.useContext(ClothesContext));
+  const context = React.useContext(ClothesContext);
+
+  //issue : on delete then add, context is different than wd --> renders wrong things
+
+  // if (context.length > 100){
+  //   console.log(context.slice(155,160));
+  // }
+
+  const [wd, setWd] = React.useState(context);
+
+  // if (wd.length > 100){
+  //   console.log(wd.slice(155,160));
+  // }
 
   const x = wd;
   const updateWD = React.useCallback((val) => {
+    // if (val.piecid > 155){
+    //   console.log(val);
+    // }
     setWd(val);
     update(wd, updateWD);
   }, []);
   const value = update(x, updateWD);
+
+  // if (value.length > 100){
+  //   console.log(value.slice(155,160));
+  // }
+
+
   addHeaderButton(navigation);
 
   return (

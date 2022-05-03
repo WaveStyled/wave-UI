@@ -206,7 +206,7 @@ function AddScreen({ navigation }) {
   const save_handler = () => {
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
-    console.log(a[a.length - 1]);
+    //console.log(a[a.length - 1]);
     
     toadd = {
       PIECEID: a[a.length - 1].pieceid + 1,
