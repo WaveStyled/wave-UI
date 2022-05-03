@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AddScreen from './AddScreen'
 import { useRoute } from '@react-navigation/native';
-import { ClothesContext } from '../../../App';
+import { ClothesContext } from '../../../context/AppContext';
 
 export default function  DetailScreen ({navigation}) {
     const route = useRoute();

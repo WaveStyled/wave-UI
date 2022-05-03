@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { View, Text,StyleSheet } from 'react-native';
-import { ClothesContext } from '../../App';
+import { ClothesContext } from '../../context/AppContext';
+
 import DropDownPicker from 'react-native-dropdown-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTheme} from 'react-native-paper';
-import clothingItems from './HomeScreenComponents/AddComponents/Itemtype_Picker';
+import clothingItems from '../../components/Items';
 import BottomSheet from 'reanimated-bottom-sheet';
 
 
