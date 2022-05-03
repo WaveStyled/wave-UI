@@ -18,10 +18,10 @@ const imgpaths = {
   3: require("../assets/3.jpeg"),
 };
 
+
 const ClothingItem = (props) => {
   var z = imgpaths["1"];
   const a = React.useContext(ClothesContext);
-
 
   const deleteItem = (key, set) => {
     to_del = a.findIndex(item => item.pieceid === key);
@@ -43,7 +43,6 @@ const ClothingItem = (props) => {
       });
     return true;
   }
-
 
   const rightActions = (key, set) => {
     return (

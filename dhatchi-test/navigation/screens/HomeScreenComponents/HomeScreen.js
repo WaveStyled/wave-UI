@@ -50,21 +50,21 @@ function addHeaderButton(navigation) {
 }
 
 export default function HomeScreen({ navigation, route }) {
+  var context = React.useContext(ClothesContext);
+  const [wd, setWd] = React.useState(context);
+  const [value, setValue] = React.useState([]);
 
+  console.log(wd.length, context.length);  // for some reason, its different
+  
   const updateWD = React.useCallback((val) => {
     setWd(val);
     update(wd, updateWD);
-  }, []);
+  }, [wd]);
 
-  var context = React.useContext(ClothesContext);
-  console.log(context.slice(150,160));
 
-  const [wd, setWd] = React.useState(context)
-  console.log(wd.slice(150,160));
-
-  const x = wd;
-
-  const value = update(x, updateWD);
+  React.useEffect(() => {
+    setValue(update(wd, updateWD));
+  }, [wd]);
 
   addHeaderButton(navigation);
 
@@ -79,8 +79,6 @@ export default function HomeScreen({ navigation, route }) {
         <View style={styles.clothsWrapper}>
           <View style={styles.items}>
             {value != null ? value : true}
-            {/* CHECK: this line causes code raises undefined error */}
-            {/* <Text> {route_actual.params.name}</Text> */}
           </View>
         </View>
       </ScrollView>
