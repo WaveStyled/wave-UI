@@ -5,7 +5,7 @@ import { Button } from "react-native";
 //import { useState, useEffect } from 'react';
 // Screens
 
-import RecommendScreen from "./screens/RecommendScreen";
+import RecommendScreen from "./screens/RecommendContainerScreen";
 import CalibrateScreen from "./screens/CalibrateScreen";
 //import HomeScreen from './screens/HomeScreen';
 import HomeContainerScreen from "./screens/HomeContainerScreen";
