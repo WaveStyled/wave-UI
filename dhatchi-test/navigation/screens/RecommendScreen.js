@@ -1,22 +1,36 @@
 import * as React from 'react';
-import { View, Text,StyleSheet } from 'react-native';
+import { View, Text,StyleSheet,TouchableOpacity } from 'react-native';
 import { ClothesContext } from '../../context/AppContext';
-
 import DropDownPicker from 'react-native-dropdown-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTheme} from 'react-native-paper';
-import clothingItems from '../../components/Items';
+//import clothingItems from './HomeScreenComponents/AddComponents/Itemtype_Picker';
+import weather from "../../components/Weathers";
+import occasion from "../../components/Occasions";
 import BottomSheet from 'reanimated-bottom-sheet';
 
 
 
-export default function DetailsScreen({ navigation }) {
+function DetailsScreen({ navigation }) {
     const a = React.useContext(ClothesContext);
     const {colors} = useTheme();
     const [type_open, setClothPickerOpen] = React.useState(false);
     const [type, setType] = React.useState();
-    ref = React.createRef();
     
+    const [weatherSelected, setWeatherItem] = React.useState([]);
+    const [weather_picker_open, setWeatherPickerOpen] = React.useState(false);
+    const [weat, setItems] = React.useState(weather);
+
+    const [occasionSelected, setOccasion] = React.useState([]);
+    const [occasion_open, setOccasionPickerOpen] = React.useState(false);
+    const [occa, setOccasions] = React.useState(occasion);
+    
+    
+    
+    const getFits = () => {
+        navigation.navigate("Wardrobe")
+    }
+
     renderHeader = () => (
         <View style={styles.header}>
           <View style={styles.panelHeader}>
@@ -24,15 +38,15 @@ export default function DetailsScreen({ navigation }) {
           </View>
         </View>
       );
-    
+      refer = React.createRef();
     return (
         
         <View style={styles.container}>
             <BottomSheet
-            ref={this.ref}
+            
             snapPoints={[330, 0]}
 
-            renderHeader={this.renderHeader}
+            renderHeader={renderHeader}
             initialSnap={1}
             enabledGestureInteraction={true}
             />
@@ -40,14 +54,78 @@ export default function DetailsScreen({ navigation }) {
             <View style={styles.container1}>
                  <View style={{alignItems: 'center'}}>
                  
-                 <Text style={{marginTop: 15, fontSize: 16, fontWeight: 'bold'}}>
+                 <Text style={{paddingBottom: 15,marginTop: 15, fontSize: 16, fontWeight: 'bold'}}>
                      Select desired Weather and Occasion
                 </Text>
-
-                 </View>
+        <View style = {styles.action}>
+        <View style={styles_multi.container}>
+            <DropDownPicker
+            placeholder = "Select the Weather"
+            open={weather_picker_open}
+            value={weatherSelected}
+            items={weather}
+            setOpen={setWeatherPickerOpen}
+            setValue={setWeatherItem}
+            setItems={setItems}
+            multiple={false}
+            min={0}
+            max={weather.length}
+            itemSeparator={true}
+            zIndex={3000}
+            zIndexInverse={1000}
+            mode="BADGE"
+            theme="DARK"
+            listMode="MODAL"
+            closeOnBackPressed={true}
+            modalProps={{
+                animationType: "fade"
+            }}
+            modalTitleStyle={{
+            fontWeight: "bold"
+             }}
+            modalTitle="Weather Options"
+            />
+    </View>
+    </View>
+    <View style = {styles.action}>
+        <View style={styles_multi.container}>
+            <DropDownPicker
+            placeholder = "Select the Occasion"
+            open={occasion_open}
+            value={occasionSelected}
+            items={occasion}
+            setOpen={setOccasionPickerOpen}
+            setValue={setOccasion}
+            setItems={setOccasions}
+            multiple={false}
+            min={0}
+            max={occasion.length}
+            itemSeparator={true}
+            zIndex={3000}
+            zIndexInverse={1000}
+            mode="BADGE"
+            theme="DARK"
+            listMode="MODAL"
+            closeOnBackPressed={true}
+            modalProps={{
+                animationType: "fade"
+            }}
+            modalTitleStyle={{
+                fontWeight: "bold"
+            }}
+            modalTitle="Occasion Options"
+        />
+        </View>
+    </View>
+            </View>
+            <TouchableOpacity style={styles.commandButton} onPress={getFits}>
+            <Text style={styles.panelButtonTitle}>Get Fit</Text>
+            </TouchableOpacity>
+            </View>
+            
             </View>
 
-        </View>
+
     )
 }
     /* <View style = {styles.container}>
@@ -208,3 +286,4 @@ const styles = StyleSheet.create({
       width: '80%'
     }
     });
+    export default DetailsScreen;
