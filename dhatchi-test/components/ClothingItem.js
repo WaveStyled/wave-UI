@@ -64,7 +64,6 @@ const ClothingItem = (props) => {
     );
   };
 
-  console.log(props.image)
 
 
   return (

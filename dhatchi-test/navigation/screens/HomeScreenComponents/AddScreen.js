@@ -125,7 +125,7 @@ function AddScreen({ navigation }) {
         aspect: [4, 3],
         quality: 1,
       }).then((image) => {
-        console.log(image);
+        //console.log(image);
         if (!image.cancelled) {
           setImage(image.uri);
         }
@@ -231,14 +231,14 @@ function AddScreen({ navigation }) {
     if (a.length === 0){
       id = 0;
     } else {
-      id = a[a.length - 1].pieceid;
+      id = a[0].pieceid;
     }
 
     toadd = {
       PIECEID: id + 1,
       COLOR: color,
       TYPE: type,
-      RECENT_DATE_WORN: null,
+      DATE_ADDED: null,
       TIMES_WORN: null,
       RATING: null,
       OC_FORMAL: ocs[0],
@@ -261,7 +261,7 @@ function AddScreen({ navigation }) {
       pieceid: id + 1,
       color: color,
       type: type,
-      recent_date_worn: null,
+      date_added: null,
       times_worn: null,
       rating: null,
       oc_formal: ocs[0],
@@ -278,8 +278,11 @@ function AddScreen({ navigation }) {
       dirty: isEnabled ? 1 : 0,
       image : image
     };
+
+    //console.log(toadd);
+    
     //console.log(topush);
-    a.push(topush);
+    a.unshift(topush);
     navigation.navigate("Wardrobe", { name: clothName });
   };
 
