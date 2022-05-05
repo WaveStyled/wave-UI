@@ -1,4 +1,4 @@
-import "react-native-gesture-handler";
+   import "react-native-gesture-handler";
 import React, { useState } from "react";
 import {
   View,
@@ -227,8 +227,8 @@ function AddScreen({ navigation }) {
   const save_handler = () => {
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
-    console.log(!a.length);
-    if (!a.length){
+    console.log(a)
+    if (a.length === 0){
       id = 0;
     } else {
       id = a[a.length - 1].pieceid;
@@ -258,7 +258,7 @@ function AddScreen({ navigation }) {
     addItem(toadd);
 
     topush = {
-      pieceid: id + 1,
+      pieceid: id.pieceid + 1,
       color: color,
       type: type,
       recent_date_worn: null,

@@ -37,6 +37,8 @@ const ClothingItem = (props) => {
           throw response;
         }
         return response.json();
+      }).then((json) => {
+        set(json);
       });
     return true;
   }

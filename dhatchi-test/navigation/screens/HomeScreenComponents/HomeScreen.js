@@ -61,6 +61,11 @@ export default function HomeScreen({ navigation, route }) {
     update(wd, updateWD);
   }, [wd]);
 
+
+  if (wd.length !== context.length){
+     setWd(context);
+   }
+
   const value = update(x, updateWD);
 
   addHeaderButton(navigation);
