@@ -28,7 +28,8 @@ function DetailsScreen({ navigation }) {
     
     
     const getFits = () => {
-        navigation.navigate("Get")
+        
+      navigation.navigate("Get")
     }
 
     renderHeader = () => (

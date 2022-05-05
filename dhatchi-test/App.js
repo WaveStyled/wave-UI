@@ -14,7 +14,7 @@ function getWardrobe(set) {
   const requestOptions = {
     method: "GET",
   };
-  fetch(`http://${API}:${NODEPORT}/startup/999/`, {method: "PUT"}).then((response)=>{
+  fetch(`http://${API}:${NODEPORT}/startup/123/`, {method: "PUT"}).then((response)=>{
     if(!response.ok){
       throw response
     }
