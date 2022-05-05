@@ -7,12 +7,19 @@ import { StyleSheet } from "react-native";
 import { ClothesContext } from "./context/AppContext";
 import { API, NODEPORT } from "./context/API";
 
+
 const Stack = createNativeStackNavigator();
 
 function getWardrobe(set) {
   const requestOptions = {
     method: "GET",
   };
+  fetch(`http://${API}:${NODEPORT}/startup/999/`, {method: "PUT"}).then((response)=>{
+    if(!response.ok){
+      throw response
+    }
+    return response.json()
+  })
   fetch(`http://${API}:${NODEPORT}/wardrobe`, requestOptions)
     .then((response) => {
       if (!response.ok) {
@@ -24,12 +31,16 @@ function getWardrobe(set) {
       set(json);
     });
 }
+function startupModel(){
+  
+}
 
 export default function App() {
   const [dummy, setDummy] = React.useState({});
   React.useEffect(() => {
     getWardrobe(setDummy);
   }, []);
+  //startupModel()
   return (
     <ClothesContext.Provider value={dummy}>
       <NavigationContainer>
