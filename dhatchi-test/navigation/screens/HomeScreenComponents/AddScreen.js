@@ -258,7 +258,7 @@ function AddScreen({ navigation }) {
     addItem(toadd);
 
     topush = {
-      pieceid: id.pieceid + 1,
+      pieceid: id + 1,
       color: color,
       type: type,
       recent_date_worn: null,

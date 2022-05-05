@@ -57,7 +57,7 @@ export default function HomeScreen({ navigation, route }) {
 
   const x = wd;
   const updateWD = React.useCallback((val) => {
-    setWd(context);
+    setWd(val);
     update(wd, updateWD);
   }, [wd]);
 
