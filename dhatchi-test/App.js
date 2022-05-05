@@ -36,7 +36,7 @@ function startupModel(){
 }
 
 export default function App() {
-  const [dummy, setDummy] = React.useState({});
+  const [dummy, setDummy] = React.useState([]);
   React.useEffect(() => {
     getWardrobe(setDummy);
   }, []);

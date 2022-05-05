@@ -18,6 +18,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
 import * as ImagePicker from "expo-image-picker";
+import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
 import { Platform } from "react-native-web";
 
 import clothingItems from "../../../components/Items";
@@ -29,6 +30,7 @@ import occasion from "../../../components/Occasions";
 import DropDownPicker from "react-native-dropdown-picker";
 import { ClothesContext } from "../../../context/AppContext";
 import { API, NODEPORT } from "../../../context/API";
+//import RNFS from 'react-native-fs';
 
 occasion_mapping = {
   FF: 0,
@@ -135,18 +137,32 @@ function AddScreen({ navigation }) {
     }
   };
 
+  const adjustImage = async (im) => {
+    let manipResult = await manipulateAsync(im.uri,
+      [
+        {resize : {
+          height: 400,
+          width: 400 ,
+        }}
+      ],
+      { compress: 0, format: SaveFormat.JPEG, base64 : true}
+    );
+    setImage(manipResult.base64);
+    return null;
+  };
+
   const pickImage = async () => {
     const permission = await ImagePicker.requestCameraPermissionsAsync();
     if (permission.granted === true) {
       let image = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
+        aspect: [1,1],
+        quality: 0,
+        base64 : true
       }).then((image) => {
-        console.log(image);
         if (!image.cancelled) {
-          setImage(image.uri);
+          adjustImage(image);
         }
         this.bs.current.snapTo(1);
       });
@@ -211,9 +227,15 @@ function AddScreen({ navigation }) {
   const save_handler = () => {
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
+    console.log(!a.length);
+    if (!a.length){
+      id = 0;
+    } else {
+      id = a[a.length - 1].pieceid;
+    }
 
     toadd = {
-      PIECEID: a[a.length - 1].pieceid + 1,
+      PIECEID: id + 1,
       COLOR: color,
       TYPE: type,
       RECENT_DATE_WORN: null,
@@ -231,11 +253,12 @@ function AddScreen({ navigation }) {
       WE_SNOWY: ws[3],
       WE_TYPICAL: ws[4],
       DIRTY: isEnabled ? 1 : 0,
+      IMAGE: image
     };
     addItem(toadd);
 
     topush = {
-      pieceid: a[a.length - 1].pieceid + 1,
+      pieceid: id.pieceid + 1,
       color: color,
       type: type,
       recent_date_worn: null,
@@ -253,8 +276,9 @@ function AddScreen({ navigation }) {
       we_snowy: ws[3],
       we_typical: ws[4],
       dirty: isEnabled ? 1 : 0,
+      image : image
     };
-
+    //console.log(topush);
     a.push(topush);
     navigation.navigate("Wardrobe", { name: clothName });
   };
@@ -284,7 +308,7 @@ function AddScreen({ navigation }) {
             >
               <ImageBackground
                 source={{
-                  uri: image,
+                  uri : 'data:image/jpeg;base64,' + image,
                 }}
                 style={{ height: 100, width: 100 }}
                 imageStyle={{ borderRadius: 15 }}

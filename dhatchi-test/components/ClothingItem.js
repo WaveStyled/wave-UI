@@ -37,9 +37,6 @@ const ClothingItem = (props) => {
           throw response;
         }
         return response.json();
-      })
-      .then((json) => {
-        set(json);
       });
     return true;
   }
@@ -65,6 +62,9 @@ const ClothingItem = (props) => {
     );
   };
 
+  console.log(props.image)
+
+
   return (
     <Swipeable renderRightActions={() => rightActions(props.id, props.update)}>
       <View style={styles.item}>
@@ -72,7 +72,7 @@ const ClothingItem = (props) => {
           <View style={styles.container}>
             <Image
               style={{ width: 80, height: 100 }}
-              source={props.id % 2 === 0 ? z : require("../assets/2.jpeg")}
+              source={{uri : 'data:image/jpeg;base64,' + props.image }}
             />
           </View>
           <Text style={styles.itemText}>{props.text}</Text>

@@ -33,6 +33,7 @@ function update(json, set) {
         id={clothes.pieceid}
         text={clothes.type + " " + clothes.color}
         update={set}
+        image={clothes.image}
       />
     ));
     return list;
@@ -52,16 +53,14 @@ function addHeaderButton(navigation) {
 export default function HomeScreen({ navigation, route }) {
   var context = React.useContext(ClothesContext);
   const [wd, setWd] = React.useState(context);
-  
+
+
   const x = wd;
   const updateWD = React.useCallback((val) => {
-    setWd(val);
+    setWd(context);
     update(wd, updateWD);
   }, [wd]);
 
-  if (wd.length !== context.length){
-    setWd(context);
-  }
 
   const value = update(x, updateWD);
 
