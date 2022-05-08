@@ -6,6 +6,7 @@ import AuthScreen from "./navigation/screens/login/AuthScreen";
 import { StyleSheet } from "react-native";
 import { ClothesContext } from "./context/AppContext";
 import { API, NODEPORT } from "./context/API";
+import 'react-native-reanimated';
 
 
 const Stack = createNativeStackNavigator();

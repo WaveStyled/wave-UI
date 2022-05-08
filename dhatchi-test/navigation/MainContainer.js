@@ -6,7 +6,7 @@ import { Button } from "react-native";
 // Screens
 
 import RecommendScreen from "./screens/RecommendContainerScreen";
-import CalibrateScreen from "./screens/CalibrateScreen";
+import CalibrateScreen from "./screens/CalibrateContainerScreen";
 //import HomeScreen from './screens/HomeScreen';
 import HomeContainerScreen from "./screens/HomeContainerScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";

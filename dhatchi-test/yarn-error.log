@@ -1,20 +1,20 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarnpkg add expo-image-manipulator@~10.2.0
+  /usr/local/bin/node /usr/local/bin/yarnpkg add react-native-reanimated@~2.3.1
 
 PATH: 
-  /Library/Frameworks/Python.framework/Versions/3.9/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
+  /opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/kgdhatchi/opt/anaconda3/bin:/Users/kgdhatchi/opt/anaconda3/condabin:/opt/homebrew/bin:/opt/homebrew/sbin
 
 Yarn version: 
   1.22.18
 
 Node version: 
-  16.14.2
+  16.13.1
 
 Platform: 
-  darwin x64
+  darwin arm64
 
 Trace: 
-  Error: EACCES: permission denied, unlink '/Users/sanjay/Desktop/Desktop - sri-e15/WaveStyledRepos/wave-UI/dhatchi-test/node_modules/@babel/helper-define-polyfill-provider/node_modules/debug/package.json'
+  Error: EACCES: permission denied, mkdir '/Users/kgdhatchi/Desktop/cse1153.0/wave-UI/dhatchi-test/node_modules/react-native-reanimated/node_modules/react-native-screens'
 
 npm manifest: 
   {
@@ -29,6 +29,7 @@ npm manifest:
       "eject": "expo eject"
     },
     "dependencies": {
+      "@expo/vector-icons": "^13.0.0",
       "@react-native-community/masked-view": "^0.1.11",
       "@react-navigation/bottom-tabs": "^6.3.1",
       "@react-navigation/drawer": "^6.4.1",
@@ -38,23 +39,26 @@ npm manifest:
       "@react-navigation/stack": "^6.2.1",
       "axios": "^0.26.1",
       "expo": "~44.0.0",
+      "expo-image-manipulator": "~10.2.0",
       "expo-image-picker": "~12.0.1",
       "expo-status-bar": "~1.2.0",
       "react": "17.0.1",
       "react-dom": "17.0.1",
       "react-native": "0.64.3",
       "react-native-color-wheel": "^0.1.7",
+      "react-native-deck-swiper": "^2.0.5",
       "react-native-dropdown-picker": "^5.4.0",
       "react-native-gesture-handler": "~2.1.0",
       "react-native-image-crop-picker": "^0.37.3",
       "react-native-multiple-select": "^0.5.7",
       "react-native-paper": "^4.12.1",
       "react-native-picker-select": "^8.0.4",
-      "react-native-reanimated": "~2.3.1",
+      "react-native-reanimated": "^2.8.0",
       "react-native-safe-area-context": "3.3.2",
       "react-native-screens": "~3.10.1",
       "react-native-select-multiple": "^2.1.0",
       "react-native-vector-icons": "^9.1.0",
+      "react-native-view-overflow": "^0.0.5",
       "react-native-web": "0.17.1",
       "reanimated-bottom-sheet": "^1.0.0-alpha.22"
     },
@@ -812,7 +816,7 @@ Lockfile:
     dependencies:
       "@babel/helper-plugin-utils" "^7.16.7"
   
-  "@babel/plugin-transform-object-assign@^7.0.0", "@babel/plugin-transform-object-assign@^7.10.4":
+  "@babel/plugin-transform-object-assign@^7.0.0", "@babel/plugin-transform-object-assign@^7.16.7":
     version "7.16.7"
     resolved "https://registry.npmjs.org/@babel/plugin-transform-object-assign/-/plugin-transform-object-assign-7.16.7.tgz"
     integrity sha512-R8mawvm3x0COTJtveuoqZIjNypn2FjfvXZr4pSQ8VhEFBuQGBz4XhHasZtHXjgXU4XptZ4HtGof3NoYc93ZH9Q==
@@ -1059,7 +1063,7 @@ Lockfile:
       "@babel/types" "^7.4.4"
       esutils "^2.0.2"
   
-  "@babel/preset-typescript@^7.1.0":
+  "@babel/preset-typescript@^7.1.0", "@babel/preset-typescript@^7.16.7":
     version "7.16.7"
     resolved "https://registry.npmjs.org/@babel/preset-typescript/-/preset-typescript-7.16.7.tgz"
     integrity sha512-WbVEmgXdIyvzB77AQjGBEyYPZx+8tTsO50XtfozQrkW8QB2rLJpH2lgx0TRw5EJrBxOZQ+wCcyPVQvS8tjEHpQ==
@@ -1225,6 +1229,11 @@ Lockfile:
       lodash.omit "^4.5.0"
       lodash.pick "^4.4.0"
       lodash.template "^4.5.0"
+  
+  "@expo/vector-icons@^13.0.0":
+    version "13.0.0"
+    resolved "https://registry.npmjs.org/@expo/vector-icons/-/vector-icons-13.0.0.tgz"
+    integrity sha512-TI+l71+5aSKnShYclFa14Kum+hQMZ86b95SH6tQUG3qZEmLTarvWpKwqtTwQKqvlJSJrpFiSFu3eCuZokY6zWA==
   
   "@hapi/hoek@^9.0.0":
     version "9.2.1"
@@ -1584,28 +1593,19 @@ Lockfile:
   
   "@types/prop-types@*":
     version "15.7.5"
-    resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
+    resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.5.tgz"
     integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
   
   "@types/react-native@~0.64.12":
     version "0.64.24"
-    resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.64.24.tgz#54d8aaadc12d429004b0a573dc3a65ad27430cc6"
+    resolved "https://registry.npmjs.org/@types/react-native/-/react-native-0.64.24.tgz"
     integrity sha512-qgqOJub7BYsAkcg3VSL3w63cgJdLoMmAX6TSTAPL53heCzUkIdtpWqjyNRH0n7jPjxPGG1Qmsv6GSUh7IfyqRg==
     dependencies:
       "@types/react" "*"
   
-  "@types/react@*":
-    version "18.0.8"
-    resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.8.tgz#a051eb380a9fbcaa404550543c58e1cf5ce4ab87"
-    integrity sha512-+j2hk9BzCOrrOSJASi5XiOyBbERk9jG5O73Ya4M0env5Ixi6vUNli4qy994AINcEF+1IEHISYFfIT4zwr++LKw==
-    dependencies:
-      "@types/prop-types" "*"
-      "@types/scheduler" "*"
-      csstype "^3.0.2"
-  
-  "@types/react@~17.0.21":
+  "@types/react@*", "@types/react@~17.0.21":
     version "17.0.44"
-    resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.44.tgz#c3714bd34dd551ab20b8015d9d0dbec812a51ec7"
+    resolved "https://registry.npmjs.org/@types/react/-/react-17.0.44.tgz"
     integrity sha512-Ye0nlw09GeMp2Suh8qoOv0odfgCoowfM/9MG6WeRD60Gq9wS90bdkdRtYbRkNhXOpG4H+YXGvj4wOWhAC0LJ1g==
     dependencies:
       "@types/prop-types" "*"
@@ -1614,7 +1614,7 @@ Lockfile:
   
   "@types/scheduler@*":
     version "0.16.2"
-    resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.2.tgz#1a62f89525723dde24ba1b01b092bf5df8ad4d39"
+    resolved "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz"
     integrity sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==
   
   "@types/yargs-parser@*":
@@ -2409,7 +2409,7 @@ Lockfile:
   
   csstype@^3.0.2:
     version "3.0.11"
-    resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.11.tgz#d66700c5eacfac1940deb4e3ee5642792d85cd33"
+    resolved "https://registry.npmjs.org/csstype/-/csstype-3.0.11.tgz"
     integrity sha512-sa6P2wJ+CAbgyy4KFssIb/JNMLxFvKF1pCYCSXS8ZMuqZnMsrxqI2E5sPyoTpxoPU/gVZMzr2zjOfg8GIZOMsw==
   
   dayjs@^1.8.15:
@@ -2674,6 +2674,18 @@ Lockfile:
     dependencies:
       fontfaceobserver "^2.1.0"
   
+  expo-image-loader@~3.1.0:
+    version "3.1.1"
+    resolved "https://registry.npmjs.org/expo-image-loader/-/expo-image-loader-3.1.1.tgz"
+    integrity sha512-ZX4Bh3K4CCX1aZflnmbOgFNLS+c0/GUys4wdvqxO+4A4KU1NNb3jE7RVa/OFYNPDcGhEw20c1QjyE/WsVURJpg==
+  
+  expo-image-manipulator@~10.2.0:
+    version "10.2.1"
+    resolved "https://registry.npmjs.org/expo-image-manipulator/-/expo-image-manipulator-10.2.1.tgz"
+    integrity sha512-0klgPMn8fIUkbWpRVT0LVCtq0ozzm3gO60jZEcJPofJRQWDKuv3Rcf0+8pTqpn45J53eAGsuZ72/Yj0AJqaedQ==
+    dependencies:
+      expo-image-loader "~3.1.0"
+  
   expo-image-picker@~12.0.1:
     version "12.0.2"
     resolved "https://registry.npmjs.org/expo-image-picker/-/expo-image-picker-12.0.2.tgz"
@@ -2808,7 +2820,7 @@ Lockfile:
     resolved "https://registry.npmjs.org/fbjs-css-vars/-/fbjs-css-vars-1.0.2.tgz"
     integrity sha512-b2XGFAFdWZWg0phtAWLHCk836A1Xann+I+Dgd3Gk64MHKZO44FfoD1KxyvbSh0qZsIoXQGGlVztIY+oitJPpRQ==
   
-  fbjs@^0.8.4:
+  fbjs@^0.8.4, fbjs@^0.8.9:
     version "0.8.18"
     resolved "https://registry.npmjs.org/fbjs/-/fbjs-0.8.18.tgz"
     integrity sha512-EQaWFK+fEPSoibjNy8IxUtaFOMXcWsY0JaVrQoZR9zC8N2Ygf9iDITPWjUTVIax95b6I742JFLqASHfsag/vKA==
@@ -4130,11 +4142,6 @@ Lockfile:
     dependencies:
       minimist "^1.2.6"
   
-  mockdate@^3.0.2:
-    version "3.0.5"
-    resolved "https://registry.npmjs.org/mockdate/-/mockdate-3.0.5.tgz"
-    integrity sha512-iniQP4rj1FhBdBYS/+eQv7j1tadJ9lJtdzgOpvsOHng/GbcDh2Fhdeq+ZRldrPYdXvCyfFUmFeEwEGXZB5I/AQ==
-  
   ms@2.0.0:
     version "2.0.0"
     resolved "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
@@ -4554,6 +4561,14 @@ Lockfile:
       kleur "^3.0.3"
       sisteransi "^1.0.5"
   
+  prop-types@15.5.10:
+    version "15.5.10"
+    resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.5.10.tgz"
+    integrity sha1-J5ffwxJhguOpXj37suiT3ddFYVQ=
+    dependencies:
+      fbjs "^0.8.9"
+      loose-envify "^1.3.1"
+  
   prop-types@^15.6.0, prop-types@^15.7.2:
     version "15.8.1"
     resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
@@ -4644,6 +4659,13 @@ Lockfile:
     dependencies:
       colorsys "^1.0.17"
   
+  react-native-deck-swiper@^2.0.5:
+    version "2.0.5"
+    resolved "https://registry.yarnpkg.com/react-native-deck-swiper/-/react-native-deck-swiper-2.0.5.tgz#acc6dbae31e45f3b5f1c51541664f94c3a8b00c7"
+    integrity sha512-PRDsdgAYUogMMwPWChEL/XsEpSob8CFNd9ThsvoyMV2lXd2bR4VZsHSuyVgXvqiHspGb3modbvogBpiSOZ3oHQ==
+    dependencies:
+      prop-types "15.5.10"
+  
   react-native-dropdown-picker@^5.4.0:
     version "5.4.0"
     resolved "https://registry.npmjs.org/react-native-dropdown-picker/-/react-native-dropdown-picker-5.4.0.tgz"
@@ -4694,17 +4716,17 @@ Lockfile:
       "@react-native-picker/picker" "^1.8.3"
       lodash.isequal "^4.5.0"
   
-  react-native-reanimated@~2.3.1:
-    version "2.3.3"
-    resolved "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-2.3.3.tgz"
-    integrity sha512-uQofwsWUoKLY4QDgSdNbRxnqQDaQEPLLBNO9SP64JfQ2fDRJD5rjb4d3S29F0z9FqTnsWEwTL2Sl0spdx9xvHA==
+  react-native-reanimated@^2.8.0:
+    version "2.8.0"
+    resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.8.0.tgz#93c06ca84d91fb3865110b0857c49a24e316130e"
+    integrity sha512-kJvf/UWLBMaGCs9X66MKq5zdFMgwx8D0nHnolbHR7s8ZnbLdb7TlQ/yuzIXqn/9wABfnwtNRI3CyaP1aHWMmZg==
     dependencies:
-      "@babel/plugin-transform-object-assign" "^7.10.4"
+      "@babel/plugin-transform-object-assign" "^7.16.7"
+      "@babel/preset-typescript" "^7.16.7"
       "@types/invariant" "^2.2.35"
       invariant "^2.2.4"
       lodash.isequal "^4.5.0"
-      mockdate "^3.0.2"
-      react-native-screens "^3.4.0"
+      setimmediate "^1.0.5"
       string-hash-64 "^1.0.3"
   
   react-native-safe-area-context@3.3.2:
@@ -4712,7 +4734,7 @@ Lockfile:
     resolved "https://registry.npmjs.org/react-native-safe-area-context/-/react-native-safe-area-context-3.3.2.tgz"
     integrity sha512-yOwiiPJ1rk+/nfK13eafbpW6sKW0jOnsRem2C1LPJjM3tfTof6hlvV5eWHATye3XOpu2cJ7N+HdkUvUDGwFD2Q==
   
-  react-native-screens@^3.4.0, react-native-screens@~3.10.1:
+  react-native-screens@~3.10.1:
     version "3.10.2"
     resolved "https://registry.npmjs.org/react-native-screens/-/react-native-screens-3.10.2.tgz"
     integrity sha512-bMKSpwMeqAoXBqTJiDEG1ogM1cMk66sEmpp/4dGqdX59v+OwMqPeTuBk37qaSuS7gPOFFKsNW2X3ymGvBT4iEw==
@@ -4734,6 +4756,11 @@ Lockfile:
     dependencies:
       prop-types "^15.7.2"
       yargs "^16.1.1"
+  
+  react-native-view-overflow@^0.0.5:
+    version "0.0.5"
+    resolved "https://registry.yarnpkg.com/react-native-view-overflow/-/react-native-view-overflow-0.0.5.tgz#56c49f0f7cdb9fd145de241d6f6bf4cfe5660915"
+    integrity sha512-p/peyU3IC7M84bZEz2K7hpLrKBPUT3W7/+wnXjGw40hX/Iaj0OmOqJI6mJcBUlpcHJvGYbx2OOpPZa4+hwJC6w==
   
   react-native-web@0.17.1:
     version "0.17.1"
@@ -5516,7 +5543,7 @@ Lockfile:
   
   typescript@~4.3.5:
     version "4.3.5"
-    resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
+    resolved "https://registry.npmjs.org/typescript/-/typescript-4.3.5.tgz"
     integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
   
   ua-parser-js@^0.7.30:
