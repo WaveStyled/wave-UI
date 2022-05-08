@@ -15,12 +15,12 @@ export default function  DetailScreen ({navigation}) {
     return (
         <View>
         <Text style={{marginTop: 15, fontSize: 18, fontWeight: 'bold', paddingVertical: '30%'}}>
-        {route.params.name} Details
+        Details
         </Text>
-        <Text>ClothItem Type: {route.params.type}</Text>
+        {/* <Text>ClothItem Type: {route.params.type}</Text>
         <Text>Color:  {route.params.color}</Text>
         <Text>Weather: {route.params.weather}</Text>
-        <Text>Occasion: {route.params.occasion}</Text>
+        <Text>Occasion: {route.params.occasion}</Text> */}
         </View>
     );
 }

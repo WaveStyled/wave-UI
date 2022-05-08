@@ -74,7 +74,7 @@ function addItem(props) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(props),
   };
-  fetch(`http://${API}:${NODEPORT}/add/999/`, requestOptions).then(
+  fetch(`http://192.168.1.76:${NODEPORT}/add/999/`, requestOptions).then(
     (response) => {
       if (!response.ok) {
         throw response;

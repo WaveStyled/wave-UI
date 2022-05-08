@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, StyleSheet, ScrollView, Button } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Button, TouchableOpacity } from "react-native";
 
 import AddScreen from "./AddScreen";
 //import { ClothesContext} from '../../App';
@@ -12,7 +12,7 @@ function get(set) {
   const requestOptions = {
     method: "GET",
   };
-  fetch(`http://${API}:${NODEPORT}/wardrobe`, requestOptions)
+  fetch(`http://192.168.1.76:${NODEPORT}/wardrobe`, requestOptions)
     .then((response) => {
       if (!response.ok) {
         throw response;
@@ -79,9 +79,11 @@ export default function HomeScreen({ navigation, route }) {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.clothsWrapper}>
+          <TouchableOpacity onPress={() => navigation.navigate("Details")}>
           <View style={styles.items}>
             {value != null ? value : true}
           </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
