@@ -11,7 +11,7 @@ function CalibrateContainerScreen({navigation, route}){
             <Stack.Screen
                  name="Get"
                  component={CalibrateSwipe}
-                options={{ headerShown: false }}
+                options={{ title: ''}}
             />
         </Stack.Navigator>
     );

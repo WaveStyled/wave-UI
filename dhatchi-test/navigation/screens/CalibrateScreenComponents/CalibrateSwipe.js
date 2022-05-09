@@ -69,9 +69,9 @@ const CardDetails = ({ index }) => (
   </View>
 );
 
-function getFits(set) {
+async function getFits(set) {
 
-  fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, {method: "PUT"})
+  await fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, {method: "PUT"})
   .then((response) => {
     if (!response.ok) {
       throw response;
@@ -85,19 +85,50 @@ function getFits(set) {
   });
   }
 
-export default function App() {
+export default function App({navigation}) {
   const [index, setIndex] = React.useState(0);
   const [fits, setFits] = React.useState([[[],[]],[[],[]]]);
   const [likes, setLikes] = React.useState([]);
+
+  const [curWeather, setWeather] = React.useState("test")
+  const [curOccasion, setOccasion] = React.useState("")
+  const [curIds, setIds] = React.useState([0])
+
   React.useEffect(() => {
     getFits(setFits);
+    setOccasion(fits[1][index][0])
+    setWeather(fits[1][index][1])
+    setIds(fits[0][index])
   }, []);
+ 
+ 
+  
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+        headerRight: () => (
+       <Text>{curWeather}</Text>
+      ),
+      headerLeft: () => (
+        <Text>{curOccasion}</Text>
+      ),
+    });
+  });
 
   const onSwipedLeft = () => {
     
     transitionRef.current.animateNextTransition();
     setIndex((index + 1) % data.length); 
     console.log("Left")
+    var x = likes;
+    x.push(0)
+    setLikes(x)
+    var y = fits
+    setOccasion(y[1][index][0])
+    setWeather(y[1][index][1])
+    setIds(y[0][index])
+    
+    
     
   };
 
@@ -109,10 +140,15 @@ export default function App() {
     var x = likes;
     x.push(1)
     setLikes(x)
-    console.log(x)
+    var y = fits
+    setOccasion(y[1][index][0])
+    setWeather(y[1][index][1])
+    setIds(y[0][index])
+    
+    
     
   };
-
+  
   return (
     <SafeAreaView style={styles.container}>
       <MaterialCommunityIcons
