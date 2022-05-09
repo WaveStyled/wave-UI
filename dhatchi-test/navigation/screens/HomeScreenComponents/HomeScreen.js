@@ -22,6 +22,7 @@ const type_mapping = {
   LGRS: 'Long Sleeve Graphic',
   LATS: 'Long Sleeve Athletics',
   FLAS: 'Flannel',
+  JERSX: 'Jersey',
   //Overtops
   SWST: 'SweatShirt',
   HOOT: 'Hoodie',
@@ -30,7 +31,7 @@ const type_mapping = {
   JAKC: 'Jacket',
   COAC: "Coat",
   VESC: "Vest",
-  PUFTC: 'Puffer',
+  PUFC: 'Puffer',
   //Pants
   SKIP: 'Skirt',
   YOGP: 'Yoga Pants',
@@ -42,7 +43,7 @@ const type_mapping = {
   PJMT: 'Pajamas',
   //shorts
   RGSH: 'Regular',
-  SWPH: 'Swimshorts',
+  SWMH: 'Swimshorts',
   SWSH: 'Sweatshorts',
   ATSH: 'Athletic Shorts',
   //Shoes
@@ -86,12 +87,13 @@ function get(set) {
 
 function update(json, set) {
   var list;
+  var typeconvert;
   if (Object.keys(json).length !== 0) {
     list = json.map((clothes) => (
       <ClothingItem
         key={clothes.pieceid}
         id={clothes.pieceid}
-        text={type_mapping[clothes.type] + " " + clothes.color}
+        text= { type_mapping[clothes.type]   + " " + clothes.color}
         update={set}
         image={clothes.image}
       />
