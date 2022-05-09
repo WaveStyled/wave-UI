@@ -13,7 +13,7 @@ import data from './data';
 import Swiper from 'react-native-deck-swiper';
 import { Transitioning, Transition } from 'react-native-reanimated';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import { API, NODEPORT } from "../../../context/API";
 const { width } = Dimensions.get('window');
 
 const stackSize = 4;
@@ -69,11 +69,48 @@ const CardDetails = ({ index }) => (
   </View>
 );
 
+function getFits(set) {
+
+  fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, {method: "PUT"})
+  .then((response) => {
+    if (!response.ok) {
+      throw response;
+    }
+    return response.json();
+  })
+  .then((json) => { 
+  
+      set(json);
+
+  });
+  }
+
 export default function App() {
   const [index, setIndex] = React.useState(0);
-  const onSwiped = () => {
+  const [fits, setFits] = React.useState([[[],[]],[[],[]]]);
+  const [likes, setLikes] = React.useState([]);
+  React.useEffect(() => {
+    getFits(setFits);
+  }, []);
+
+  const onSwipedLeft = () => {
+    
     transitionRef.current.animateNextTransition();
-    setIndex((index + 1) % data.length);
+    setIndex((index + 1) % data.length); 
+    console.log("Left")
+    
+  };
+
+  const onSwipedRight = () => {
+    
+    transitionRef.current.animateNextTransition();
+    setIndex((index + 1) % data.length); 
+    console.log("Right")
+    var x = likes;
+    x.push(1)
+    setLikes(x)
+    console.log(x)
+    
   };
 
   return (
@@ -99,8 +136,13 @@ export default function App() {
           renderCard={card => <Card card={card} />}
           infinite
           backgroundColor={'transparent'}
-          onSwiped={onSwiped}
-          onTapCard={() => swiperRef.current.swipeLeft()}
+          onSwipedLeft={() => {
+            onSwipedLeft()
+          
+          }}
+          onSwipedRight = {() => {
+            onSwipedRight()
+          }}
           cardVerticalMargin={50}
           stackSize={stackSize}
           stackScale={10}
@@ -167,7 +209,11 @@ export default function App() {
             underlayColor='transparent'
             activeOpacity={0.3}
             color={colors.red}
-            onPress={() => swiperRef.current.swipeLeft()}
+            onPress={() => {
+              
+              swiperRef.current.swipeLeft()
+            
+            }}
           />
           <MaterialCommunityIcons.Button
             name='circle-outline'
@@ -176,7 +222,9 @@ export default function App() {
             underlayColor='transparent'
             activeOpacity={0.3}
             color={colors.blue}
-            onPress={() => swiperRef.current.swipeRight()}
+            onPress={() => {
+              
+              swiperRef.current.swipeRight()}}
           />
         </View>
       </View>

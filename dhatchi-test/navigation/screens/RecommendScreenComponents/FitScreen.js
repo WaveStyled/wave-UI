@@ -23,7 +23,7 @@ function FitScreen({ navigation }){
     const [fits, setFits] = React.useState([[[],[]],[[],[]]]);
     const [curWeather, setWeather] = React.useState("r")
     const [curOccasion, setOccasion] = React.useState("")
-    const [curIds, setIds] = React.useState([])
+    const [curIds, setIds] = React.useState([0])
     const [curCounter, incrementCounter] = React.useState(0)
     const a = React.useContext(ClothesContext);
     
@@ -39,16 +39,6 @@ function FitScreen({ navigation }){
     React.useEffect(() => {
         getFits(setFits);
       }, []);
-    const setHeader = () => {
-        React.useLayoutEffect(() => {
-            navigation.setOptions({
-              headerRight: () => (
-                <Text>hi</Text>
-              ),
-            });
-          });
-        }
-    var counter = 0;
     
    //console.log(fits)
    React.useEffect(() => {
@@ -56,7 +46,6 @@ function FitScreen({ navigation }){
     setWeather(fits[1][curCounter][1])
     setIds(fits[0][curCounter])
   }, []);
-
    //setWeather(fits[1][counter][0])
     //setOccasion(fits[1][0][0])
     //console.log(curWeather)
@@ -71,8 +60,19 @@ function FitScreen({ navigation }){
           ),
         });
       });
-    //console.log(a)
-   // var x = a.filter((item)=> item.pieceid == "102")
+      //console.log(a)
+    var objects = []
+    //console.log(curIds)
+    React.useLayoutEffect(()=>{
+        for ( var i = 0; i < 7; i++){
+            //console.log(curIds[i])
+            //console.log(a.filter((item)=> item.pieceid == curIds[i].toString()))
+            objects.push(a.filter((item)=> item.pieceid == curIds[i].toString()))
+        }
+    })
+   
+    console.log(objects)
+      // var x = a.filter((item)=> item.pieceid == "102")
     //console.log(x.map(({pieceid})=>(pieceid)))
     return (
         <View
