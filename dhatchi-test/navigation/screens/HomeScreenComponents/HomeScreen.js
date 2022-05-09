@@ -79,11 +79,11 @@ export default function HomeScreen({ navigation, route }) {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.clothsWrapper}>
-          <TouchableOpacity onPress={() => navigation.navigate("Details")}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate("Details")}> */}
           <View style={styles.items}>
             {value != null ? value : true}
           </View>
-          </TouchableOpacity>
+          {/* </TouchableOpacity> */}
         </View>
       </ScrollView>
     </View>

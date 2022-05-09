@@ -11,6 +11,8 @@ import "react-native-gesture-handler";
 import { Swipeable } from "react-native-gesture-handler";
 import { API, NODEPORT } from "../context/API";
 import { ClothesContext } from "../context/AppContext";
+import { useRoute } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 
 const imgpaths = {
   1: require("../assets/1.jpeg"),
@@ -19,7 +21,7 @@ const imgpaths = {
 };
 
 
-const ClothingItem = (props) => {
+function ClothingItem (props) {
   var z = imgpaths["1"];
   const a = React.useContext(ClothesContext);
 
@@ -65,8 +67,9 @@ const ClothingItem = (props) => {
   };
 
 
-
+  const navigation = useNavigation(); 
   return (
+    <TouchableOpacity onPress={() => navigation.navigate("Details")}>
     <Swipeable renderRightActions={() => rightActions(props.id, props.update)}>
       <View style={styles.item}>
         <View style={styles.itemLeft}>
@@ -81,6 +84,7 @@ const ClothingItem = (props) => {
         <View style={styles.circular}></View>
       </View>
     </Swipeable>
+    </TouchableOpacity>
   );
 };
 
