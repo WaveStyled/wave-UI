@@ -7,7 +7,8 @@ import { StyleSheet } from "react-native";
 import { ClothesContext } from "./context/AppContext";
 import { API, NODEPORT } from "./context/API";
 import 'react-native-reanimated';
-
+// import utils from '../utils';
+import LoadScreen from "./navigation/screens/LoadScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -45,7 +46,25 @@ export default function App() {
   return (
     <ClothesContext.Provider value={dummy}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+         initialRouteName="LoadScreen"
+         screenOptions={{
+           headerTitleAlign: 'center',
+           headerStyle: {
+             backgroundColor: '#0080ff'
+           },
+           headerTintColor: '#ffffff',
+           headerTitleStyle: {
+             fontSize: 25,
+             fontWeight: 'bold'
+           }
+         }}
+        >
+        <Stack.Screen
+            name="LoadScreen"
+            component={LoadScreen}
+            options={{ headerShown: false, gestureEnabled: false }}
+          />
           <Stack.Screen
             name="LogIn"
             component={AuthScreen}
