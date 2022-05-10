@@ -13,8 +13,10 @@ import data from './data';
 import Swiper from 'react-native-deck-swiper';
 import { Transitioning, Transition } from 'react-native-reanimated';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { API, NODEPORT } from "../../../context/API";
+import { API, NODEPORT } from "../../../context/API"
+import { ClothesContext } from '../../../context/AppContext';
 const { width } = Dimensions.get('window');
+
 
 const stackSize = 4;
 const colors = {
@@ -53,22 +55,7 @@ const transition = (
 const swiperRef = React.createRef();
 const transitionRef = React.createRef();
 
-const Card = ({ card }) => {
-  return (
-    <View style={styles.card}>
-      <Image source={{ uri: card.image }} style={styles.cardImage} />
-    </View>
-  );
-};
 
-const CardDetails = ({ index }) => (
-  <View key={data[index].id} style={{ alignItems: 'center' }}>
-    <Text style={[styles.text, styles.heading]} numberOfLines={2}>
-      {data[index].name}
-    </Text>
-    <Text style={[styles.text, styles.price]}>{data[index].price}</Text>
-  </View>
-);
 
 async function getFits(set) {
 
@@ -87,6 +74,7 @@ async function getFits(set) {
   }
 
 export default function App({navigation}) {
+  const a = React.useContext(ClothesContext);
   const [index, setIndex] = React.useState(0);
   const [fits, setFits] = React.useState([[[],[]],[[],[]]]);
   const [likes, setLikes] = React.useState([]);
@@ -94,13 +82,35 @@ export default function App({navigation}) {
   const [curWeather, setWeather] = React.useState("test")
   const [curOccasion, setOccasion] = React.useState("")
   const [curIds, setIds] = React.useState([0])
+  const [change, setChange] = React.useState(false); // this determines whether the fits need to be fetched again
+  const [counter, setCount] = React.useState(0); // this keeps track of the buffer
+  const [testing, setOutfits] = React.useState([[]]); // this stores the JSX objects
 
   React.useEffect(() => {
     getFits(setFits);
-    setOccasion(fits[1][index][0])
-    setWeather(fits[1][index][1])
-    setIds(fits[0][index])
-  }, []);
+  }, [change]);
+
+  React.useEffect(() => {
+    setCount(fits[0].length);
+    setOccasion(fits[1][index][0]);
+    setWeather(fits[1][index][1]);
+    setIds(fits[0][index]);
+  }, [fits[0]]); // updates these fields only when fits[0] has fnished init (NOTE this has to be in a separate hook)
+
+  React.useEffect(() => {
+    var ids = fits[0][index].filter((value) => value !== 0);
+    const test = ids.map(function (value) {
+      var val = a.find((element) => element.pieceid === value);
+      return val;
+    });
+    setOutfits(test);
+  }, [fits[0]]);  // updates only when a new fetch comes
+
+  console.log(testing);
+
+  const update = () => {  //invoke this when the buffer runs out
+    setChange(!change);
+  };
  
  
   
@@ -116,6 +126,25 @@ export default function App({navigation}) {
     });
   });
 
+
+  const Card = ({ card }) => {
+    return (
+      <View style={styles.card}>
+        <Image source={{ uri: 'data:image/jpeg;base64,' + testing[0].image }} style={styles.cardImage} />
+      </View>
+    );
+  };
+  
+  const CardDetails = ({ index }) => (
+    <View key={data[index].id} style={{ alignItems: 'center' }}>
+      <Text style={[styles.text, styles.heading]} numberOfLines={2}>
+        {data[index].name}
+      </Text>
+      <Text style={[styles.text, styles.price]}>{data[index].price}</Text>
+    </View>
+  );
+
+
   const onSwipedLeft = () => {
     
     transitionRef.current.animateNextTransition();
@@ -128,9 +157,6 @@ export default function App({navigation}) {
     setOccasion(y[1][index][0])
     setWeather(y[1][index][1])
     setIds(y[0][index])
-    
-    
-    
   };
 
   const onSwipedRight = () => {

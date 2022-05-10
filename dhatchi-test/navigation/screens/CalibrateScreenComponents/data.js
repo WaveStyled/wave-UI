@@ -1,6 +1,6 @@
 export default [
     {
-      id: '40454230',
+      id: '120',
       price: 'A simple yet dependable choice!',
       name: 'Black Shirt',
       image:

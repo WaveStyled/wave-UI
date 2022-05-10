@@ -1,53 +1,29 @@
 import * as React from "react";
-import { View, Text,StyleSheet,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+
+
 
 export default function SettingsScreen({ navigation }) {
   const getCalibration = () => {
-    navigation.navigate("Get")
-  }
+    navigation.navigate("Get");
+  };
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text
-        style={{ fontSize: 26, fontWeight: "bold" }}
-      >
-        Calibrate Screen
-      </Text>
+      <Text style={{ fontSize: 26, fontWeight: "bold" }}>Calibrate Screen</Text>
       <TouchableOpacity style={styles.commandButton} onPress={getCalibration}>
-            <Text style={styles.panelButtonTitle}>Get Calibrated!</Text>
-            </TouchableOpacity>
+        <Text style={styles.panelButtonTitle}>Get Calibrated!</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const styles = StyleSheet.create({
   container1: {
     flex: 1,
-    paddingHorizontal: '10%',
-    justifyContent: 'center',
-    backgroundColor : '#dfe3ee',
-    paddingVertical : '8%'
+    paddingHorizontal: "10%",
+    justifyContent: "center",
+    backgroundColor: "#dfe3ee",
+    paddingVertical: "8%",
   },
   container: {
     flex: 1,
@@ -55,13 +31,13 @@ const styles = StyleSheet.create({
   commandButton: {
     padding: 10,
     borderRadius: 20,
-    backgroundColor: '#2874A6',
-    alignItems: 'center',
+    backgroundColor: "#2874A6",
+    alignItems: "center",
     marginTop: 15,
   },
   panel: {
     padding: 20,
-    backgroundColor: '#58D68D',
+    backgroundColor: "#58D68D",
     paddingTop: 20,
     // borderTopLeftRadius: 20,
     // borderTopRightRadius: 20,
@@ -71,25 +47,25 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.4,
   },
   header: {
-    backgroundColor: '#E8EAED',
-    shadowColor: '#333333',
-    shadowOffset: {width: -1, height: -3},
+    backgroundColor: "#E8EAED",
+    shadowColor: "#333333",
+    shadowOffset: { width: -1, height: -3 },
     shadowRadius: 2,
     shadowOpacity: 0.4,
     // elevation: 5,
     paddingTop: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    paddingVertical : '5%'
+    paddingVertical: "5%",
   },
   panelHeader: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   panelHandle: {
     width: 40,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#00000040',
+    backgroundColor: "#00000040",
     marginBottom: 10,
   },
   panelTitle: {
@@ -98,54 +74,54 @@ const styles = StyleSheet.create({
   },
   panelSubtitle: {
     fontSize: 14,
-    color: 'gray',
+    color: "gray",
     height: 30,
     marginBottom: 10,
   },
   panelButton: {
     padding: 13,
     borderRadius: 10,
-    backgroundColor: '#45B39D',
-    alignItems: 'center',
+    backgroundColor: "#45B39D",
+    alignItems: "center",
     marginVertical: 7,
   },
   panelButtonTitle: {
     fontSize: 17,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: "white",
   },
   action: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 10,
     marginBottom: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#f2f2f2',
+    borderBottomColor: "#f2f2f2",
     paddingBottom: 5,
     paddingTop: 20,
   },
   actionError: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#FF0000',
+    borderBottomColor: "#FF0000",
     paddingBottom: 5,
   },
   textInput: {
     flex: 1,
-    marginTop: Platform.OS === 'ios' ? 0 : -12,
+    marginTop: Platform.OS === "ios" ? 0 : -12,
     paddingLeft: 10,
-    color: '#05375a',
+    color: "#05375a",
   },
-  });
-  
-  const styles_multi = StyleSheet.create({
+});
+
+const styles_multi = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
-  }, 
-  multiSelectContainer :{
-    height:'20%',
-    width: '80%'
-  }
-  });
+    alignItems: "center",
+    backgroundColor: "#F5FCFF",
+  },
+  multiSelectContainer: {
+    height: "20%",
+    width: "80%",
+  },
+});

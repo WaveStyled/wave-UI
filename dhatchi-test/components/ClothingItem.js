@@ -14,15 +14,8 @@ import { ClothesContext } from "../context/AppContext";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from '@react-navigation/native';
 
-const imgpaths = {
-  1: require("../assets/1.jpeg"),
-  2: require("../assets/2.jpeg"),
-  3: require("../assets/3.jpeg"),
-};
-
 
 function ClothingItem (props) {
-  var z = imgpaths["1"];
   const a = React.useContext(ClothesContext);
 
   const deleteItem = (key, set) => {
@@ -66,10 +59,18 @@ function ClothingItem (props) {
     );
   };
 
-
   const navigation = useNavigation(); 
+
+  const propagate = {
+    id : props.id,
+    text : props.text,
+    date : props.date,
+    image : props.image
+  };
+
+
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Details")}>
+    <TouchableOpacity onPress={() => navigation.navigate("Details", {item: propagate})}>
     <Swipeable renderRightActions={() => rightActions(props.id, props.update)}>
       <View style={styles.item}>
         <View style={styles.itemLeft}>

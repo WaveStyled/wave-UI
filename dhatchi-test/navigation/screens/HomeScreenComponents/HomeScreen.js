@@ -16,7 +16,7 @@ function get(set) {
   const requestOptions = {
     method: "GET",
   };
-  fetch(`http://192.168.1.76:${NODEPORT}/wardrobe`, requestOptions)
+  fetch(`http://${API}:${NODEPORT}/wardrobe`, requestOptions)
     .then((response) => {
       if (!response.ok) {
         throw response;
