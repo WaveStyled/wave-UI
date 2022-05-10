@@ -22,7 +22,8 @@ const colors = {
   blue: '#0070FF',
   gray: '#777777',
   white: '#ffffff',
-  black: '#000000'
+  black: '#000000',
+  green: 'green'
 };
 const ANIMATION_DURATION = 200;
 
@@ -252,12 +253,12 @@ export default function App({navigation}) {
             }}
           />
           <MaterialCommunityIcons.Button
-            name='circle-outline'
+            name='check'
             size={94}
             backgroundColor='transparent'
             underlayColor='transparent'
             activeOpacity={0.3}
-            color={colors.blue}
+            color={colors.green}
             onPress={() => {
               
               swiperRef.current.swipeRight()}}
