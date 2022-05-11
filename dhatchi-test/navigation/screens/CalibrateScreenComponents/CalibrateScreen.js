@@ -1,19 +1,60 @@
 import * as React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import { API, NODEPORT } from "../../../context/API";
 
 
+async function getFits(set) {
+
+  await fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, {method: "PUT"})
+  .then((response) => {
+    if (!response.ok) {
+      throw response;
+    }
+    return response.json();
+  })
+  .then((json) => { 
+  
+      set(json);
+
+  });
+  }
 
 export default function SettingsScreen({ navigation }) {
+
+
+  const [preloadFits, setFits] = React.useState([[[],[]],[[],[]]])
+ 
+  React.useEffect(() => {
+    getFits(setFits);
+  }, []);
+
+
   const getCalibration = () => {
-    navigation.navigate("Get");
+    console.log(preloadFits)
+    navigation.navigate("Get", {initial: preloadFits});
   };
+  
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 26, fontWeight: "bold" }}>Calibrate Screen</Text>
-      <TouchableOpacity style={styles.commandButton} onPress={getCalibration}>
-        <Text style={styles.panelButtonTitle}>Get Calibrated!</Text>
-      </TouchableOpacity>
-    </View>
+        <Text style={{ fontSize: 26, fontWeight: "bold" }}>
+          Calibrate Screen
+        </Text>
+        <TouchableOpacity
+          style={styles.commandButton}
+          onPress={getCalibration}
+          disabled={false}
+        >
+          <Text style={styles.panelButtonTitle}>Get Calibrated!</Text>
+        </TouchableOpacity>
+      </View>
   );
 }
 
@@ -34,6 +75,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#2874A6",
     alignItems: "center",
     marginTop: 15,
+  },
+
+  inputButton: {
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: "#ADD8E6",
+    alignItems: "center",
+    marginTop: 15,
+    paddingVertical: 20,
   },
   panel: {
     padding: 20,

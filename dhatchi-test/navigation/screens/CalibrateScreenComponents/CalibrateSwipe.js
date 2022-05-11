@@ -73,10 +73,11 @@ async function getFits(set) {
   });
   }
 
-export default function App({navigation}) {
+export default function App({route, navigation}) {
   const a = React.useContext(ClothesContext);
+
   const [index, setIndex] = React.useState(0);
-  const [fits, setFits] = React.useState([[[],[]],[[],[]]]);
+  const [fits, setFits] = React.useState(route.params.initial);
   const [likes, setLikes] = React.useState([]);
 
   const [curWeather, setWeather] = React.useState("test")
@@ -85,9 +86,17 @@ export default function App({navigation}) {
   const [change, setChange] = React.useState(false); // this determines whether the fits need to be fetched again
   const [counter, setCount] = React.useState(0); // this keeps track of the buffer
   const [testing, setOutfits] = React.useState([[]]); // this stores the JSX objects
+  const [loaded, setLoad] = React.useState(true)
 
   React.useEffect(() => {
-    getFits(setFits);
+    console.log("HAPPENS")
+    if (!loaded) {
+      console.log("UPDATE")
+      getFits(setFits);
+    } else {
+      console.log("HERE");
+      setLoad(false);
+    }
   }, [change]);
 
   React.useEffect(() => {
@@ -106,14 +115,13 @@ export default function App({navigation}) {
     setOutfits(test);
   }, [fits[0]]);  // updates only when a new fetch comes
 
-  console.log(testing);
 
   const update = () => {  //invoke this when the buffer runs out
     setChange(!change);
   };
  
- 
-  
+  console.log(fits[0])
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
