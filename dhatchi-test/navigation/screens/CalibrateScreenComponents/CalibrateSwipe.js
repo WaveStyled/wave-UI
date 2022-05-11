@@ -169,7 +169,7 @@ export default function App({ route, navigation }) {
   const Card = ({ card }) => {
     // console.log(card[0]);
     //const value = UD(card);
-    console.log(card);
+    //console.log(card);
 
     function UD(data) {
       var list;
