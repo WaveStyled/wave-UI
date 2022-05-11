@@ -75,8 +75,9 @@ async function getFits(set) {
 function IDtoJSX(ids, a) {
   maps = [];
   ids.forEach(function (item, i) {
-    var ids = item.filter((value) => value !== 0);
-    const test = ids.map(function (value) {
+    var keys = item.filter((value) => value !== 0);
+    console.log(keys)
+    const test = keys.map(function (value) {
       var val = a.find((element) => element.pieceid === value);
       return val;
     });
@@ -101,7 +102,6 @@ function UD(json) {
 
 export default function App({ route, navigation }) {
   const a = React.useContext(ClothesContext);
-  console.log("HELO", route.params.initial)
 
   const [index, setIndex] = React.useState(0);
   const [fits, setFits] = React.useState(route.params.initial);
@@ -129,6 +129,7 @@ export default function App({ route, navigation }) {
       setLoad(false);
     }
   }, [change]);
+
 
   React.useEffect(() => {
     setCount(fits[0].length);
@@ -183,29 +184,36 @@ export default function App({ route, navigation }) {
       }
       return list;
     }
-    const { items = [] } = card;
-    //const list = UD(card)
-    const listItems = items.map((item) => (
-      <OutfitComponent image={item.image} />
-    ));
+
+    var outfit; 
+    console.log(card);
+    console.log(testing[0][0].pieceid, testing.length);
+    if (card != null) {
+      const { items = [] } = card;
+      //const list = UD(card)
+      // const listItems = items.map((item) => (
+      //   <OutfitComponent image={item.image} />
+      // ));
+      outfit = card.map((value, idx) => (
+        <View key={idx} style={styles.cardImage}>
+          <Image
+            style={{ width: 80, height: 100 }}
+            source={{ uri: "data:image/jpeg;base64," + value.image }}
+          />
+          <View style={styles2.circular}></View>
+        </View>
+      ))
+    }
 
     return (
       <View style={styles.card}>
-        {card.map((value, idx) => (
-          <View key={idx} style={styles.cardImage}>
-            <Image
-              style={{ width: 80, height: 100 }}
-              source={{ uri: "data:image/jpeg;base64," + value.image }}
-            />
-            <View style={styles2.circular}></View>
-          </View>
-        ))}
+        {outfit == null ? true : outfit}
       </View>
     );
   };
 
   const CardDetails = ({ index }) => (
-    <View key={curIds[index]} style={{ alignItems: 'center' }}>
+    <View key={curIds[index]} style={{ alignItems: "center" }}>
       <Text style={[styles.text, styles.heading]} numberOfLines={2}>
         {testing[index][1][0]}
       </Text>
@@ -259,7 +267,7 @@ export default function App({ route, navigation }) {
       <View style={styles.swiperContainer}>
         <Swiper
           ref={swiperRef}
-          cards={testing}
+          cards={testing[0][1].image == null ? console.log("BRUH") : testing}
           renderCard={(card) => <Card card={card} />}
           infinite
           backgroundColor={"transparent"}
