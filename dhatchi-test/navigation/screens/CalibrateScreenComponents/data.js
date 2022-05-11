@@ -43,7 +43,7 @@ export default [
     },
     {
       id: '40454230',
-      price: 'A simple yet dependable choice!',
+      price: 'Bruh',
       name: 'Pink Shirt',
       image:
       'https://moodle.com/wp-content/uploads/2021/06/22087-11.jpg'

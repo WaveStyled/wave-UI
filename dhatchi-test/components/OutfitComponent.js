@@ -1,10 +1,10 @@
 import React from "react";
 import {
   View,
-  Text,
   StyleSheet,
   Image,
 } from "react-native";
+import "react-native-gesture-handler";
 
 function OutfitComponent (props) {
   return (
@@ -16,7 +16,6 @@ function OutfitComponent (props) {
               source={{uri : 'data:image/jpeg;base64,' + props.image }}
             />
           </View>
-          <Text style={styles.itemText}>{props.text}</Text>
         </View>
         <View style={styles.circular}></View>
       </View>

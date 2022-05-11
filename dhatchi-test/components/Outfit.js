@@ -11,23 +11,9 @@ import "react-native-gesture-handler";
 import { OutfitComponent } from "./OutfitComponent";
 
 function Outfit(props) {
+  console.log("HEHEHEHEHEHE")
   console.log(props.data);
-  function update(json) {
-    var list;
-    if (Object.keys(json).length !== 0) {
-      list = json.map((clothes) => (
-        <OutfitComponent
-          key={clothes.pieceid}
-          id={clothes.pieceid}
-          text={type_mapping[clothes.type] + " " + clothes.color}
-          date={clothes.date_added}
-          // might need to add weather/occasion
-          image={clothes.image}
-        />
-      ));
-      return list;
-    }
-  }
+  
 
   const value = update(props.data);
 
