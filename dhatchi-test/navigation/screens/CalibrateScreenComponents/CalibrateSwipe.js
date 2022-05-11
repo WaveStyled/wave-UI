@@ -76,7 +76,7 @@ function IDtoJSX(ids, a) {
   maps = [];
   ids.forEach(function (item, i) {
     var keys = item.filter((value) => value !== 0);
-    console.log(keys)
+    console.log(keys);
     const test = keys.map(function (value) {
       var val = a.find((element) => element.pieceid === value);
       return val;
@@ -130,13 +130,11 @@ export default function App({ route, navigation }) {
     }
   }, [change]);
 
-
   React.useEffect(() => {
     setCount(fits[0].length);
     setOccasion(fits[1][index][0]);
     setWeather(fits[1][index][1]);
-    setIds(fits[0][index]);
-  }, [fits[0]]); // updates these fields only when fits[0] has fnished init (NOTE this has to be in a separate hook)
+  }, [index]); // updates these fields only when fits[0] has fnished init (NOTE this has to be in a separate hook)
 
   React.useEffect(() => {
     if (!loaded2) {
@@ -159,6 +157,8 @@ export default function App({ route, navigation }) {
     //invoke this when the buffer runs out
     setChange(!change);
   };
+
+
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -185,9 +185,7 @@ export default function App({ route, navigation }) {
       return list;
     }
 
-    var outfit; 
-    console.log(card);
-    console.log(testing[0][0].pieceid, testing.length);
+    var outfit;
     if (card != null) {
       const { items = [] } = card;
       //const list = UD(card)
@@ -202,14 +200,10 @@ export default function App({ route, navigation }) {
           />
           <View style={styles2.circular}></View>
         </View>
-      ))
+      ));
     }
 
-    return (
-      <View style={styles.card}>
-        {outfit == null ? true : outfit}
-      </View>
-    );
+    return <View style={styles.card}>{outfit == null ? true : outfit}</View>;
   };
 
   const CardDetails = ({ index }) => (
@@ -267,7 +261,7 @@ export default function App({ route, navigation }) {
       <View style={styles.swiperContainer}>
         <Swiper
           ref={swiperRef}
-          cards={testing[0][1].image == null ? console.log("BRUH") : testing}
+          cards={testing}
           renderCard={(card) => <Card card={card} />}
           infinite
           backgroundColor={"transparent"}
