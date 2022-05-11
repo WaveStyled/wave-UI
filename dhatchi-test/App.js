@@ -33,9 +33,6 @@ function getWardrobe(set) {
       set(json);
     });
 }
-function startupModel(){
-  
-}
 
 export default function App() {
   const [dummy, setDummy] = React.useState([]);

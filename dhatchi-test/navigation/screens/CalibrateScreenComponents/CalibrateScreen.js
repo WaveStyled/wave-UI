@@ -10,51 +10,44 @@ import {
 } from "react-native";
 import { API, NODEPORT } from "../../../context/API";
 
-
-async function getFits(set) {
-
-  await fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, {method: "PUT"})
-  .then((response) => {
-    if (!response.ok) {
-      throw response;
-    }
-    return response.json();
-  })
-  .then((json) => { 
-  
+function getFits(set) {
+  fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, { method: "PUT" })
+    .then((response) => {
+      if (!response.ok) {
+        throw response;
+      }
+      return response.json();
+    })
+    .then((json) => {
       set(json);
-
-  });
-  }
+    });
+}
 
 export default function SettingsScreen({ navigation }) {
+  const [preloadFits, setFits] = React.useState([
+    [[], []],
+    [[], []],
+  ]);
 
-
-  const [preloadFits, setFits] = React.useState([[[],[]],[[],[]]])
- 
   React.useEffect(() => {
     getFits(setFits);
   }, []);
 
-
   const getCalibration = () => {
-    console.log(preloadFits)
-    navigation.navigate("Get", {initial: preloadFits});
+    navigation.navigate("Get", { initial: preloadFits });
   };
-  
+
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text style={{ fontSize: 26, fontWeight: "bold" }}>
-          Calibrate Screen
-        </Text>
-        <TouchableOpacity
-          style={styles.commandButton}
-          onPress={getCalibration}
-          disabled={false}
-        >
-          <Text style={styles.panelButtonTitle}>Get Calibrated!</Text>
-        </TouchableOpacity>
-      </View>
+      <Text style={{ fontSize: 26, fontWeight: "bold" }}>Calibrate Screen</Text>
+      <TouchableOpacity
+        style={styles.commandButton}
+        onPress={getCalibration}
+        disabled={false}
+      >
+        <Text style={styles.panelButtonTitle}>Get Calibrated!</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 

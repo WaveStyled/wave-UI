@@ -101,6 +101,7 @@ function UD(json) {
 
 export default function App({ route, navigation }) {
   const a = React.useContext(ClothesContext);
+  console.log("HELO", route.params.initial)
 
   const [index, setIndex] = React.useState(0);
   const [fits, setFits] = React.useState(route.params.initial);
@@ -170,62 +171,47 @@ export default function App({ route, navigation }) {
     // console.log(card[0]);
     //const value = UD(card);
     //console.log(card);
-
     function UD(data) {
       var list;
       if (Object.keys(data).length !== 0) {
         list = card.map((value) => (
-          <View style={styles.container}>
-            <Image
-              style={{ width: 80, height: 100 }}
-              source={{uri : 'data:image/jpeg;base64,' + value.image }}
-            />
-          </View>
+          <Image
+            style={{ width: 80, height: 100 }}
+            source={{ uri: "data:image/jpeg;base64," + value.image }}
+          />
         ));
       }
       return list;
     }
+    const { items = [] } = card;
+    //const list = UD(card)
+    const listItems = items.map((item) => (
+      <OutfitComponent image={item.image} />
+    ));
 
-    //list = UD(card);
-
-
-    return <View style={styles.card}>
-{/*       
-      {list != null ? list : true} */}
-
-      <View style={styles.container}>
+    return (
+      <View style={styles.card}>
+        {card.map((value, idx) => (
+          <View key={idx} style={styles.cardImage}>
             <Image
               style={{ width: 80, height: 100 }}
-              source={{uri : 'data:image/jpeg;base64,' + card[0].image }}
+              source={{ uri: "data:image/jpeg;base64," + value.image }}
             />
+            <View style={styles2.circular}></View>
           </View>
-
-          <View style={styles.container}>
-            <Image
-              style={{ width: 80, height: 100 }}
-              source={{uri : 'data:image/jpeg;base64,' + card[1].image }}
-            />
-          </View>
-
-          <View style={styles.container}>
-            <Image
-              style={{ width: 80, height: 100 }}
-              source={{uri : 'data:image/jpeg;base64,' + card[2].image }}
-            />
-          </View>
-      
-      
-      </View>;
+        ))}
+      </View>
+    );
   };
 
-  // const CardDetails = ({ index }) => (
-  //   <View key={curIds[index]} style={{ alignItems: 'center' }}>
-  //     <Text style={[styles.text, styles.heading]} numberOfLines={2}>
-  //       {testing.pieceid}
-  //     </Text>
-  //     <Text style={[styles.text, styles.price]}>{data[index].price}</Text>
-  //   </View>
-  // );
+  const CardDetails = ({ index }) => (
+    <View key={curIds[index]} style={{ alignItems: 'center' }}>
+      <Text style={[styles.text, styles.heading]} numberOfLines={2}>
+        {testing[index][1][0]}
+      </Text>
+      <Text style={[styles.text, styles.price]}>{data[index].price}</Text>
+    </View>
+  );
 
   const onSwipedLeft = () => {
     transitionRef.current.animateNextTransition();
