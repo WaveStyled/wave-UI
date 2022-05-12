@@ -12,7 +12,7 @@ import {
 
 import data from "./data";
 import Swiper from "react-native-deck-swiper";
-import { Transitioning, Transition } from "react-native-reanimated";
+import { Transitioning, Transition, set } from "react-native-reanimated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { API, NODEPORT } from "../../../context/API";
 import { ClothesContext } from "../../../context/AppContext";
@@ -76,7 +76,7 @@ function IDtoJSX(ids, a) {
   maps = [];
   ids.forEach(function (item, i) {
     var keys = item.filter((value) => value !== 0);
-    console.log(keys);
+    //console.log(keys);
     const test = keys.map(function (value) {
       var val = a.find((element) => element.pieceid === value);
       return val;
@@ -214,14 +214,44 @@ export default function App({ route, navigation }) {
       <Text style={[styles.text, styles.price]}>{data[index].price}</Text>
     </View>
   );
+  const refreshBuffer = () => {
+    var send = []
+    send.push(likes)
+    send.push(fits[1])
+    send.push(fits[0])
+    
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(send),
+    };
+    // End Calibrate, getFits(), reset index, set proper variables
+    fetch(`http://${API}:${NODEPORT}/end_calibrate/123/`,
+    requestOptions,
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw response;
+      }
+      console.log(response)
 
+    })
+    
+}
+  
   const onSwipedLeft = () => {
     transitionRef.current.animateNextTransition();
-    setIndex((index + 1) % data.length);
+    setIndex((index + 1) % testing.length);
     console.log("Left");
+    // update 1 outfit before end of buffer, so error doesnt happen on render
+    
     var x = likes;
     x.push(0);
     setLikes(x);
+    if(index == fits[0].length-2){
+      refreshBuffer()
+    }
+    
     var y = fits;
     setOccasion(y[1][index][0]);
     setWeather(y[1][index][1]);
@@ -231,11 +261,15 @@ export default function App({ route, navigation }) {
 
   const onSwipedRight = () => {
     transitionRef.current.animateNextTransition();
-    setIndex((index + 1) % data.length);
+    setIndex((index + 1) % testing.length);
     console.log("Right");
     var x = likes;
     x.push(1);
     setLikes(x);
+    if(index == fits[0].length-2){
+      refreshBuffer()
+    }
+    
     var y = fits;
     setOccasion(y[1][index][0]);
     setWeather(y[1][index][1]);
