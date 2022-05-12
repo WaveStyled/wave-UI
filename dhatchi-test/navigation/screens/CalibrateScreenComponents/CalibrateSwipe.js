@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   Dimensions,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 
 import data from "./data";
@@ -130,11 +130,7 @@ export default function App({ route, navigation }) {
       setLoad(false);
     }
   }, [change]);
-  
-  
-  const endCalibration = () => {
-    navigation.navigate("Screening");
-  };
+
   React.useEffect(() => {
     setOccasion(fits[1][index][0]);
     setWeather(fits[1][index][1]);
@@ -271,6 +267,35 @@ export default function App({ route, navigation }) {
     }
   };
 
+  const endCalibration = () => {
+    var send = [];
+    send.push(likes);
+    console.log(fits[0].slice(0, index));
+    console.log(fits[1].slice(0, index));
+    console.log(likes);
+    send.push(fits[0].slice(0, index));
+    send.push(fits[1].slice(0, index));
+
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(send),
+    };
+    // End Calibrate, getFits(), reset index, set proper variables
+    fetch(`http://${API}:${NODEPORT}/end_calibrate/123/`, requestOptions).then(
+      (response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        console.log(response);
+      }
+    );
+
+
+    navigation.navigate("Screening");
+  };
+
+
   return (
     <SafeAreaView style={styles.container}>
       <MaterialCommunityIcons
@@ -380,15 +405,15 @@ export default function App({ route, navigation }) {
               swiperRef.current.swipeRight();
             }}
           />
-          <TouchableOpacity
-        style={styles.commandButton}
-        // onPress={endCalibration}
-        disabled={false}
-      >
-        <Text style={styles.panelButtonTitle}>End Calibration</Text>
-      </TouchableOpacity>
         </View>
       </View>
+      <TouchableOpacity
+        style={styles4.commandButton}
+        onPress={endCalibration}
+        disabled={false}
+      >
+        <Text style={styles4.panelButtonTitle}>End Calibration</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -425,13 +450,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.white,
-  },
-  commandButton: {
-    padding: 10,
-    borderRadius: 20,
-    backgroundColor: "#2874A6",
-    alignItems: "center",
-    marginTop: 15,
   },
   text: {
     textAlign: "center",
@@ -522,6 +540,89 @@ const styles3 = StyleSheet.create({
     borderRadius: 5,
     marginRight: 15,
   },
+  itemText: {
+    maxWidth: "80%",
+  },
+  circular: {
+    width: 12,
+    height: 12,
+    borderColor: "#55BCF6",
+    borderWidth: 2,
+    borderRadius: 5,
+  },
+});
+
+
+const styles4 = StyleSheet.create({
+  container1: {
+    flex: 1,
+    paddingHorizontal: "10%",
+    justifyContent: "center",
+    backgroundColor: "#dfe3ee",
+    paddingVertical: "8%",
+  },
+  container: {
+    flex: 1,
+  },
+  commandButton: {
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: "#2874A6",
+    alignItems: "center",
+    marginTop: 15,
+  },
+
+  inputButton: {
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: "#ADD8E6",
+    alignItems: "center",
+    marginTop: 15,
+    paddingVertical: 20,
+  },
+  panel: {
+    padding: 20,
+    backgroundColor: "#58D68D",
+    paddingTop: 20,
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
+    // shadowColor: '#000000',
+    // shadowOffset: {width: 0, height: 0},
+    // shadowRadius: 5,
+    // shadowOpacity: 0.4,
+  },
+  header: {
+    backgroundColor: "#E8EAED",
+    shadowColor: "#333333",
+    shadowOffset: { width: -1, height: -3 },
+    shadowRadius: 2,
+    shadowOpacity: 0.4,
+    // elevation: 5,
+    paddingTop: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingVertical: "5%",
+  },
+  panelHeader: {
+    alignItems: "center",
+  },
+  panelHandle: {
+    width: 40,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#00000040",
+    marginBottom: 10,
+  },
+  panelTitle: {
+    fontSize: 27,
+    height: 35,
+  },
+  panelSubtitle: {
+    fontSize: 14,
+    color: "gray",
+    height: 30,
+    marginBottom: 10,
+  },
   panelButton: {
     padding: 13,
     borderRadius: 10,
@@ -534,14 +635,26 @@ const styles3 = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
-  itemText: {
-    maxWidth: "80%",
+  action: {
+    flexDirection: "row",
+    marginTop: 10,
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f2f2f2",
+    paddingBottom: 5,
+    paddingTop: 20,
   },
-  circular: {
-    width: 12,
-    height: 12,
-    borderColor: "#55BCF6",
-    borderWidth: 2,
-    borderRadius: 5,
+  actionError: {
+    flexDirection: "row",
+    marginTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#FF0000",
+    paddingBottom: 5,
+  },
+  textInput: {
+    flex: 1,
+    marginTop: Platform.OS === "ios" ? 0 : -12,
+    paddingLeft: 10,
+    color: "#05375a",
   },
 });
