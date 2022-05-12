@@ -58,4 +58,4 @@ const type_mapping = {
   
   };
 
-  export default type_mapping
+  export default type_mapping;

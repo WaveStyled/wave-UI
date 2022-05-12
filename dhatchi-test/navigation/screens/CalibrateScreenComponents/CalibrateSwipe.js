@@ -16,8 +16,8 @@ import { Transitioning, Transition, set } from "react-native-reanimated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { API, NODEPORT } from "../../../context/API";
 import { ClothesContext } from "../../../context/AppContext";
-import { Outfit } from "../../../components/Outfit";
 import { OutfitComponent } from "../../../components/OutfitComponent";
+import {type_mapping} from '../../../components/types';
 const { width } = Dimensions.get("window");
 
 const stackSize = 4;
@@ -131,13 +131,12 @@ export default function App({ route, navigation }) {
   }, [change]);
 
   React.useEffect(() => {
-    setCount(fits[0].length);
     setOccasion(fits[1][index][0]);
     setWeather(fits[1][index][1]);
-  }, [index]); // updates these fields only when fits[0] has fnished init (NOTE this has to be in a separate hook)
+  }, [index, fits[0]]); // updates these fields only when fits[0] has fnished init (NOTE this has to be in a separate hook)
 
   React.useEffect(() => {
-    if (!loaded2) {
+    if (!loaded) {
       maps = [];
       fits[0].forEach(function (item, i) {
         var ids = item.filter((value) => value !== 0);
@@ -148,17 +147,15 @@ export default function App({ route, navigation }) {
         maps.push(test);
       });
       setOutfits(maps);
-    } else {
-      setLoad2(false);
     }
-  }, [fits[0]]); // updates only when a new fetch comes
+  }, [fits[0], change]); // updates only when a new fetch comes
+
+  console.log(fits[0]);
 
   const update = () => {
     //invoke this when the buffer runs out
     setChange(!change);
   };
-
-
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -169,41 +166,29 @@ export default function App({ route, navigation }) {
   });
 
   const Card = ({ card }) => {
-    // console.log(card[0]);
-    //const value = UD(card);
-    //console.log(card);
-    function UD(data) {
-      var list;
-      if (Object.keys(data).length !== 0) {
-        list = card.map((value) => (
-          <Image
-            style={{ width: 80, height: 100 }}
-            source={{ uri: "data:image/jpeg;base64," + value.image }}
-          />
-        ));
-      }
-      return list;
-    }
 
     var outfit;
     if (card != null) {
-      const { items = [] } = card;
-      //const list = UD(card)
-      // const listItems = items.map((item) => (
-      //   <OutfitComponent image={item.image} />
-      // ));
       outfit = card.map((value, idx) => (
-        <View key={idx} style={styles.cardImage}>
-          <Image
-            style={{ width: 80, height: 100 }}
-            source={{ uri: "data:image/jpeg;base64," + value.image }}
-          />
-          <View style={styles2.circular}></View>
+        <View key={idx} style={styles3.item}>
+          <View style={styles3.itemLeft}>
+            <View style={styles.cardImage}>
+              {/* <View key={idx} style={styles.cardImage}> */}
+                <Image
+                  style={{ width: 80, height: 80 }}
+                  source={{ uri: "data:image/jpeg;base64," + value.image }}
+                />
+              {/* </View> */}
+            </View>
+            <Text key={idx} style={styles3.itemText}>
+              {value.type + " " + value.color}
+            </Text>
+          </View>
         </View>
       ));
     }
 
-    return <View style={styles.card}>{outfit == null ? true : outfit}</View>;
+    return <View style={styles.card}>{outfit}</View>;
   };
 
   const CardDetails = ({ index }) => (
@@ -214,67 +199,71 @@ export default function App({ route, navigation }) {
       <Text style={[styles.text, styles.price]}>{data[index].price}</Text>
     </View>
   );
-  const refreshBuffer = () => {
-    var send = []
-    send.push(likes)
-    send.push(fits[1])
-    send.push(fits[0])
-    
+
+  const refreshBuffer = async () => {
+    setChange(!change);
+    setLoad(false);
+    setIndex(0);
+    setLikes([]);
+    var send = [];
+    send.push(likes);
+    send.push(fits[0]);
+    send.push(fits[1]);
+
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(send),
     };
     // End Calibrate, getFits(), reset index, set proper variables
-    fetch(`http://${API}:${NODEPORT}/end_calibrate/123/`,
-    requestOptions,
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw response;
+    fetch(`http://${API}:${NODEPORT}/end_calibrate/123/`, requestOptions).then(
+      (response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        console.log(response);
       }
-      console.log(response)
+    );
+  };
 
-    })
-    
-}
-  
   const onSwipedLeft = () => {
     transitionRef.current.animateNextTransition();
-    setIndex((index + 1) % testing.length);
     console.log("Left");
     // update 1 outfit before end of buffer, so error doesnt happen on render
-    
+
     var x = likes;
     x.push(0);
     setLikes(x);
-    if(index == fits[0].length-2){
-      refreshBuffer()
-    }
     
-    var y = fits;
-    setOccasion(y[1][index][0]);
-    setWeather(y[1][index][1]);
-    setIds(y[0][index]);
-    setNext(false);
+    if (index + 1 == testing.length) {
+      refreshBuffer();
+    } else {
+      setIndex((index + 1) % testing.length);
+      var y = fits;
+      setOccasion(y[1][index][0]);
+      setWeather(y[1][index][1]);
+      setIds(y[0][index]);
+      setNext(false);
+    }
   };
 
   const onSwipedRight = () => {
     transitionRef.current.animateNextTransition();
-    setIndex((index + 1) % testing.length);
     console.log("Right");
+
     var x = likes;
     x.push(1);
     setLikes(x);
-    if(index == fits[0].length-2){
-      refreshBuffer()
+    if (index + 1 == testing.length) {
+      refreshBuffer();
+    } else {
+      setIndex((index + 1) % testing.length);
+      var y = fits;
+      setOccasion(y[1][index][0]);
+      setWeather(y[1][index][1]);
+      setIds(y[0][index]);
+      setNext(false);
     }
-    
-    var y = fits;
-    setOccasion(y[1][index][0]);
-    setWeather(y[1][index][1]);
-    setIds(y[0][index]);
-    setNext(false);
   };
 
   return (
@@ -480,4 +469,48 @@ const styles2 = StyleSheet.create({
     borderWidth: 1,
   },
   addText: {},
+});
+
+const styles3 = StyleSheet.create({
+  item: {
+    backgroundColor: "#FFF",
+    borderRadius: 7,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  itemLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
+  },
+  delSquare: {
+    flexDirection: "row",
+
+    alignItems: "center",
+    justifyContent: "space-between",
+
+    backgroundColor: "red",
+    padding: 10,
+    borderRadius: 7,
+    marginBottom: 10,
+  },
+  square: {
+    width: 80,
+    height: 100,
+    backgroundColor: "#55BCF6",
+    opacity: 0.4,
+    borderRadius: 5,
+    marginRight: 15,
+  },
+  itemText: {
+    maxWidth: "80%",
+  },
+  circular: {
+    width: 12,
+    height: 12,
+    borderColor: "#55BCF6",
+    borderWidth: 2,
+    borderRadius: 5,
+  },
 });
