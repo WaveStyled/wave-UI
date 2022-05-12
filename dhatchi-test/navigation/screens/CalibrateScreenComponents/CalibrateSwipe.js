@@ -7,7 +7,6 @@ import {
   View,
   SafeAreaView,
   Dimensions,
-  ScrollView,
   TouchableOpacity,
 } from "react-native";
 
@@ -17,8 +16,6 @@ import { Transitioning, Transition, set } from "react-native-reanimated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { API, NODEPORT } from "../../../context/API";
 import { ClothesContext } from "../../../context/AppContext";
-import { OutfitComponent } from "../../../components/OutfitComponent";
-import {type_mapping} from '../../../components/types';
 const { width } = Dimensions.get("window");
 
 const stackSize = 4;
@@ -87,19 +84,6 @@ function IDtoJSX(ids, a) {
   return maps;
 }
 
-function UD(json) {
-  var list;
-  if (Object.keys(json).length !== 0) {
-    list = json.map((clothes) => (
-      <OutfitComponent
-        key={clothes.pieceid}
-        id={clothes.pieceid}
-        image={clothes.image}
-      />
-    ));
-    return list;
-  }
-}
 
 export default function App({ route, navigation }) {
   const a = React.useContext(ClothesContext);
@@ -110,15 +94,12 @@ export default function App({ route, navigation }) {
 
   const [curWeather, setWeather] = React.useState("test");
   const [curOccasion, setOccasion] = React.useState("");
-  const [curIds, setIds] = React.useState([0]);
   const [change, setChange] = React.useState(false); // this determines whether the fits need to be fetched again
-  const [counter, setCount] = React.useState(0); // this keeps track of the buffer
   const [testing, setOutfits] = React.useState(
     IDtoJSX(route.params.initial[0], a)
   ); // this stores the JSX objects
   const [loaded, setLoad] = React.useState(true);
-  const [loaded2, setLoad2] = React.useState(true);
-  const [next, setNext] = React.useState(true);
+
 
   React.useEffect(() => {
     console.log("HAPPENS");
@@ -153,10 +134,6 @@ export default function App({ route, navigation }) {
 
   console.log(fits[0]);
 
-  const update = () => {
-    //invoke this when the buffer runs out
-    setChange(!change);
-  };
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -171,8 +148,8 @@ export default function App({ route, navigation }) {
     var outfit;
     if (card != null) {
       outfit = card.map((value, idx) => (
-        <View key={idx} style={styles3.item}>
-          <View style={styles3.itemLeft}>
+        <View key={idx} style={styles.item}>
+          <View style={styles.itemLeft}>
             <View style={styles.cardImage}>
               {/* <View key={idx} style={styles.cardImage}> */}
                 <Image
@@ -181,7 +158,7 @@ export default function App({ route, navigation }) {
                 />
               {/* </View> */}
             </View>
-            <Text key={idx} style={styles3.itemText}>
+            <Text key={idx} style={styles.itemText}>
               {value.type + " " + value.color}
             </Text>
           </View>
@@ -193,11 +170,10 @@ export default function App({ route, navigation }) {
   };
 
   const CardDetails = ({ index }) => (
-    <View key={curIds[index]} style={{ alignItems: "center" }}>
+    <View key={testing[index].pieceid} style={{ alignItems: "center" }}>
       <Text style={[styles.text, styles.heading]} numberOfLines={2}>
-        {testing[index][1][0]}
+      <Text style={[styles.text, styles.price]}>{fits[0][index].toString()}</Text>
       </Text>
-      <Text style={[styles.text, styles.price]}>{data[index].price}</Text>
     </View>
   );
 
@@ -230,7 +206,6 @@ export default function App({ route, navigation }) {
   const onSwipedLeft = () => {
     transitionRef.current.animateNextTransition();
     console.log("Left");
-    // update 1 outfit before end of buffer, so error doesnt happen on render
 
     var x = likes;
     x.push(0);
@@ -243,8 +218,6 @@ export default function App({ route, navigation }) {
       var y = fits;
       setOccasion(y[1][index][0]);
       setWeather(y[1][index][1]);
-      setIds(y[0][index]);
-      setNext(false);
     }
   };
 
@@ -262,17 +235,12 @@ export default function App({ route, navigation }) {
       var y = fits;
       setOccasion(y[1][index][0]);
       setWeather(y[1][index][1]);
-      setIds(y[0][index]);
-      setNext(false);
     }
   };
 
   const endCalibration = () => {
     var send = [];
     send.push(likes);
-    console.log(fits[0].slice(0, index));
-    console.log(fits[1].slice(0, index));
-    console.log(likes);
     send.push(fits[0].slice(0, index));
     send.push(fits[1].slice(0, index));
 
@@ -290,7 +258,6 @@ export default function App({ route, navigation }) {
         console.log(response);
       }
     );
-
 
     navigation.navigate("Screening");
   };
@@ -408,11 +375,11 @@ export default function App({ route, navigation }) {
         </View>
       </View>
       <TouchableOpacity
-        style={styles4.commandButton}
+        style={styles.commandButton}
         onPress={endCalibration}
         disabled={false}
       >
-        <Text style={styles4.panelButtonTitle}>End Calibration</Text>
+        <Text style={styles.panelButtonTitle}>End Calibration</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -464,51 +431,6 @@ const styles = StyleSheet.create({
   },
   heading: { fontSize: 24, marginBottom: 10, color: colors.gray },
   price: { color: colors.blue, fontSize: 32, fontWeight: "500" },
-});
-
-const styles2 = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#E8EAED",
-  },
-  clothsWrapper: {
-    paddingTop: 80,
-    paddingHorizontal: 20,
-  },
-  items: {
-    marginTop: 30,
-  },
-  writeClothWrapper: {
-    position: "absolute",
-    bottom: 60,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-  },
-  input: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    backgroundColor: "#FFF",
-    borderRadius: 60,
-    borderColor: "#C0C0C0",
-    borderWidth: 1,
-    width: 250,
-  },
-  addWrapper: {
-    width: 60,
-    height: 60,
-    backgroundColor: "#FFF",
-    borderRadius: 60,
-    justifyContent: "center",
-    alignItems: "center",
-    borderColor: "#C0C0C0",
-    borderWidth: 1,
-  },
-  addText: {},
-});
-
-const styles3 = StyleSheet.create({
   item: {
     backgroundColor: "#FFF",
     borderRadius: 7,
@@ -521,48 +443,13 @@ const styles3 = StyleSheet.create({
     alignItems: "center",
     flexWrap: "wrap",
   },
-  delSquare: {
-    flexDirection: "row",
-
-    alignItems: "center",
-    justifyContent: "space-between",
-
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 7,
-    marginBottom: 10,
-  },
-  square: {
-    width: 80,
-    height: 100,
-    backgroundColor: "#55BCF6",
-    opacity: 0.4,
-    borderRadius: 5,
-    marginRight: 15,
-  },
   itemText: {
     maxWidth: "80%",
   },
-  circular: {
-    width: 12,
-    height: 12,
-    borderColor: "#55BCF6",
-    borderWidth: 2,
-    borderRadius: 5,
-  },
-});
-
-
-const styles4 = StyleSheet.create({
-  container1: {
-    flex: 1,
-    paddingHorizontal: "10%",
-    justifyContent: "center",
-    backgroundColor: "#dfe3ee",
-    paddingVertical: "8%",
-  },
-  container: {
-    flex: 1,
+  panelButtonTitle: {
+    fontSize: 17,
+    fontWeight: "bold",
+    color: "white",
   },
   commandButton: {
     padding: 10,
@@ -570,91 +457,5 @@ const styles4 = StyleSheet.create({
     backgroundColor: "#2874A6",
     alignItems: "center",
     marginTop: 15,
-  },
-
-  inputButton: {
-    padding: 10,
-    borderRadius: 20,
-    backgroundColor: "#ADD8E6",
-    alignItems: "center",
-    marginTop: 15,
-    paddingVertical: 20,
-  },
-  panel: {
-    padding: 20,
-    backgroundColor: "#58D68D",
-    paddingTop: 20,
-    // borderTopLeftRadius: 20,
-    // borderTopRightRadius: 20,
-    // shadowColor: '#000000',
-    // shadowOffset: {width: 0, height: 0},
-    // shadowRadius: 5,
-    // shadowOpacity: 0.4,
-  },
-  header: {
-    backgroundColor: "#E8EAED",
-    shadowColor: "#333333",
-    shadowOffset: { width: -1, height: -3 },
-    shadowRadius: 2,
-    shadowOpacity: 0.4,
-    // elevation: 5,
-    paddingTop: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingVertical: "5%",
-  },
-  panelHeader: {
-    alignItems: "center",
-  },
-  panelHandle: {
-    width: 40,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#00000040",
-    marginBottom: 10,
-  },
-  panelTitle: {
-    fontSize: 27,
-    height: 35,
-  },
-  panelSubtitle: {
-    fontSize: 14,
-    color: "gray",
-    height: 30,
-    marginBottom: 10,
-  },
-  panelButton: {
-    padding: 13,
-    borderRadius: 10,
-    backgroundColor: "#45B39D",
-    alignItems: "center",
-    marginVertical: 7,
-  },
-  panelButtonTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "white",
-  },
-  action: {
-    flexDirection: "row",
-    marginTop: 10,
-    marginBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
-    paddingBottom: 5,
-    paddingTop: 20,
-  },
-  actionError: {
-    flexDirection: "row",
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#FF0000",
-    paddingBottom: 5,
-  },
-  textInput: {
-    flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : -12,
-    paddingLeft: 10,
-    color: "#05375a",
   },
 });
