@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   Dimensions,
   ScrollView,
+  TouchableOpacity
 } from "react-native";
 
 import data from "./data";
@@ -129,7 +130,11 @@ export default function App({ route, navigation }) {
       setLoad(false);
     }
   }, [change]);
-
+  
+  
+  const endCalibration = () => {
+    navigation.navigate("Screening");
+  };
   React.useEffect(() => {
     setOccasion(fits[1][index][0]);
     setWeather(fits[1][index][1]);
@@ -375,6 +380,13 @@ export default function App({ route, navigation }) {
               swiperRef.current.swipeRight();
             }}
           />
+          <TouchableOpacity
+        style={styles.commandButton}
+        // onPress={endCalibration}
+        disabled={false}
+      >
+        <Text style={styles.panelButtonTitle}>End Calibration</Text>
+      </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -413,6 +425,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.white,
+  },
+  commandButton: {
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: "#2874A6",
+    alignItems: "center",
+    marginTop: 15,
   },
   text: {
     textAlign: "center",
@@ -502,6 +521,18 @@ const styles3 = StyleSheet.create({
     opacity: 0.4,
     borderRadius: 5,
     marginRight: 15,
+  },
+  panelButton: {
+    padding: 13,
+    borderRadius: 10,
+    backgroundColor: "#45B39D",
+    alignItems: "center",
+    marginVertical: 7,
+  },
+  panelButtonTitle: {
+    fontSize: 17,
+    fontWeight: "bold",
+    color: "white",
   },
   itemText: {
     maxWidth: "80%",
