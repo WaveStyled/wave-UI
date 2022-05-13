@@ -82,6 +82,9 @@ function ClothingItem (props) {
           </View>
           <Text style={styles.itemText}>{props.text}</Text>
         </View>
+        <View style={styles.container}>
+        <Text style={props.dirty ? styles.itemDirty : styles.itemSanitary}>{props.dirty ? "\nDIRTY" : "\nCLEAN"}</Text>
+        </View>
         <View style={styles.circular}></View>
       </View>
     </Swipeable>
@@ -124,7 +127,21 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   itemText: {
-    maxWidth: "80%",
+    maxWidth: "50%",
+    paddingLeft: 15
+  },
+  itemSanitary:{
+    fontWeight : "bold",
+    fontSize: 10,
+    backgroundColor: "transparent",
+    justifyContent: "center"
+  },
+  itemDirty:{
+    fontWeight : "bold",
+    fontSize: 10,
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    color : 'red'
   },
   circular: {
     width: 12,

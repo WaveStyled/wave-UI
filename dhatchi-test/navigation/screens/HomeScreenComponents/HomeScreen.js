@@ -39,6 +39,7 @@ function update(json, set) {
         text= { type_mapping[clothes.type]   + " " + clothes.color}
         update={set}
         image={clothes.image}
+        dirty={clothes.dirty}
       />
     ));
     return list;
