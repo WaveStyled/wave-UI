@@ -72,7 +72,7 @@ function ClothingItem (props) {
   return (
     <TouchableOpacity onPress={() => navigation.navigate("Details", {item: propagate})}>
     <Swipeable renderRightActions={() => rightActions(props.id, props.update)}>
-      <View style={styles.item}>
+      <View style={props.dirty ? styles.dirtyitem : styles.item}>
         <View style={styles.itemLeft}>
           <View style={styles.container}>
             <Image
@@ -101,6 +101,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
+  },
+  dirtyitem: {
+    backgroundColor: "#FFF",
+    padding: 10,
+    borderRadius: 7,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 10,
+    opacity: 0.8,
+    backgroundColor : '#EDC9AF'
   },
   itemLeft: {
     flexDirection: "row",
