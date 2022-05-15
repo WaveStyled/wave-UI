@@ -54,10 +54,13 @@ const transition = (
 const swiperRef = React.createRef();
 const transitionRef = React.createRef();
 
-async function getFits(set, old_state) {
-  await fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, {
-    method: "PUT",
-  })
+function getRecommendations(occasion, weather, set) {
+  return fetch(
+    `http://${API}:${NODEPORT}/recommend/123/${occasion}/${weather}`,
+    {
+      method: "PUT",
+    }
+  )
     .then((response) => {
       if (!response.ok) {
         throw response;
@@ -73,7 +76,6 @@ function IDtoJSX(ids, a) {
   maps = [];
   ids.forEach(function (item, i) {
     var keys = item.filter((value) => value !== 0);
-    //console.log(keys);
     const test = keys.map(function (value) {
       var val = a.find((element) => element.pieceid === value);
       return val;
@@ -85,60 +87,57 @@ function IDtoJSX(ids, a) {
 
 export default function App({ route, navigation }) {
   const a = React.useContext(ClothesContext);
-  console.log(route.params.initial)
+
   const [index, setIndex] = React.useState(0);
   const [fits, setFits] = React.useState(route.params.initial);
   const [likes, setLikes] = React.useState([]);
 
-  const [curWeather, setWeather] = React.useState("test");
-  const [curOccasion, setOccasion] = React.useState("");
-  
+  const [curWeather,] = React.useState(route.params.weather);
+  const [curOccasion,] = React.useState(route.params.occasion);
+
   const [change, setChange] = React.useState(false); // this determines whether the fits need to be fetched again
-  const [testing, setOutfits] = React.useState([]);
-  //  IDtoJSX(route.params.initial[0], a)
-  //); // this stores the JSX objects
+  const [testing, setOutfits] = React.useState(
+    IDtoJSX(route.params.initial, a)
+  ); // this stores the JSX objects
   const [loaded, setLoad] = React.useState(true);
 
-  // React.useEffect(() => {
-  //   console.log("HAPPENS");
-  //   if (!loaded) {
-  //     console.log("UPDATE");
-  //     getFits(setFits, fits);
-  //   } else {
-  //     console.log("HERE");
-  //     setLoad(false);
-  //   }
-  // }, [change]);
+  React.useEffect(() => {
+    console.log("HAPPENS");
+    if (!loaded) {
+      console.log("UPDATE");
+      getRecommendations(curOccasion, curWeather, setFits);
+    } else {
+      console.log("HERE");
+      setLoad(false);
+    }
+  }, [change]);
 
-  // React.useEffect(() => {
-  //   setOccasion(fits[1][index][0]);
-  //   setWeather(fits[1][index][1]);
-  // }, [index, fits[0]]); // updates these fields only when fits[0] has fnished init (NOTE this has to be in a separate hook)
+  React.useEffect(() => {
+    if (!loaded) {
+      maps = [];
+      fits.forEach(function (item, i) {
+        var ids = item.filter((value) => value !== 0);
+        const test = ids.map(function (value) {
+          var val = a.find((element) => element.pieceid === value);
+          return val;
+        });
+        maps.push(test);
+      });
+      setOutfits(maps);
+    }
+  }, [fits, change]); // updates only when a new fetch comes
 
-  // React.useEffect(() => {
-  //   if (!loaded) {
-  //     maps = [];
-  //     fits[0].forEach(function (item, i) {
-  //       var ids = item.filter((value) => value !== 0);
-  //       const test = ids.map(function (value) {
-  //         var val = a.find((element) => element.pieceid === value);
-  //         return val;
-  //       });
-  //       maps.push(test);
-  //     });
-  //     setOutfits(maps);
-  //   }
-  // }, [fits[0], change]); // updates only when a new fetch comes
-
-  // console.log(fits[0]);
-
-  // React.useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerShown: true,
-  //     headerRight: () => <Text>{curWeather}</Text>,
-  //     headerLeft: () => <Text>{curOccasion}</Text>,
-  //   });
-  // });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerRight: () => (
+        <Text style={styles.panelButtonTitle2}>{curWeather}</Text>
+      ),
+      headerLeft: () => (
+        <Text style={styles.panelButtonTitle2}>{curOccasion}</Text>
+      ),
+    });
+  });
 
   const Card = ({ card }) => {
     var outfit;
@@ -181,9 +180,13 @@ export default function App({ route, navigation }) {
     setIndex(0);
     setLikes([]);
     var send = [];
-    send.push(likes.slice(0, index+1));
-    send.push(fits[0].slice(0, index+1));
-    send.push(fits[1].slice(0, index+1));
+    send.push(likes.slice(0, index + 1));
+    send.push(fits.slice(0, index + 1));
+
+    var w_o_vals = fits.map((_) => [curOccasion, curWeather])
+    send.push(w_o_vals.slice(0, index + 1));
+
+    console.log(send);
 
     const requestOptions = {
       method: "PUT",
@@ -205,17 +208,12 @@ export default function App({ route, navigation }) {
     transitionRef.current.animateNextTransition();
     console.log("Left");
 
-
     var x = likes;
     x.push(0);
     setLikes(x);
     setIndex((index + 1) % testing.length);
     if (index + 1 == testing.length) {
       refreshBuffer();
-    } else {
-      var y = fits;
-      setOccasion(y[1][index][0]);
-      setWeather(y[1][index][1]);
     }
   };
 
@@ -229,18 +227,16 @@ export default function App({ route, navigation }) {
     setLikes(x);
     if (index + 1 == testing.length) {
       refreshBuffer();
-    } else {
-      var y = fits;
-      setOccasion(y[1][index][0]);
-      setWeather(y[1][index][1]);
     }
   };
 
-  const endCalibration = () => {
+  const Finish = () => {
     var send = [];
-    send.push(likes.slice(0,index));
-    send.push(fits[0].slice(0, index));
-    send.push(fits[1].slice(0, index));
+    send.push(likes.slice(0, index));
+    send.push(fits.slice(0, index));
+
+    var w_o_vals = fits.map(function(_) {return [curOccasion, curWeather]})
+    send.push(w_o_vals.slice(0, index + 1));
 
     const requestOptions = {
       method: "PUT",
@@ -260,15 +256,22 @@ export default function App({ route, navigation }) {
     const trainOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-    }
-    fetch(`http://${API}:${NODEPORT}/recommender_train/123/`, trainOptions).then((response) => {
+    };
+    fetch(
+      `http://${API}:${NODEPORT}/recommender_train/123/`,
+      trainOptions
+    ).then((response) => {
       if (!response.ok) {
         throw response;
       }
       return response;
     });
 
-    navigation.navigate("Screening");
+    navigation.navigate("RecommendMain");
+  };
+
+  const chooseOutfit = () => {
+    // outfit selection logic here
   };
 
   return (
@@ -290,7 +293,7 @@ export default function App({ route, navigation }) {
         <Swiper
           ref={swiperRef}
           cards={testing}
-          renderCard={(card) => card.length == 0 ? true : <Card card={card} />}
+          renderCard={(card) => <Card card={card} />}
           infinite
           backgroundColor={"transparent"}
           onSwipedLeft={() => {
@@ -300,13 +303,14 @@ export default function App({ route, navigation }) {
             onSwipedRight();
           }}
           cardVerticalMargin={50}
-          stackSize={testing.length}
+          stackSize={2}
           stackScale={5}
           stackSeparation={14}
           animateOverlayLabelsOpacity
           animateCardOpacity
           disableTopSwipe
           disableBottomSwipe
+          stackAnimationTension={100}
           overlayLabels={{
             left: {
               title: "NOPE",
@@ -360,7 +364,7 @@ export default function App({ route, navigation }) {
         <View style={styles.bottomContainerButtons}>
           <MaterialCommunityIcons.Button
             name="close"
-            size={94}
+            size={50}
             backgroundColor="transparent"
             underlayColor="transparent"
             activeOpacity={0.3}
@@ -370,25 +374,47 @@ export default function App({ route, navigation }) {
             }}
           />
           <MaterialCommunityIcons.Button
+            name="hanger"
+            size={50}
+            backgroundColor="transparent"
+            underlayColor="transparent"
+            activeOpacity={0.3}
+            color={colors.blue}
+            onPress={() => {
+              swiperRef.current.swipeRight();
+            }}
+          />
+          <MaterialCommunityIcons.Button
             name="check"
-            size={94}
+            size={50}
             backgroundColor="transparent"
             underlayColor="transparent"
             activeOpacity={0.3}
             color={colors.green}
             onPress={() => {
-              swiperRef.current.swipeRight();
+              chooseOutfit();
             }}
           />
         </View>
+        <View style={styles.bottomContainerButtons}>
+          <Text style={styles.text}>Dislike</Text>
+
+          <Text>Outfit of the Day</Text>
+
+          <Text>Like</Text>
+        </View>
+        <View style={{ alignItems: "center" }}>
+          <TouchableOpacity
+            style={styles.commandButton}
+            onPress={Finish}
+            disabled={false}
+          >
+            <Text style={styles.panelButtonTitle}>
+              Exit and Refine Recommendations
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <TouchableOpacity
-        style={styles.commandButton}
-        onPress={endCalibration}
-        disabled={false}
-      >
-        <Text style={styles.panelButtonTitle}>End Calibration</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -396,7 +422,8 @@ export default function App({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: "#ADD8E6",
+    justifyContent: "center",
   },
   swiperContainer: {
     flex: 0.55,
@@ -428,7 +455,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    fontSize: 50,
+    fontSize: 15,
     backgroundColor: "transparent",
   },
   done: {
@@ -458,12 +485,20 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "bold",
     color: "white",
+    justifyContent: 'center'
+  },
+  panelButtonTitle2: {
+    fontSize: 17,
+    fontWeight: "bold",
+    color: "black",
+    justifyContent: 'center'
   },
   commandButton: {
     padding: 10,
     borderRadius: 20,
     backgroundColor: "#2874A6",
     alignItems: "center",
-    marginTop: 15,
+    width: "60%",
+    justifyContent: "center",
   },
 });

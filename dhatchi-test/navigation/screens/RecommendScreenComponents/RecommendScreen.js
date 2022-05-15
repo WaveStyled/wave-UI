@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import weather from "../../../components/Weathers";
 import occasion from "../../../components/Occasions";
-import BottomSheet from "reanimated-bottom-sheet";
 import { API, NODEPORT } from "../../../context/API";
+import Spinner from "react-native-loading-spinner-overlay";
 
 occasion_mapping = {
   FF: "oc_formal",
@@ -54,19 +54,23 @@ function DetailsScreen({ navigation }) {
   const [nav, setNav] = React.useState(false);
   const [recommend_ready, setRecommendReady] = React.useState(false);
 
+  const [loading, Load] = React.useState(false);
+
   React.useEffect(() => {
     if (nav) {
+      Load(false);
       navigation.navigate("Get", {
         initial: recommend,
         occasion: occasion_mapping[occasionSelected],
         weather: weather_mapping[weatherSelected],
       });
+      setNav(false);
     }
   }, [nav, recommend]);
 
   React.useEffect(() => {
-    if (recommend != null){
-      setNav(true)
+    if (recommend != null) {
+      setNav(true);
     }
   }, [recommend]);
 
@@ -75,6 +79,7 @@ function DetailsScreen({ navigation }) {
       occasion_mapping[occasionSelected],
       weather_mapping[weatherSelected]
     );
+    Load(true);
     initial_recommend(
       occasion_mapping[occasionSelected],
       weather_mapping[weatherSelected],
@@ -89,89 +94,98 @@ function DetailsScreen({ navigation }) {
       </View>
     </View>
   );
+
+  renderPrompt = () => (
+    <View style={{ alignItems: "center" }}>
+      <Text
+        style={{
+          paddingBottom: 15,
+          marginTop: 15,
+          fontSize: 16,
+          fontWeight: "bold",
+        }}
+      >
+        Select desired Weather and Occasion
+      </Text>
+      <View style={styles.action}>
+        <View style={styles_multi.container}>
+          <DropDownPicker
+            placeholder="Select the Weather"
+            open={weather_picker_open}
+            value={weatherSelected}
+            items={weather}
+            setOpen={setWeatherPickerOpen}
+            setValue={setWeatherItem}
+            setItems={setItems}
+            dropDownDirection="TOP"
+            multiple={false}
+            min={1}
+            max={weather.length}
+            itemSeparator={true}
+            zIndex={3000}
+            zIndexInverse={1000}
+            mode="BADGE"
+            theme="DARK"
+            closeOnBackPressed={true}
+            modalProps={{
+              animationType: "fade",
+            }}
+            modalTitleStyle={{
+              fontWeight: "bold",
+            }}
+            modalTitle="Weather Options"
+          />
+        </View>
+      </View>
+      <View style={styles.action}>
+        <View style={styles_multi.container}>
+          <DropDownPicker
+            placeholder="Select the Occasion"
+            open={occasion_open}
+            value={occasionSelected}
+            items={occasion}
+            setOpen={setOccasionPickerOpen}
+            setValue={setOccasion}
+            setItems={setOccasions}
+            multiple={false}
+            dropDownDirection="TOP"
+            min={1}
+            max={occasion.length}
+            itemSeparator={true}
+            zIndex={3000}
+            zIndexInverse={1000}
+            mode="BADGE"
+            theme="DARK"
+            closeOnBackPressed={true}
+            modalProps={{
+              animationType: "fade",
+            }}
+            modalTitleStyle={{
+              fontWeight: "bold",
+            }}
+            modalTitle="Occasion Options"
+          />
+        </View>
+      </View>
+    </View>
+  );
+
+  renderLoad = () => (
+    <Spinner
+      visible={loading}
+      textContent={"Loading Recommendations..."}
+      textStyle={styles.spinnerTextStyle}
+    />
+  );
+
+  console.log(loading);
+
   refer = React.createRef();
   return (
     <View style={styles.container}>
-      <BottomSheet
-        snapPoints={[330, 0]}
-        renderHeader={renderHeader}
-        initialSnap={1}
-        enabledGestureInteraction={true}
-      />
-
       <View style={styles.container1}>
-        <View style={{ alignItems: "center" }}>
-          <Text
-            style={{
-              paddingBottom: 15,
-              marginTop: 15,
-              fontSize: 16,
-              fontWeight: "bold",
-            }}
-          >
-            Select desired Weather and Occasion
-          </Text>
-          <View style={styles.action}>
-            <View style={styles_multi.container}>
-              <DropDownPicker
-                placeholder="Select the Weather"
-                open={weather_picker_open}
-                value={weatherSelected}
-                items={weather}
-                setOpen={setWeatherPickerOpen}
-                setValue={setWeatherItem}
-                setItems={setItems}
-                dropDownDirection="TOP"
-                multiple={false}
-                min={1}
-                max={weather.length}
-                itemSeparator={true}
-                zIndex={3000}
-                zIndexInverse={1000}
-                mode="BADGE"
-                theme="DARK"
-                closeOnBackPressed={true}
-                modalProps={{
-                  animationType: "fade",
-                }}
-                modalTitleStyle={{
-                  fontWeight: "bold",
-                }}
-                modalTitle="Weather Options"
-              />
-            </View>
-          </View>
-          <View style={styles.action}>
-            <View style={styles_multi.container}>
-              <DropDownPicker
-                placeholder="Select the Occasion"
-                open={occasion_open}
-                value={occasionSelected}
-                items={occasion}
-                setOpen={setOccasionPickerOpen}
-                setValue={setOccasion}
-                setItems={setOccasions}
-                multiple={false}
-                dropDownDirection="TOP"
-                min={1}
-                max={occasion.length}
-                itemSeparator={true}
-                zIndex={3000}
-                zIndexInverse={1000}
-                mode="BADGE"
-                theme="DARK"
-                closeOnBackPressed={true}
-                modalProps={{
-                  animationType: "fade",
-                }}
-                modalTitleStyle={{
-                  fontWeight: "bold",
-                }}
-                modalTitle="Occasion Options"
-              />
-            </View>
-          </View>
-        </View>
+        {loading ? renderLoad() : renderPrompt()}
+
         <Text
           style={{
             paddingBottom: 15,
@@ -191,6 +205,9 @@ function DetailsScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  spinnerTextStyle: {
+    color: "#FFF",
+  },
   container1: {
     flex: 1,
     paddingHorizontal: "10%",
