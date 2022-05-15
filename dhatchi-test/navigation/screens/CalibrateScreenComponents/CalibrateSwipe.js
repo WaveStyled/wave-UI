@@ -55,8 +55,8 @@ const transition = (
 const swiperRef = React.createRef();
 const transitionRef = React.createRef();
 
-async function getFits(set, old_state) {
-  await fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, {
+function getFits(set, old_state) {
+ fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, {
     method: "PUT",
   })
     .then((response) => {
@@ -300,13 +300,14 @@ export default function App({ route, navigation }) {
             onSwipedRight();
           }}
           cardVerticalMargin={50}
-          stackSize={testing.length}
+          stackSize={2}
           stackScale={5}
           stackSeparation={14}
           animateOverlayLabelsOpacity
           animateCardOpacity
           disableTopSwipe
           disableBottomSwipe
+          stackAnimationTension={100}
           overlayLabels={{
             left: {
               title: "NOPE",
