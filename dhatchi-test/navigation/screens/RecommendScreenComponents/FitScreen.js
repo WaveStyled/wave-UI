@@ -15,6 +15,7 @@ import { Transitioning, Transition, set } from "react-native-reanimated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { API, NODEPORT } from "../../../context/API";
 import { ClothesContext } from "../../../context/AppContext";
+import { DataTable } from "react-native-paper";
 const { width } = Dimensions.get("window");
 
 const stackSize = 4;
@@ -68,6 +69,7 @@ function getRecommendations(occasion, weather, set) {
       return response.json();
     })
     .then((json) => {
+      console.log("BUH", json);
       set(json);
     });
 }
@@ -180,11 +182,11 @@ export default function App({ route, navigation }) {
     setIndex(0);
     setLikes([]);
     var send = [];
-    send.push(likes.slice(0, index + 1));
-    send.push(fits.slice(0, index + 1));
+    send.push(likes.slice(0, index));
+    send.push(fits.slice(0, index));
 
     var w_o_vals = fits.map((_) => [curOccasion, curWeather])
-    send.push(w_o_vals.slice(0, index + 1));
+    send.push(w_o_vals.slice(0, index));
 
     console.log(send);
 
@@ -236,7 +238,7 @@ export default function App({ route, navigation }) {
     send.push(fits.slice(0, index));
 
     var w_o_vals = fits.map(function(_) {return [curOccasion, curWeather]})
-    send.push(w_o_vals.slice(0, index + 1));
+    send.push(w_o_vals.slice(0, index));
 
     const requestOptions = {
       method: "PUT",
@@ -272,6 +274,26 @@ export default function App({ route, navigation }) {
 
   const chooseOutfit = () => {
     // outfit selection logic here
+    var data = {
+      outfit : fits[index],
+      weather : curWeather,
+      occasion : curOccasion,
+    }
+    const chooseOutfit = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+    fetch(
+      `http://${API}:${NODEPORT}/OOTD/123/`,
+      chooseOutfit
+    ).then((response) => {
+      if (!response.ok) {
+        throw response;
+      }
+      return response;
+    });
+
   };
 
   return (
@@ -381,7 +403,7 @@ export default function App({ route, navigation }) {
             activeOpacity={0.3}
             color={colors.blue}
             onPress={() => {
-              swiperRef.current.swipeRight();
+              chooseOutfit();
             }}
           />
           <MaterialCommunityIcons.Button
@@ -392,8 +414,7 @@ export default function App({ route, navigation }) {
             activeOpacity={0.3}
             color={colors.green}
             onPress={() => {
-              chooseOutfit();
-            }}
+              swiperRef.current.swipeRight();            }}
           />
         </View>
         <View style={styles.bottomContainerButtons}>
