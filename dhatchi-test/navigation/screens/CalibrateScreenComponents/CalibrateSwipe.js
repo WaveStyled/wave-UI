@@ -55,7 +55,7 @@ const transition = (
 const swiperRef = React.createRef();
 const transitionRef = React.createRef();
 
-async function getFits(set) {
+async function getFits(set, old_state) {
   await fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, {
     method: "PUT",
   })
@@ -84,7 +84,6 @@ function IDtoJSX(ids, a) {
   return maps;
 }
 
-
 export default function App({ route, navigation }) {
   const a = React.useContext(ClothesContext);
 
@@ -100,12 +99,11 @@ export default function App({ route, navigation }) {
   ); // this stores the JSX objects
   const [loaded, setLoad] = React.useState(true);
 
-
   React.useEffect(() => {
     console.log("HAPPENS");
     if (!loaded) {
       console.log("UPDATE");
-      getFits(setFits);
+      getFits(setFits, fits);
     } else {
       console.log("HERE");
       setLoad(false);
@@ -134,7 +132,6 @@ export default function App({ route, navigation }) {
 
   console.log(fits[0]);
 
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -144,7 +141,6 @@ export default function App({ route, navigation }) {
   });
 
   const Card = ({ card }) => {
-
     var outfit;
     if (card != null) {
       outfit = card.map((value, idx) => (
@@ -152,10 +148,10 @@ export default function App({ route, navigation }) {
           <View style={styles.itemLeft}>
             <View style={styles.cardImage}>
               {/* <View key={idx} style={styles.cardImage}> */}
-                <Image
-                  style={{ width: 80, height: 80 }}
-                  source={{ uri: "data:image/jpeg;base64," + value.image }}
-                />
+              <Image
+                style={{ width: 80, height: 80 }}
+                source={{ uri: "data:image/jpeg;base64," + value.image }}
+              />
               {/* </View> */}
             </View>
             <Text key={idx} style={styles.itemText}>
@@ -172,20 +168,22 @@ export default function App({ route, navigation }) {
   const CardDetails = ({ index }) => (
     <View key={testing[index].pieceid} style={{ alignItems: "center" }}>
       <Text style={[styles.text, styles.heading]} numberOfLines={2}>
-      <Text style={[styles.text, styles.price]}>{fits[0][index].toString()}</Text>
+        <Text style={[styles.text, styles.price]}>
+          {fits[0][index].toString()}
+        </Text>
       </Text>
     </View>
   );
 
-  const refreshBuffer = async () => {
+  const refreshBuffer = () => {
     setChange(!change);
     setLoad(false);
     setIndex(0);
     setLikes([]);
     var send = [];
-    send.push(likes);
-    send.push(fits[0]);
-    send.push(fits[1]);
+    send.push(likes.slice(0, index+1));
+    send.push(fits[0].slice(0, index+1));
+    send.push(fits[1].slice(0, index+1));
 
     const requestOptions = {
       method: "PUT",
@@ -207,14 +205,14 @@ export default function App({ route, navigation }) {
     transitionRef.current.animateNextTransition();
     console.log("Left");
 
+
     var x = likes;
     x.push(0);
     setLikes(x);
-    
+    setIndex((index + 1) % testing.length);
     if (index + 1 == testing.length) {
       refreshBuffer();
     } else {
-      setIndex((index + 1) % testing.length);
       var y = fits;
       setOccasion(y[1][index][0]);
       setWeather(y[1][index][1]);
@@ -225,13 +223,13 @@ export default function App({ route, navigation }) {
     transitionRef.current.animateNextTransition();
     console.log("Right");
 
+    setIndex((index + 1) % testing.length);
     var x = likes;
     x.push(1);
     setLikes(x);
     if (index + 1 == testing.length) {
       refreshBuffer();
     } else {
-      setIndex((index + 1) % testing.length);
       var y = fits;
       setOccasion(y[1][index][0]);
       setWeather(y[1][index][1]);
@@ -240,7 +238,7 @@ export default function App({ route, navigation }) {
 
   const endCalibration = () => {
     var send = [];
-    send.push(likes);
+    send.push(likes.slice(0,index));
     send.push(fits[0].slice(0, index));
     send.push(fits[1].slice(0, index));
 
@@ -255,13 +253,23 @@ export default function App({ route, navigation }) {
         if (!response.ok) {
           throw response;
         }
-        console.log(response);
+        return response;
       }
     );
 
+    const trainOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    }
+    fetch(`http://${API}:${NODEPORT}/recommender_train/123/`, trainOptions).then((response) => {
+      if (!response.ok) {
+        throw response;
+      }
+      return response;
+    });
+
     navigation.navigate("Screening");
   };
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -292,8 +300,8 @@ export default function App({ route, navigation }) {
             onSwipedRight();
           }}
           cardVerticalMargin={50}
-          stackSize={stackSize}
-          stackScale={10}
+          stackSize={testing.length}
+          stackScale={5}
           stackSeparation={14}
           animateOverlayLabelsOpacity
           animateCardOpacity

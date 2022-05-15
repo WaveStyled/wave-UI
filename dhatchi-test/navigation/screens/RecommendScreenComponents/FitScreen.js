@@ -1,192 +1,468 @@
-import { View, Text,StyleSheet,TouchableOpacity } from 'react-native';
-import * as React from 'react';
+import React from "react";
+import {
+  Image,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+
+import Swiper from "react-native-deck-swiper";
+import { Transitioning, Transition, set } from "react-native-reanimated";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { API, NODEPORT } from "../../../context/API";
 import { ClothesContext } from "../../../context/AppContext";
+const { width } = Dimensions.get("window");
 
-function getFits(set) {
+const stackSize = 4;
+const colors = {
+  red: "#EC2379",
+  blue: "#0070FF",
+  gray: "#777777",
+  white: "#ffffff",
+  black: "#000000",
+  green: "green",
+};
+const ANIMATION_DURATION = 200;
 
-    fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, {method: "PUT"})
+const transition = (
+  <Transition.Sequence>
+    <Transition.Out
+      type="slide-bottom"
+      durationMs={ANIMATION_DURATION}
+      interpolation="easeIn"
+    />
+    <Transition.Together>
+      <Transition.In
+        type="fade"
+        durationMs={ANIMATION_DURATION}
+        delayMs={ANIMATION_DURATION / 2}
+      />
+      <Transition.In
+        type="slide-bottom"
+        durationMs={ANIMATION_DURATION}
+        delayMs={ANIMATION_DURATION / 2}
+        interpolation="easeOut"
+      />
+    </Transition.Together>
+  </Transition.Sequence>
+);
+
+const swiperRef = React.createRef();
+const transitionRef = React.createRef();
+
+async function getFits(set, old_state) {
+  await fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, {
+    method: "PUT",
+  })
     .then((response) => {
       if (!response.ok) {
         throw response;
       }
       return response.json();
     })
-    .then((json) => { 
-    
-        set(json);
-
+    .then((json) => {
+      set(json);
     });
+}
+
+function IDtoJSX(ids, a) {
+  maps = [];
+  ids.forEach(function (item, i) {
+    var keys = item.filter((value) => value !== 0);
+    //console.log(keys);
+    const test = keys.map(function (value) {
+      var val = a.find((element) => element.pieceid === value);
+      return val;
+    });
+    maps.push(test);
+  });
+  return maps;
+}
+
+export default function App({ route, navigation }) {
+  const a = React.useContext(ClothesContext);
+  console.log(route.params.initial)
+  const [index, setIndex] = React.useState(0);
+  const [fits, setFits] = React.useState(route.params.initial);
+  const [likes, setLikes] = React.useState([]);
+
+  const [curWeather, setWeather] = React.useState("test");
+  const [curOccasion, setOccasion] = React.useState("");
+  const [change, setChange] = React.useState(false); // this determines whether the fits need to be fetched again
+  const [testing, setOutfits] = React.useState(
+    IDtoJSX(route.params.initial[0], a)
+  ); // this stores the JSX objects
+  const [loaded, setLoad] = React.useState(true);
+
+  React.useEffect(() => {
+    console.log("HAPPENS");
+    if (!loaded) {
+      console.log("UPDATE");
+      getFits(setFits, fits);
+    } else {
+      console.log("HERE");
+      setLoad(false);
+    }
+  }, [change]);
+
+  React.useEffect(() => {
+    setOccasion(fits[1][index][0]);
+    setWeather(fits[1][index][1]);
+  }, [index, fits[0]]); // updates these fields only when fits[0] has fnished init (NOTE this has to be in a separate hook)
+
+  React.useEffect(() => {
+    if (!loaded) {
+      maps = [];
+      fits[0].forEach(function (item, i) {
+        var ids = item.filter((value) => value !== 0);
+        const test = ids.map(function (value) {
+          var val = a.find((element) => element.pieceid === value);
+          return val;
+        });
+        maps.push(test);
+      });
+      setOutfits(maps);
+    }
+  }, [fits[0], change]); // updates only when a new fetch comes
+
+  console.log(fits[0]);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerRight: () => <Text>{curWeather}</Text>,
+      headerLeft: () => <Text>{curOccasion}</Text>,
+    });
+  });
+
+  const Card = ({ card }) => {
+    var outfit;
+    if (card != null) {
+      outfit = card.map((value, idx) => (
+        <View key={idx} style={styles.item}>
+          <View style={styles.itemLeft}>
+            <View style={styles.cardImage}>
+              {/* <View key={idx} style={styles.cardImage}> */}
+              <Image
+                style={{ width: 80, height: 80 }}
+                source={{ uri: "data:image/jpeg;base64," + value.image }}
+              />
+              {/* </View> */}
+            </View>
+            <Text key={idx} style={styles.itemText}>
+              {value.type + " " + value.color}
+            </Text>
+          </View>
+        </View>
+      ));
     }
 
-function FitScreen({ navigation }){
-    const [fits, setFits] = React.useState([[[],[]],[[],[]]]);
-    const [curWeather, setWeather] = React.useState("r")
-    const [curOccasion, setOccasion] = React.useState("")
-    const [curIds, setIds] = React.useState([0])
-    const [curCounter, incrementCounter] = React.useState(0)
-    const a = React.useContext(ClothesContext);
-    
-    const updateHeader =() => {
-        incrementCounter(curCounter + 1)
-        
-            setOccasion(fits[1][curCounter][0])
-            setWeather(fits[1][curCounter][1])
-            setIds(fits[0][curCounter])
-         
-    }
-       
-    React.useEffect(() => {
-        getFits(setFits);
-      }, []);
-    
-   //console.log(fits)
-   React.useEffect(() => {
-    setOccasion(fits[1][curCounter][0])
-    setWeather(fits[1][curCounter][1])
-    setIds(fits[0][curCounter])
-  }, []);
-   //setWeather(fits[1][counter][0])
-    //setOccasion(fits[1][0][0])
-    //console.log(curWeather)
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-          headerShown: true,
-            headerRight: () => (
-           <Text>{curWeather}</Text>
-          ),
-          headerLeft: () => (
-            <Text>{curOccasion}</Text>
-          ),
-        });
-      });
-      //console.log(a)
-    var objects = []
-    //console.log(curIds)
-    React.useLayoutEffect(()=>{
-        for ( var i = 0; i < 7; i++){
-            //console.log(curIds[i])
-            //console.log(a.filter((item)=> item.pieceid == curIds[i].toString()))
-            objects.push(a.filter((item)=> item.pieceid == curIds[i].toString()))
-        }
-    })
-   
-    console.log(objects)
-      // var x = a.filter((item)=> item.pieceid == "102")
-    //console.log(x.map(({pieceid})=>(pieceid)))
-    return (
-        <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
-      }}>
-      <Text>Hello, world!</Text>
-      
-            <TouchableOpacity style={styles.commandButton} onPress={updateHeader}>
-            <Text style={styles.panelButtonTitle}>Like</Text>
-            </TouchableOpacity>
-            
+    return <View style={styles.card}>{outfit}</View>;
+  };
+
+  const CardDetails = ({ index }) => (
+    <View key={testing[index].pieceid} style={{ alignItems: "center" }}>
+      <Text style={[styles.text, styles.heading]} numberOfLines={2}>
+        <Text style={[styles.text, styles.price]}>
+          {fits[0][index].toString()}
+        </Text>
+      </Text>
     </View>
-    
-);
+  );
+
+  const refreshBuffer = () => {
+    setChange(!change);
+    setLoad(false);
+    setIndex(0);
+    setLikes([]);
+    var send = [];
+    send.push(likes.slice(0, index+1));
+    send.push(fits[0].slice(0, index+1));
+    send.push(fits[1].slice(0, index+1));
+
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(send),
+    };
+    // End Calibrate, getFits(), reset index, set proper variables
+    fetch(`http://${API}:${NODEPORT}/end_calibrate/123/`, requestOptions).then(
+      (response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        console.log(response);
+      }
+    );
+  };
+
+  const onSwipedLeft = () => {
+    transitionRef.current.animateNextTransition();
+    console.log("Left");
+
+
+    var x = likes;
+    x.push(0);
+    setLikes(x);
+    setIndex((index + 1) % testing.length);
+    if (index + 1 == testing.length) {
+      refreshBuffer();
+    } else {
+      var y = fits;
+      setOccasion(y[1][index][0]);
+      setWeather(y[1][index][1]);
+    }
+  };
+
+  const onSwipedRight = () => {
+    transitionRef.current.animateNextTransition();
+    console.log("Right");
+
+    setIndex((index + 1) % testing.length);
+    var x = likes;
+    x.push(1);
+    setLikes(x);
+    if (index + 1 == testing.length) {
+      refreshBuffer();
+    } else {
+      var y = fits;
+      setOccasion(y[1][index][0]);
+      setWeather(y[1][index][1]);
+    }
+  };
+
+  const endCalibration = () => {
+    var send = [];
+    send.push(likes.slice(0,index));
+    send.push(fits[0].slice(0, index));
+    send.push(fits[1].slice(0, index));
+
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(send),
+    };
+    // End Calibrate, getFits(), reset index, set proper variables
+    fetch(`http://${API}:${NODEPORT}/end_calibrate/123/`, requestOptions).then(
+      (response) => {
+        if (!response.ok) {
+          throw response;
+        }
+        return response;
+      }
+    );
+
+    const trainOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    }
+    fetch(`http://${API}:${NODEPORT}/recommender_train/123/`, trainOptions).then((response) => {
+      if (!response.ok) {
+        throw response;
+      }
+      return response;
+    });
+
+    navigation.navigate("Screening");
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <MaterialCommunityIcons
+        name="crop-square"
+        size={width}
+        color={colors.blue}
+        style={{
+          opacity: 0.05,
+          transform: [{ rotate: "45deg" }, { scale: 1.6 }],
+          position: "absolute",
+          left: -15,
+          top: 30,
+        }}
+      />
+      <StatusBar hidden={true} />
+      <View style={styles.swiperContainer}>
+        <Swiper
+          ref={swiperRef}
+          cards={testing}
+          renderCard={(card) => <Card card={card} />}
+          infinite
+          backgroundColor={"transparent"}
+          onSwipedLeft={() => {
+            onSwipedLeft();
+          }}
+          onSwipedRight={() => {
+            onSwipedRight();
+          }}
+          cardVerticalMargin={50}
+          stackSize={testing.length}
+          stackScale={5}
+          stackSeparation={14}
+          animateOverlayLabelsOpacity
+          animateCardOpacity
+          disableTopSwipe
+          disableBottomSwipe
+          overlayLabels={{
+            left: {
+              title: "NOPE",
+              style: {
+                label: {
+                  backgroundColor: colors.red,
+                  borderColor: colors.red,
+                  color: colors.white,
+                  borderWidth: 1,
+                  fontSize: 24,
+                },
+                wrapper: {
+                  flexDirection: "column",
+                  alignItems: "flex-end",
+                  justifyContent: "flex-start",
+                  marginTop: 20,
+                  marginLeft: -20,
+                },
+              },
+            },
+            right: {
+              title: "LIKE",
+              style: {
+                label: {
+                  backgroundColor: colors.blue,
+                  borderColor: colors.blue,
+                  color: colors.white,
+                  borderWidth: 1,
+                  fontSize: 24,
+                },
+                wrapper: {
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  marginTop: 20,
+                  marginLeft: 20,
+                },
+              },
+            },
+          }}
+        />
+      </View>
+      <View style={styles.bottomContainer}>
+        <Transitioning.View
+          ref={transitionRef}
+          transition={transition}
+          style={styles.bottomContainerMeta}
+        >
+          {/* <CardDetails index={index} /> */}
+        </Transitioning.View>
+        <View style={styles.bottomContainerButtons}>
+          <MaterialCommunityIcons.Button
+            name="close"
+            size={94}
+            backgroundColor="transparent"
+            underlayColor="transparent"
+            activeOpacity={0.3}
+            color={colors.red}
+            onPress={() => {
+              swiperRef.current.swipeLeft();
+            }}
+          />
+          <MaterialCommunityIcons.Button
+            name="check"
+            size={94}
+            backgroundColor="transparent"
+            underlayColor="transparent"
+            activeOpacity={0.3}
+            color={colors.green}
+            onPress={() => {
+              swiperRef.current.swipeRight();
+            }}
+          />
+        </View>
+      </View>
+      <TouchableOpacity
+        style={styles.commandButton}
+        onPress={endCalibration}
+        disabled={false}
+      >
+        <Text style={styles.panelButtonTitle}>End Calibration</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container1: {
-      flex: 1,
-      paddingHorizontal: '10%',
-      justifyContent: 'center',
-      backgroundColor : '#dfe3ee',
-      paddingVertical : '8%'
-    },
-    container: {
-      flex: 1,
-    },
-    commandButton: {
-      padding: 10,
-      borderRadius: 20,
-      backgroundColor: '#2874A6',
-      alignItems: 'center',
-      marginTop: 15,
-    },
-    panel: {
-      padding: 20,
-      backgroundColor: '#58D68D',
-      paddingTop: 20,
-      // borderTopLeftRadius: 20,
-      // borderTopRightRadius: 20,
-      // shadowColor: '#000000',
-      // shadowOffset: {width: 0, height: 0},
-      // shadowRadius: 5,
-      // shadowOpacity: 0.4,
-    },
-    header: {
-      backgroundColor: '#E8EAED',
-      shadowColor: '#333333',
-      shadowOffset: {width: -1, height: -3},
-      shadowRadius: 2,
-      shadowOpacity: 0.4,
-      // elevation: 5,
-      paddingTop: 20,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      paddingVertical : '5%'
-    },
-    panelHeader: {
-      alignItems: 'center',
-    },
-    panelHandle: {
-      width: 40,
-      height: 8,
-      borderRadius: 4,
-      backgroundColor: '#00000040',
-      marginBottom: 10,
-    },
-    panelTitle: {
-      fontSize: 27,
-      height: 35,
-    },
-    panelSubtitle: {
-      fontSize: 14,
-      color: 'gray',
-      height: 30,
-      marginBottom: 10,
-    },
-    panelButton: {
-      padding: 13,
-      borderRadius: 10,
-      backgroundColor: '#45B39D',
-      alignItems: 'center',
-      marginVertical: 7,
-    },
-    panelButtonTitle: {
-      fontSize: 17,
-      fontWeight: 'bold',
-      color: 'white',
-    },
-    action: {
-      flexDirection: 'row',
-      marginTop: 10,
-      marginBottom: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: '#f2f2f2',
-      paddingBottom: 5,
-      paddingTop: 20,
-    },
-    actionError: {
-      flexDirection: 'row',
-      marginTop: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: '#FF0000',
-      paddingBottom: 5,
-    },
-    textInput: {
-      flex: 1,
-      marginTop: Platform.OS === 'ios' ? 0 : -12,
-      paddingLeft: 10,
-      color: '#05375a',
-    },
-    });
-
-export default FitScreen
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
+  },
+  swiperContainer: {
+    flex: 0.55,
+  },
+  bottomContainer: {
+    flex: 0.45,
+    justifyContent: "space-evenly",
+  },
+  bottomContainerMeta: { alignContent: "flex-end", alignItems: "center" },
+  bottomContainerButtons: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  cardImage: {
+    width: 160,
+    flex: 1,
+    resizeMode: "contain",
+  },
+  card: {
+    flex: 0.45,
+    borderRadius: 8,
+    shadowRadius: 25,
+    shadowColor: colors.black,
+    shadowOpacity: 0.08,
+    shadowOffset: { width: 0, height: 0 },
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.white,
+  },
+  text: {
+    textAlign: "center",
+    fontSize: 50,
+    backgroundColor: "transparent",
+  },
+  done: {
+    textAlign: "center",
+    fontSize: 30,
+    color: colors.white,
+    backgroundColor: "transparent",
+  },
+  heading: { fontSize: 24, marginBottom: 10, color: colors.gray },
+  price: { color: colors.blue, fontSize: 32, fontWeight: "500" },
+  item: {
+    backgroundColor: "#FFF",
+    borderRadius: 7,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  itemLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
+  },
+  itemText: {
+    maxWidth: "80%",
+  },
+  panelButtonTitle: {
+    fontSize: 17,
+    fontWeight: "bold",
+    color: "white",
+  },
+  commandButton: {
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: "#2874A6",
+    alignItems: "center",
+    marginTop: 15,
+  },
+});
