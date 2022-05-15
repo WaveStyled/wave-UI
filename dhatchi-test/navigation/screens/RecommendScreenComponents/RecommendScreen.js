@@ -1,13 +1,10 @@
 import * as React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { ClothesContext } from "../../../context/AppContext";
 import DropDownPicker from "react-native-dropdown-picker";
 import weather from "../../../components/Weathers";
 import occasion from "../../../components/Occasions";
 import BottomSheet from "reanimated-bottom-sheet";
 import { API, NODEPORT } from "../../../context/API";
-
-
 
 occasion_mapping = {
   FF: "oc_formal",
@@ -26,10 +23,13 @@ weather_mapping = {
   T: "we_typical",
 };
 
-function initial_recommend(occasion, weather) {
-  return fetch(`http://${API}:${NODEPORT}/recommend/123/${occasion}/${weather}`, {
-    method: "PUT",
-  })
+function initial_recommend(occasion, weather, set) {
+  return fetch(
+    `http://${API}:${NODEPORT}/recommend/123/${occasion}/${weather}`,
+    {
+      method: "PUT",
+    }
+  )
     .then((response) => {
       if (!response.ok) {
         throw response;
@@ -37,10 +37,9 @@ function initial_recommend(occasion, weather) {
       return response.json();
     })
     .then((json) => {
-      return json;
+      set(json);
     });
 }
-
 
 function DetailsScreen({ navigation }) {
   const [weatherSelected, setWeatherItem] = React.useState([]);
@@ -51,10 +50,36 @@ function DetailsScreen({ navigation }) {
   const [occasion_open, setOccasionPickerOpen] = React.useState(false);
   const [occa, setOccasions] = React.useState(occasion);
 
+  const [recommend, setInitial] = React.useState(null);
+  const [nav, setNav] = React.useState(false);
+  const [recommend_ready, setRecommendReady] = React.useState(false);
+
+  React.useEffect(() => {
+    if (nav) {
+      navigation.navigate("Get", {
+        initial: recommend,
+        occasion: occasion_mapping[occasionSelected],
+        weather: weather_mapping[weatherSelected],
+      });
+    }
+  }, [nav, recommend]);
+
+  React.useEffect(() => {
+    if (recommend != null){
+      setNav(true)
+    }
+  }, [recommend]);
+
   const getFits = () => {
-    console.log(occasion_mapping[occasionSelected], weather_mapping[weatherSelected]);
-    recommend = initial_recommend(occasion_mapping[occasionSelected], weather_mapping[weatherSelected])
-    navigation.navigate("Get", {initial: recommend});
+    console.log(
+      occasion_mapping[occasionSelected],
+      weather_mapping[weatherSelected]
+    );
+    initial_recommend(
+      occasion_mapping[occasionSelected],
+      weather_mapping[weatherSelected],
+      setInitial
+    );
   };
 
   renderHeader = () => (

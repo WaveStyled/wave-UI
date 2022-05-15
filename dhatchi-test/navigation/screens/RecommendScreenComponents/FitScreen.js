@@ -92,52 +92,53 @@ export default function App({ route, navigation }) {
 
   const [curWeather, setWeather] = React.useState("test");
   const [curOccasion, setOccasion] = React.useState("");
+  
   const [change, setChange] = React.useState(false); // this determines whether the fits need to be fetched again
-  const [testing, setOutfits] = React.useState(
-    IDtoJSX(route.params.initial[0], a)
-  ); // this stores the JSX objects
+  const [testing, setOutfits] = React.useState([]);
+  //  IDtoJSX(route.params.initial[0], a)
+  //); // this stores the JSX objects
   const [loaded, setLoad] = React.useState(true);
 
-  React.useEffect(() => {
-    console.log("HAPPENS");
-    if (!loaded) {
-      console.log("UPDATE");
-      getFits(setFits, fits);
-    } else {
-      console.log("HERE");
-      setLoad(false);
-    }
-  }, [change]);
+  // React.useEffect(() => {
+  //   console.log("HAPPENS");
+  //   if (!loaded) {
+  //     console.log("UPDATE");
+  //     getFits(setFits, fits);
+  //   } else {
+  //     console.log("HERE");
+  //     setLoad(false);
+  //   }
+  // }, [change]);
 
-  React.useEffect(() => {
-    setOccasion(fits[1][index][0]);
-    setWeather(fits[1][index][1]);
-  }, [index, fits[0]]); // updates these fields only when fits[0] has fnished init (NOTE this has to be in a separate hook)
+  // React.useEffect(() => {
+  //   setOccasion(fits[1][index][0]);
+  //   setWeather(fits[1][index][1]);
+  // }, [index, fits[0]]); // updates these fields only when fits[0] has fnished init (NOTE this has to be in a separate hook)
 
-  React.useEffect(() => {
-    if (!loaded) {
-      maps = [];
-      fits[0].forEach(function (item, i) {
-        var ids = item.filter((value) => value !== 0);
-        const test = ids.map(function (value) {
-          var val = a.find((element) => element.pieceid === value);
-          return val;
-        });
-        maps.push(test);
-      });
-      setOutfits(maps);
-    }
-  }, [fits[0], change]); // updates only when a new fetch comes
+  // React.useEffect(() => {
+  //   if (!loaded) {
+  //     maps = [];
+  //     fits[0].forEach(function (item, i) {
+  //       var ids = item.filter((value) => value !== 0);
+  //       const test = ids.map(function (value) {
+  //         var val = a.find((element) => element.pieceid === value);
+  //         return val;
+  //       });
+  //       maps.push(test);
+  //     });
+  //     setOutfits(maps);
+  //   }
+  // }, [fits[0], change]); // updates only when a new fetch comes
 
-  console.log(fits[0]);
+  // console.log(fits[0]);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      headerRight: () => <Text>{curWeather}</Text>,
-      headerLeft: () => <Text>{curOccasion}</Text>,
-    });
-  });
+  // React.useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerShown: true,
+  //     headerRight: () => <Text>{curWeather}</Text>,
+  //     headerLeft: () => <Text>{curOccasion}</Text>,
+  //   });
+  // });
 
   const Card = ({ card }) => {
     var outfit;
@@ -289,7 +290,7 @@ export default function App({ route, navigation }) {
         <Swiper
           ref={swiperRef}
           cards={testing}
-          renderCard={(card) => <Card card={card} />}
+          renderCard={(card) => card.length == 0 ? true : <Card card={card} />}
           infinite
           backgroundColor={"transparent"}
           onSwipedLeft={() => {
