@@ -13,6 +13,7 @@ import { API, NODEPORT } from "../context/API";
 import { ClothesContext } from "../context/AppContext";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from '@react-navigation/native';
+import { RotateInUpLeft } from "react-native-reanimated";
 
 
 function ClothingItem (props) {
@@ -68,9 +69,8 @@ function ClothingItem (props) {
     image : props.image
   };
 
-
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Details", {item: propagate})}>
+    <TouchableOpacity onPress={() => navigation.navigate("Details", {item: propagate, name: props.text})}>
     <Swipeable renderRightActions={() => rightActions(props.id, props.update)}>
       <View style={props.dirty ? styles.dirtyitem : styles.item}>
         <View style={styles.itemLeft}>

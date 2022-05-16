@@ -23,6 +23,7 @@ export default function DetailScreen({ route, navigation }) {
   const { item } = route.params;
   console.log(item.id, item.text);
   return (
+    <ScrollView>
     <View style={styles.clothsWrapper}>
       <Text
         style={{
@@ -32,13 +33,17 @@ export default function DetailScreen({ route, navigation }) {
           paddingVertical: "30%",
         }}
       >
-        Details
+      {route.params.name}  Details
       </Text>
       <View style={styles.items}>
-        
+      <Text>
+
+      
+      </Text>
       </View>
       {/* </TouchableOpacity> */}
     </View>
+    </ScrollView>
   );
 }
 

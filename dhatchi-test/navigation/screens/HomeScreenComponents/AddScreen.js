@@ -86,7 +86,7 @@ function addItem(props) {
 
 //import ImageCropPicker from 'react-native-image-crop-picker';
 
-function AddScreen({ navigation }) {
+function AddScreen({ navigation, route }) {
   const { colors } = useTheme();
   const [clothName, setClothName] = useState();
   const [color, setColor] = useState();
