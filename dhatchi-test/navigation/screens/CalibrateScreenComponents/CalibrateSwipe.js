@@ -17,6 +17,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { API, NODEPORT } from "../../../context/API";
 import { ClothesContext } from "../../../context/AppContext";
 const { width } = Dimensions.get("window");
+import type_mapping from "../../../components/type_mapping";
+import weather_mapping from "../../../components/weather_mapping";
+import occasion_mapping from "../../../components/occasion_mapping";
+
 
 const stackSize = 4;
 const colors = {
@@ -155,7 +159,7 @@ export default function App({ route, navigation }) {
               {/* </View> */}
             </View>
             <Text key={idx} style={styles.itemText}>
-              {value.type + " " + value.color}
+              {type_mapping[value.type] + " " + value.color}
             </Text>
           </View>
         </View>
