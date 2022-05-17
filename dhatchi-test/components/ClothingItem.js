@@ -82,6 +82,7 @@ function ClothingItem(props) {
           type : props.type,
           dirty : props.dirty,
           image : props.image,
+          pieceid : props.id
         })
       }
     >

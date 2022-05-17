@@ -93,13 +93,28 @@ function mapWeatherToBin(we) {
 }
 
 function addItem(props) {
-  console.log(props);
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(props),
   };
-  fetch(`http://${API}:${NODEPORT}/add/123/`, requestOptions).then(
+  fetch(`http://${API}:${NODEPORT}/update/123/`, requestOptions).then(
+    (response) => {
+      if (!response.ok) {
+        throw response;
+      }
+    }
+  );
+  return true;
+}
+
+function updateItem(props){
+  const requestOptions2 = {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(props),
+  };
+  fetch(`http://${API}:${NODEPORT}/change/123/`, requestOptions2).then(
     (response) => {
       if (!response.ok) {
         throw response;
@@ -114,9 +129,9 @@ function addItem(props) {
 function AddScreen({ navigation, route }) {
   console.log(route.params.weather, route.params.occasion);
   const { colors } = useTheme();
-  const [clothName, setClothName] = useState(!route.params.update ? null : route.params.clothName);
+  const [clothName, setClothName] = useState();
 
-  const [color, setColor] = useState(!route.params.update ? null : route.params.color);
+  const [color, setColor] = useState();
 
   const [weatherSelected, setWeatherItem] = useState([]);
   const [weather_picker_open, setWeatherPickerOpen] = useState(false);
@@ -126,19 +141,26 @@ function AddScreen({ navigation, route }) {
   const [occasion_open, setOccasionPickerOpen] = useState(false);
   const [occa, setOccasions] = useState(occasion);
 
+  const [type, setType] = useState();
+  const [type_open, setClothPickerOpen] = useState(false);
+
+  const [isEnabled, setIsEnabled] = useState(route.params.dirty == null ? false : route.params.dirty);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+
+  const a = React.useContext(ClothesContext);
+  const [image, setImage, isDirty, setDirty] = useState(image);
+
+
   React.useEffect(() => {
     if (route.params.update){
       setWeatherItem(propstoweather(route.params.weather));
       setOccasion(propstooccasion(route.params.occasion));
+      setColor(route.params.color);
+      setClothName(route.params.clothName);
+      setImage(route.params.image)
+      setType(route.params.type)
     }
-  }, [])
-
-
-  const [type, setType] = useState(!route.params.update ? null : route.params.type);
-  const [type_open, setClothPickerOpen] = useState(false);
-
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  }, []);
 
   console.log("######");
   console.log(weatherSelected);
@@ -146,9 +168,6 @@ function AddScreen({ navigation, route }) {
   console.log(type);
   console.log("Dirty? ", isEnabled);
 
-  const a = React.useContext(ClothesContext);
-
-  const [image, setImage, isDirty, setDirty] = useState(!route.params.update ? image : route.params.image);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   const takeImage = async () => {
@@ -259,6 +278,65 @@ function AddScreen({ navigation, route }) {
 
   //CHECK: when the save button is clicked, it navigates to the detail screen, and the name/color attribute entered
   // on the form are displayed on a details screen. Not able to transfer data from pickers yet
+  const update_handler = () => {
+    console.log("update");
+    ws = mapWeatherToBin(weatherSelected);
+    ocs = mapOccasionToBin(occasionSelected);
+
+    toupdate = {
+      PIECEID: route.params.pieceid,
+      COLOR: color,
+      TYPE: type,
+      DATE_ADDED: null,
+      TIMES_WORN: null,
+      RATING: null,
+      OC_FORMAL: ocs[0],
+      OC_SEMI_FORMAL: ocs[1],
+      OC_CASUAL: ocs[2],
+      OC_WORKOUT: ocs[3],
+      OC_OUTDOORS: ocs[4],
+      OC_COMFY: ocs[5],
+      WE_COLD: ws[0],
+      WE_HOT: ws[1],
+      WE_RAINY: ws[2],
+      WE_SNOWY: ws[3],
+      WE_TYPICAL: ws[4],
+      DIRTY: isEnabled ? 1 : 0,
+      IMAGE: image
+    };
+
+    updateItem(toupdate);
+    
+    tochange = {
+      pieceid: route.params.pieceid,
+      color: color,
+      type: type,
+      date_added: null,
+      times_worn: null,
+      rating: null,
+      oc_formal: ocs[0],
+      oc_semi_formal: ocs[1],
+      oc_casual: ocs[2],
+      oc_workout: ocs[3],
+      oc_outdoors: ocs[4],
+      oc_comfy: ocs[5],
+      we_cold: ws[0],
+      we_hot: ws[1],
+      we_rainy: ws[2],
+      we_snowy: ws[3],
+      we_typical: ws[4],
+      dirty: isEnabled ? 1 : 0,
+      image : image
+    };
+
+    to_change = a.filter((value) => value.pieceid === route.params.pieceid)
+
+    if (to_change.length > 0){
+      a[a.indexOf(to_change[0])] = tochange;
+    }
+    navigation.navigate("Wardrobe", { name: clothName });
+  };
+  
   const save_handler = () => {
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
@@ -533,8 +611,8 @@ function AddScreen({ navigation, route }) {
             </View>
           </View>
         </ScrollView>
-        <TouchableOpacity style={styles.commandButton} onPress={save_handler}>
-          <Text style={styles.panelButtonTitle}>Save</Text>
+        <TouchableOpacity style={styles.commandButton} onPress={route.params.update ? update_handler : save_handler}>
+          <Text style={styles.panelButtonTitle}>{route.params.update ? "Update" : "Save"}</Text>
         </TouchableOpacity>
       </View>
     </View>
