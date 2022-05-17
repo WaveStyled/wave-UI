@@ -32,7 +32,7 @@ import { ClothesContext } from "../../../context/AppContext";
 import { API, NODEPORT } from "../../../context/API";
 //import RNFS from 'react-native-fs';
 
-occasion_mapping = {
+const occasion_mapping = {
   FF: 0,
   SF: 1,
   CS: 2,
@@ -41,7 +41,7 @@ occasion_mapping = {
   LZ: 5,
 };
 
-weather_mapping = {
+const weather_mapping = {
   C: 0,
   H: 1,
   R: 2,
@@ -87,19 +87,21 @@ function addItem(props) {
 //import ImageCropPicker from 'react-native-image-crop-picker';
 
 function AddScreen({ navigation, route }) {
+  console.log(route.params.weather, route.params.occasion);
   const { colors } = useTheme();
-  const [clothName, setClothName] = useState();
-  const [color, setColor] = useState();
+  const [clothName, setClothName] = useState(!route.params.update ? null : route.params.clothName);
 
-  const [weatherSelected, setWeatherItem] = useState([]);
+  const [color, setColor] = useState(!route.params.update ? null : route.params.color);
+
+  const [weatherSelected, setWeatherItem] = useState(!route.params.update ? [] : route.params.weather);
   const [weather_picker_open, setWeatherPickerOpen] = useState(false);
   const [weat, setItems] = useState(weather);
 
-  const [occasionSelected, setOccasion] = useState([]);
+  const [occasionSelected, setOccasion] = useState(!route.params.update ? [] : route.params.occasion);
   const [occasion_open, setOccasionPickerOpen] = useState(false);
   const [occa, setOccasions] = useState(occasion);
 
-  const [type, setType] = useState();
+  const [type, setType] = useState(!route.params.update ? null : route.params.type);
   const [type_open, setClothPickerOpen] = useState(false);
 
   const [isEnabled, setIsEnabled] = useState(false);
@@ -113,7 +115,7 @@ function AddScreen({ navigation, route }) {
 
   const a = React.useContext(ClothesContext);
 
-  const [image, setImage, isDirty, setDirty] = useState(image);
+  const [image, setImage, isDirty, setDirty] = useState(!route.params.update ? image : route.params.image);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   const takeImage = async () => {
@@ -227,7 +229,7 @@ function AddScreen({ navigation, route }) {
   const save_handler = () => {
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
-    console.log(a)
+    // console.log(a)
     if (a.length === 0){
       id = 0;
     } else {

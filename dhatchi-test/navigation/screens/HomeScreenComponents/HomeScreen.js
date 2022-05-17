@@ -40,6 +40,10 @@ function update(json, set) {
         update={set}
         image={clothes.image}
         dirty={clothes.dirty}
+        color={clothes.color}
+        weather={[clothes.we_cold, clothes.we_hot, clothes.we_rainy, clothes.we_snowy, clothes.we_avg_tmp]}
+        occasion={[clothes.oc_formal, clothes.oc_semi_formal, clothes.oc_casual, clothes.oc_workout, clothes.oc_outdoors, clothes.oc_comfy]}
+        type={clothes.type}
       />
     ));
     return list;
@@ -50,7 +54,7 @@ function addHeaderButton(navigation) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button onPress={() => navigation.navigate("Add")} title="Add Item" />
+        <Button onPress={() => navigation.navigate("Add", {update : false})} title="Add Item" />
       ),
     });
   });

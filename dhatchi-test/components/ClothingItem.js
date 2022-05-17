@@ -12,32 +12,58 @@ import { Swipeable } from "react-native-gesture-handler";
 import { API, NODEPORT } from "../context/API";
 import { ClothesContext } from "../context/AppContext";
 import { useRoute } from "@react-navigation/native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import { RotateInUpLeft } from "react-native-reanimated";
 
 
-function ClothingItem (props) {
+function propstoweather(p){
+  const weat_map = ["C", "H", "R", "N", "T"];
+  w = p.map(function (value, index) {
+    if (value) {
+      return weat_map[index];
+    } else {
+      return false;
+    }
+  });
+  return w.filter((element) => element !== false);
+}
+
+function propstooccasion(p){
+  const occ_map = ["FF", "SF", "CS", "WK", "BD", "LZ"];
+  o = p.map(function (value, index) {
+    if (value) {
+      return occ_map[index];
+    } else {
+      return false;
+    }
+  });
+  return o.filter((element) => element !== false);
+}
+
+
+function ClothingItem(props) {
   const a = React.useContext(ClothesContext);
 
   const deleteItem = (key, set) => {
-    to_del = a.findIndex(item => item.pieceid === key);
+    to_del = a.findIndex((item) => item.pieceid === key);
     a.splice(to_del, 1);
 
     const requestOptions = {
       method: "POST",
     };
-  
-    fetch(`http://${API}:${NODEPORT}/delete/999/` + key, requestOptions)
+
+    fetch(`http://${API}:${NODEPORT}/delete/123/` + key, requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw response;
         }
         return response.json();
-      }).then((json) => {
+      })
+      .then((json) => {
         set(json);
       });
     return true;
-  }
+  };
 
   const rightActions = (key, set) => {
     return (
@@ -60,37 +86,57 @@ function ClothingItem (props) {
     );
   };
 
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
+
+
+  console.log(props.id, propstoweather(props.weather), propstooccasion(props.occasion));
 
   const propagate = {
-    id : props.id,
-    text : props.text,
-    date : props.date,
-    image : props.image
+    id: props.id,
+    text: props.text,
+    date: props.date,
+    image: props.image,
   };
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Details", {item: propagate, name: props.text})}>
-    <Swipeable renderRightActions={() => rightActions(props.id, props.update)}>
-      <View style={props.dirty ? styles.dirtyitem : styles.item}>
-        <View style={styles.itemLeft}>
-          <View style={styles.container}>
-            <Image
-              style={{ width: 80, height: 100 }}
-              source={{uri : 'data:image/jpeg;base64,' + props.image }}
-            />
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("Add", {
+          update: true,
+          clothName : null,
+          color : props.color,
+          weather : propstoweather(props.weather),
+          occasion : propstooccasion(props.occasion),
+          type : props.type,
+          dirty : props.dirty,
+          image : props.image,
+        })
+      }
+    >
+      <Swipeable
+        renderRightActions={() => rightActions(props.id, props.update)}
+      >
+        <View style={props.dirty ? styles.dirtyitem : styles.item}>
+          <View style={styles.itemLeft}>
+            <View style={styles.container}>
+              <Image
+                style={{ width: 80, height: 100 }}
+                source={{ uri: "data:image/jpeg;base64," + props.image }}
+              />
+            </View>
+            <Text style={styles.itemText}>{props.text}</Text>
           </View>
-          <Text style={styles.itemText}>{props.text}</Text>
+          <View style={styles.container}>
+            <Text style={props.dirty ? styles.itemDirty : styles.itemSanitary}>
+              {props.dirty ? "\nDIRTY" : "\nCLEAN"}
+            </Text>
+          </View>
+          <View style={styles.circular}></View>
         </View>
-        <View style={styles.container}>
-        <Text style={props.dirty ? styles.itemDirty : styles.itemSanitary}>{props.dirty ? "\nDIRTY" : "\nCLEAN"}</Text>
-        </View>
-        <View style={styles.circular}></View>
-      </View>
-    </Swipeable>
+      </Swipeable>
     </TouchableOpacity>
   );
-};
+}
 
 const styles = StyleSheet.create({
   item: {
@@ -111,7 +157,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 10,
     opacity: 0.8,
-    backgroundColor : '#EDC9AF'
+    backgroundColor: "#EDC9AF",
   },
   itemLeft: {
     flexDirection: "row",
@@ -139,20 +185,20 @@ const styles = StyleSheet.create({
   },
   itemText: {
     maxWidth: "50%",
-    paddingLeft: 15
+    paddingLeft: 15,
   },
-  itemSanitary:{
-    fontWeight : "bold",
-    fontSize: 10,
-    backgroundColor: "transparent",
-    justifyContent: "center"
-  },
-  itemDirty:{
-    fontWeight : "bold",
+  itemSanitary: {
+    fontWeight: "bold",
     fontSize: 10,
     backgroundColor: "transparent",
     justifyContent: "center",
-    color : 'red'
+  },
+  itemDirty: {
+    fontWeight: "bold",
+    fontSize: 10,
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    color: "red",
   },
   circular: {
     width: 12,
