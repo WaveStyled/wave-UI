@@ -49,6 +49,31 @@ const weather_mapping = {
   T: 4,
 };
 
+function propstoweather(p){
+  const weat_map = ["C", "H", "R", "N", "T"];
+  w = p.map(function (value, index) {
+    if (value) {
+      return weat_map[index];
+    } else {
+      return false;
+    }
+  });
+  return w.filter((element) => element !== false);
+}
+
+function propstooccasion(p){
+  const occ_map = ["FF", "SF", "CS", "WK", "BD", "LZ"];
+  o = p.map(function (value, index) {
+    if (value) {
+      return occ_map[index];
+    } else {
+      return false;
+    }
+  });
+  return o.filter((element) => element !== false);
+}
+
+
 function mapOccasionToBin(ocs) {
   (arr = []).length = occasion.length;
   arr.fill(0);
@@ -93,13 +118,21 @@ function AddScreen({ navigation, route }) {
 
   const [color, setColor] = useState(!route.params.update ? null : route.params.color);
 
-  const [weatherSelected, setWeatherItem] = useState(!route.params.update ? [] : route.params.weather);
+  const [weatherSelected, setWeatherItem] = useState([]);
   const [weather_picker_open, setWeatherPickerOpen] = useState(false);
   const [weat, setItems] = useState(weather);
 
-  const [occasionSelected, setOccasion] = useState(!route.params.update ? [] : route.params.occasion);
+  const [occasionSelected, setOccasion] = useState([]);
   const [occasion_open, setOccasionPickerOpen] = useState(false);
   const [occa, setOccasions] = useState(occasion);
+
+  React.useEffect(() => {
+    if (route.params.update){
+      setWeatherItem(propstoweather(route.params.weather));
+      setOccasion(propstooccasion(route.params.occasion));
+    }
+  }, [])
+
 
   const [type, setType] = useState(!route.params.update ? null : route.params.type);
   const [type_open, setClothPickerOpen] = useState(false);

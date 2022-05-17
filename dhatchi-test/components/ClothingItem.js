@@ -16,31 +16,6 @@ import { useNavigation } from "@react-navigation/native";
 import { RotateInUpLeft } from "react-native-reanimated";
 
 
-function propstoweather(p){
-  const weat_map = ["C", "H", "R", "N", "T"];
-  w = p.map(function (value, index) {
-    if (value) {
-      return weat_map[index];
-    } else {
-      return false;
-    }
-  });
-  return w.filter((element) => element !== false);
-}
-
-function propstooccasion(p){
-  const occ_map = ["FF", "SF", "CS", "WK", "BD", "LZ"];
-  o = p.map(function (value, index) {
-    if (value) {
-      return occ_map[index];
-    } else {
-      return false;
-    }
-  });
-  return o.filter((element) => element !== false);
-}
-
-
 function ClothingItem(props) {
   const a = React.useContext(ClothesContext);
 
@@ -88,9 +63,6 @@ function ClothingItem(props) {
 
   const navigation = useNavigation();
 
-
-  console.log(props.id, propstoweather(props.weather), propstooccasion(props.occasion));
-
   const propagate = {
     id: props.id,
     text: props.text,
@@ -105,8 +77,8 @@ function ClothingItem(props) {
           update: true,
           clothName : null,
           color : props.color,
-          weather : propstoweather(props.weather),
-          occasion : propstooccasion(props.occasion),
+          weather : props.weather,
+          occasion : props.occasion,
           type : props.type,
           dirty : props.dirty,
           image : props.image,
