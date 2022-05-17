@@ -98,7 +98,7 @@ function addItem(props) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(props),
   };
-  fetch(`http://${API}:${NODEPORT}/update/123/`, requestOptions).then(
+  fetch(`http://${API}:${NODEPORT}/add/123/`, requestOptions).then(
     (response) => {
       if (!response.ok) {
         throw response;
@@ -144,7 +144,7 @@ function AddScreen({ navigation, route }) {
   const [type, setType] = useState();
   const [type_open, setClothPickerOpen] = useState(false);
 
-  const [isEnabled, setIsEnabled] = useState(route.params.dirty == null ? false : route.params.dirty);
+  const [isEnabled, setIsEnabled] = useState(route.params.dirty == null ? false : Boolean(route.params.dirty));
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   const a = React.useContext(ClothesContext);
@@ -454,7 +454,7 @@ function AddScreen({ navigation, route }) {
             </View>
           </TouchableOpacity>
           <Text style={{ marginTop: 15, fontSize: 18, fontWeight: "bold" }}>
-            Add Item to Wardrobe
+            {route.params.update ? "Update Item in Wardrobe" : "Add Item to Wardrobe"}
           </Text>
         </View>
         <ScrollView nestedScrollEnabled={true}>
