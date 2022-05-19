@@ -106,11 +106,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#E8EAED",
   },
   clothsWrapper: {
-    paddingTop: 80,
-    paddingHorizontal: 20,
+    paddingTop: 30,
+    paddingHorizontal: 10,
   },
   items: {
-    marginTop: 30,
+    marginTop: 0,
   },
   writeClothWrapper: {
     position: "absolute",

@@ -12,7 +12,7 @@ function RecommendContainerScreen({navigation, route}){
             <Stack.Screen
                  name="Get"
                  component={FitScreen}
-                options={{ headerShown: false }}
+                 options={{ title: "" }}
             />
 
         </Stack.Navigator>

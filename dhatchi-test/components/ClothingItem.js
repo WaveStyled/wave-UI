@@ -14,9 +14,29 @@ import { ClothesContext } from "../context/AppContext";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { RotateInUpLeft } from "react-native-reanimated";
-
+import {
+  useFonts, 
+  OpenSans_300Light,
+  OpenSans_300Light_Italic,
+  OpenSans_400Regular,
+  OpenSans_400Regular_Italic,
+  OpenSans_600SemiBold,
+  OpenSans_600SemiBold_Italic,
+  OpenSans_700Bold,
+  OpenSans_700Bold_Italic,
+  OpenSans_800ExtraBold,
+  OpenSans_800ExtraBold_Italic 
+} from '@expo-google-fonts/open-sans'
+import Spinner from "react-native-loading-spinner-overlay";
 
 function ClothingItem(props) {
+
+  let[fontsLoaded, error] = useFonts({
+    "OpenSans":OpenSans_400Regular,
+  });
+  if (!fontsLoaded) {
+    <Spinner/>
+  }
   const a = React.useContext(ClothesContext);
 
   const deleteItem = (key, set) => {
@@ -93,7 +113,7 @@ function ClothingItem(props) {
           <View style={styles.itemLeft}>
             <View style={styles.container}>
               <Image
-                style={{ width: 80, height: 100 }}
+                style={{ width: 100, height: 100 }}
                 source={{ uri: "data:image/jpeg;base64," + props.image }}
               />
             </View>
@@ -159,6 +179,7 @@ const styles = StyleSheet.create({
   itemText: {
     maxWidth: "50%",
     paddingLeft: 15,
+    fontFamily: 'OpenSans',
   },
   itemSanitary: {
     fontWeight: "bold",
