@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add GlobalStyle
+  /usr/local/bin/node /usr/local/bin/yarnpkg add @expo-google-fonts/open-sans
 
 PATH: 
-  /Library/Frameworks/Python.framework/Versions/3.9/bin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/usr/local/mongodb/bin:/usr/local/mongodb/bin
+  /Library/Frameworks/Python.framework/Versions/3.9/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
 
 Yarn version: 
   1.22.18
@@ -14,17 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/GlobalStyle: Not found
-      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66138:18)
-      at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140883:22)
-      at Request.emit (node:events:526:28)
-      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141855:10)
-      at Request.emit (node:events:526:28)
-      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141777:12)
-      at Object.onceWrapper (node:events:645:28)
-      at IncomingMessage.emit (node:events:538:35)
-      at endReadableNT (node:internal/streams/readable:1345:12)
-      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+  Error: EACCES: permission denied, mkdir '/Users/sanjay/Desktop/Desktop - sri-e15/WaveStyledRepos/wave-UI/dhatchi-test/node_modules/@babel/core/node_modules/debug'
 
 npm manifest: 
   {
@@ -39,6 +29,7 @@ npm manifest:
       "eject": "expo eject"
     },
     "dependencies": {
+      "@expo-google-fonts/open-sans": "^0.2.2",
       "@expo/vector-icons": "^12.0.0",
       "@react-native-community/masked-view": "^0.1.11",
       "@react-navigation/bottom-tabs": "^6.3.1",
@@ -60,6 +51,7 @@ npm manifest:
       "react-native-dropdown-picker": "^5.4.0",
       "react-native-gesture-handler": "~2.1.0",
       "react-native-image-crop-picker": "^0.37.3",
+      "react-native-loading-spinner-overlay": "^3.0.0",
       "react-native-multiple-select": "^0.5.7",
       "react-native-paper": "^4.12.1",
       "react-native-picker-select": "^8.0.4",
@@ -79,7 +71,12 @@ npm manifest:
       "@types/react-native": "~0.64.12",
       "typescript": "~4.3.5"
     },
-    "private": true
+    "private": true,
+    "rnpm": {
+      "assets": [
+        "./assets/fonts/"
+      ]
+    }
   }
 
 yarn manifest: 
@@ -1157,6 +1154,11 @@ Lockfile:
     dependencies:
       "@types/hammerjs" "^2.0.36"
   
+  "@expo-google-fonts/open-sans@^0.2.2":
+    "integrity" "sha512-jITtlGDb5QZ3O8W70eqvGki7+tYGQ/+pPEv58RM7n5QQ6xXJPXumE4KnjDClEvEQ2zZYzVlVo6InqARIgEf1Kg=="
+    "resolved" "https://registry.npmjs.org/@expo-google-fonts/open-sans/-/open-sans-0.2.2.tgz"
+    "version" "0.2.2"
+  
   "@expo/config-plugins@^4.0.2", "@expo/config-plugins@4.0.6":
     "integrity" "sha512-K/KQaw/CU8uLQgk7sFnZC54YGHoGucKFfdjYeZx5ds2eyzbuMAiKzGFcxZ/S+1dVBZ8QHzwowsVBW3kuYhnQ3Q=="
     "resolved" "https://registry.npmjs.org/@expo/config-plugins/-/config-plugins-4.0.6.tgz"
@@ -1438,13 +1440,6 @@ Lockfile:
     "integrity" "sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw=="
     "resolved" "https://registry.npmjs.org/@react-native-community/masked-view/-/masked-view-0.1.11.tgz"
     "version" "0.1.11"
-  
-  "@react-native-community/push-notification-ios@^1.10.1":
-    "integrity" "sha512-k6bZWUKLif4GjenyTD3aQLwA2VT3bNmt22INO/34lexnpmqkPDZF7nreqbckTHG0Zso9wDTe4N/AZJUC/d8iRg=="
-    "resolved" "https://registry.npmjs.org/@react-native-community/push-notification-ios/-/push-notification-ios-1.10.1.tgz"
-    "version" "1.10.1"
-    dependencies:
-      "invariant" "^2.2.4"
   
   "@react-native-picker/picker@^1.8.3":
     "integrity" "sha512-pacdQDX6V6EmjF+HoiIh6u++qx4mTK0WnhgUHRc01B+Qt5eoeUwseBqmqfTSXTx/aHDEd6PiIw7UGvKgFoqgFQ=="
@@ -4799,6 +4794,11 @@ Lockfile:
     "resolved" "https://registry.npmjs.org/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz"
     "version" "1.3.1"
   
+  "react-native-loading-spinner-overlay@^3.0.0":
+    "integrity" "sha512-SmRCmfY795/Jxm9JHoyE0I6ry9uBT7m/RYAPNm0vlfZr9dz39HlzIt4h0MvcZvgSmUjEkHm6DzWnuWSO1yKr4A=="
+    "resolved" "https://registry.npmjs.org/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-3.0.0.tgz"
+    "version" "3.0.0"
+  
   "react-native-multiple-select@^0.5.7":
     "integrity" "sha512-scVCrOKwGacOYspWa8aINoe+cmMHc5yEMERThUXa04P9VNFWsq9NoQEwLKI+cCXPhe+VMg0+NsoLIhUGTn69fg=="
     "resolved" "https://registry.npmjs.org/react-native-multiple-select/-/react-native-multiple-select-0.5.7.tgz"
@@ -4887,7 +4887,7 @@ Lockfile:
       "normalize-css-color" "^1.0.2"
       "prop-types" "^15.6.0"
   
-  "react-native@*", "react-native@^0.49.1", "react-native@>=0.33", "react-native@>=0.36", "react-native@>=0.40.0", "react-native@>=0.41.2", "react-native@>=0.42.0", "react-native@>=0.57", "react-native@>=0.58.4", "react-native@>=0.64.0-rc.0 || 0.0.0-*", "react-native@>0.57.0", "react-native@0.64.3":
+  "react-native@*", "react-native@^0.49.1", "react-native@>=0.33", "react-native@>=0.36", "react-native@>=0.40.0", "react-native@>=0.41.2", "react-native@>=0.42.0", "react-native@>=0.57", "react-native@>=0.64.0-rc.0 || 0.0.0-*", "react-native@>0.57.0", "react-native@0.64.3":
     "integrity" "sha512-2OEU74U0Ek1/WeBzPbg6XDsCfjF/9fhrNX/5TFgEiBKd5mNc9LOZ/OlMmkb7iues/ZZ/oc51SbEfLRQdcW0fVw=="
     "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.64.3.tgz"
     "version" "0.64.3"
@@ -4930,7 +4930,7 @@ Lockfile:
     "resolved" "https://registry.npmjs.org/react-refresh/-/react-refresh-0.4.3.tgz"
     "version" "0.4.3"
   
-  "react@*", "react@^16.0.0-beta.5", "react@^17.0.0", "react@^18.0.0", "react@>=16.0", "react@>=16.0.0", "react@>=16.3.0", "react@>=16.6.3", "react@>=17.0.1", "react@>16.6.0", "react@16 || 17", "react@17.0.1":
+  "react@*", "react@^16.0.0-beta.5", "react@^17.0.0", "react@^18.0.0", "react@>=16.0", "react@>=16.0.0", "react@>=16.3.0", "react@>=17.0.1", "react@>16.6.0", "react@16 || 17", "react@17.0.1":
     "integrity" "sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w=="
     "resolved" "https://registry.npmjs.org/react/-/react-17.0.1.tgz"
     "version" "17.0.1"
