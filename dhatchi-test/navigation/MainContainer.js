@@ -2,28 +2,50 @@ import * as React from "react";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Button } from "react-native";
-//import { useState, useEffect } from 'react';
-// Screens
-
-import RecommendScreen from "./screens/RecommendContainerScreen";
-import CalibrateScreen from "./screens/CalibrateContainerScreen";
-//import HomeScreen from './screens/HomeScreen';
-import HomeContainerScreen from "./screens/HomeContainerScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AuthScreen from "./screens/login/AuthScreen";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-//Screen names
+import RecommendScreen from "./screens/RecommendContainerScreen";
+import CalibrateScreen from "./screens/CalibrateContainerScreen";
+import HomeContainerScreen from "./screens/HomeContainerScreen";
+
+import { ClothesContext } from "../context/AppContext";
+import { UserContext } from "../context/UserIDContext";
+import { API, NODEPORT } from "../context/API";
 
 const homeName = "Home";
 const RecommendName = "Recommend";
 const CalibrateName = "Calibrate";
-const addName = "Add Item";
-const Tab = createMaterialBottomTabNavigator();
 
+const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+function getWardrobe(set, userid) {
+  const requestOptions = {
+    method: "GET",
+  };
+  fetch(`http://${API}:${NODEPORT}/startup/${userid}/`, { method: "PUT" }).then(
+    (response) => {
+      if (!response.ok) {
+        throw response;
+      }
+      return response.json();
+    }
+  );
+  fetch(`http://${API}:${NODEPORT}/wardrobe/${userid}`, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw response;
+      }
+      return response.json();
+    })
+    .then((json) => {
+      set(json);
+    });
+}
+
 function addHeaderButton(navigation) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -86,24 +108,34 @@ function HomeTabs({ state, descriptors, navigation, route }) {
 }
 
 function MainContainer({ route, navigation }) {
+  const id = route.params.id
+  const [wardrobeContext, setWardrobeContext] = React.useState([]);
+  const [userid, setuserid] = React.useState(id);
+  React.useEffect(() => {
+    getWardrobe(setWardrobeContext, id);
+  }, []);
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name={"HomeScreen"}
-        component={HomeTabs}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name={"RecommendScreen"}
-        component={HomeTabs}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name={"CalibrateScreen"}
-        component={HomeTabs}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
+    <UserContext.Provider value={userid}>
+      <ClothesContext.Provider value={wardrobeContext}>
+        <Stack.Navigator>
+          <Stack.Screen
+            name={"HomeScreen"}
+            component={HomeTabs}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={"RecommendScreen"}
+            component={HomeTabs}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={"CalibrateScreen"}
+            component={HomeTabs}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </ClothesContext.Provider>
+    </UserContext.Provider>
   );
 }
 

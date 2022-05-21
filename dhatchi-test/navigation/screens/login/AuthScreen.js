@@ -100,7 +100,7 @@ function AuthScreen({ route, navigation }) {
           <Text style={styles.heading}> {isLogin ? "Login" : "Signup"} </Text>
           <View style={{ marginVertical: 20 }}>
             <Button
-              onPress={() => navigation.navigate("MainApp")}
+              onPress={() => navigation.navigate("MainApp", {id : 123})}
               title="TestButtons"
             />
           </View>

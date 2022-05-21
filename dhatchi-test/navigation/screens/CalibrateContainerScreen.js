@@ -3,8 +3,6 @@ import CalibrateScreen from "../screens/CalibrateScreenComponents/CalibrateScree
 import CalibrateSwipe from "../screens/CalibrateScreenComponents/CalibrateSwipe";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-
-
 function CalibrateContainerScreen({ navigation, route }) {
   const Stack = createNativeStackNavigator();
 

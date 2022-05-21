@@ -1,36 +1,18 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import { API, NODEPORT } from "../../../context/API";
-
-function getFits(set) {
-  fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, { method: "PUT" })
-    .then((response) => {
-      if (!response.ok) {
-        throw response;
-      }
-      return response.json();
-    })
-    .then((json) => {
-      set(json);
-    });
-}
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {UserContext} from '../../../context/UserIDContext'
+import { getFits } from "./CalibrateUtils/CalibrateFetches";
 
 export default function SettingsScreen({ navigation }) {
+  const uid = React.useContext(UserContext);
+
   const [preloadFits, setFits] = React.useState([
     [[], []],
     [[], []],
   ]);
 
   React.useEffect(() => {
-    getFits(setFits);
+    getFits(setFits, uid);
   }, []);
 
   const getCalibration = () => {
@@ -157,14 +139,3 @@ const styles = StyleSheet.create({
   },
 });
 
-const styles_multi = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#F5FCFF",
-  },
-  multiSelectContainer: {
-    height: "20%",
-    width: "80%",
-  },
-});

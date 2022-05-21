@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Image,
   StatusBar,
   StyleSheet,
   Text,
@@ -10,17 +9,21 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import data from "./data";
 import Swiper from "react-native-deck-swiper";
-import { Transitioning, Transition, set } from "react-native-reanimated";
+import { Transitioning, Transition } from "react-native-reanimated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { API, NODEPORT } from "../../../context/API";
 import { ClothesContext } from "../../../context/AppContext";
-const { width } = Dimensions.get("window");
-import type_mapping from "../../../components/type_mapping";
-import weather_mapping from "../../../components/weather_mapping";
-import occasion_mapping from "../../../components/occasion_mapping";
+import { UserContext } from "../../../context/UserIDContext";
 
+import {
+  getFits,
+  fetchEndCalibration,
+  fetchRecommenderTrain,
+  IDtoJSX,
+} from "./CalibrateUtils/CalibrateFetches";
+import { Card } from "./CalibrateUtils/OutfitRender";
+
+const { width } = Dimensions.get("window");
 
 const stackSize = 4;
 const colors = {
@@ -59,37 +62,9 @@ const transition = (
 const swiperRef = React.createRef();
 const transitionRef = React.createRef();
 
-function getFits(set, old_state) {
- fetch(`http://${API}:${NODEPORT}/start_calibrate/123/5/`, {
-    method: "PUT",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw response;
-      }
-      return response.json();
-    })
-    .then((json) => {
-      set(json);
-    });
-}
-
-function IDtoJSX(ids, a) {
-  maps = [];
-  ids.forEach(function (item, i) {
-    var keys = item.filter((value) => value !== 0);
-    //console.log(keys);
-    const test = keys.map(function (value) {
-      var val = a.find((element) => element.pieceid === value);
-      return val;
-    });
-    maps.push(test);
-  });
-  return maps;
-}
-
 export default function App({ route, navigation }) {
   const a = React.useContext(ClothesContext);
+  const uid = React.useContext(UserContext);
 
   const [index, setIndex] = React.useState(0);
   const [fits, setFits] = React.useState(route.params.initial);
@@ -107,7 +82,7 @@ export default function App({ route, navigation }) {
     console.log("HAPPENS");
     if (!loaded) {
       console.log("UPDATE");
-      getFits(setFits, fits);
+      getFits(setFits, uid);
     } else {
       console.log("HERE");
       setLoad(false);
@@ -144,31 +119,6 @@ export default function App({ route, navigation }) {
     });
   });
 
-  const Card = ({ card }) => {
-    var outfit;
-    if (card != null) {
-      outfit = card.map((value, idx) => (
-        <View key={idx} style={styles.item}>
-          <View style={styles.itemLeft}>
-            <View style={styles.cardImage}>
-              {/* <View key={idx} style={styles.cardImage}> */}
-              <Image
-                style={{ width: 80, height: 80 }}
-                source={{ uri: "data:image/jpeg;base64," + value.image }}
-              />
-              {/* </View> */}
-            </View>
-            <Text key={idx} style={styles.itemText}>
-              {type_mapping[value.type] + " " + value.color}
-            </Text>
-          </View>
-        </View>
-      ));
-    }
-
-    return <View style={styles.card}>{outfit}</View>;
-  };
-
   const CardDetails = ({ index }) => (
     <View key={testing[index].pieceid} style={{ alignItems: "center" }}>
       <Text style={[styles.text, styles.heading]} numberOfLines={2}>
@@ -185,30 +135,16 @@ export default function App({ route, navigation }) {
     setIndex(0);
     setLikes([]);
     var send = [];
-    send.push(likes.slice(0, index+1));
-    send.push(fits[0].slice(0, index+1));
-    send.push(fits[1].slice(0, index+1));
+    send.push(likes.slice(0, index + 1));
+    send.push(fits[0].slice(0, index + 1));
+    send.push(fits[1].slice(0, index + 1));
 
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(send),
-    };
-    // End Calibrate, getFits(), reset index, set proper variables
-    fetch(`http://${API}:${NODEPORT}/end_calibrate/123/`, requestOptions).then(
-      (response) => {
-        if (!response.ok) {
-          throw response;
-        }
-        console.log(response);
-      }
-    );
+    fetchEndCalibration(send, uid);
   };
 
   const onSwipedLeft = () => {
     transitionRef.current.animateNextTransition();
     console.log("Left");
-
 
     var x = likes;
     x.push(0);
@@ -242,35 +178,12 @@ export default function App({ route, navigation }) {
 
   const endCalibration = () => {
     var send = [];
-    send.push(likes.slice(0,index));
+    send.push(likes.slice(0, index));
     send.push(fits[0].slice(0, index));
     send.push(fits[1].slice(0, index));
 
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(send),
-    };
-    // End Calibrate, getFits(), reset index, set proper variables
-    fetch(`http://${API}:${NODEPORT}/end_calibrate/123/`, requestOptions).then(
-      (response) => {
-        if (!response.ok) {
-          throw response;
-        }
-        return response;
-      }
-    );
-
-    const trainOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-    }
-    fetch(`http://${API}:${NODEPORT}/recommender_train/123/`, trainOptions).then((response) => {
-      if (!response.ok) {
-        throw response;
-      }
-      return response;
-    });
+    fetchEndCalibration(send, uid);
+    fetchRecommenderTrain(uid);
 
     navigation.navigate("Screening");
   };
@@ -415,22 +328,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
-  cardImage: {
-    width: 160,
-    flex: 1,
-    resizeMode: "contain",
-  },
-  card: {
-    flex: 0.45,
-    borderRadius: 8,
-    shadowRadius: 25,
-    shadowColor: colors.black,
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 0 },
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.white,
-  },
   text: {
     textAlign: "center",
     fontSize: 50,
@@ -444,18 +341,6 @@ const styles = StyleSheet.create({
   },
   heading: { fontSize: 24, marginBottom: 10, color: colors.gray },
   price: { color: colors.blue, fontSize: 32, fontWeight: "500" },
-  item: {
-    backgroundColor: "#FFF",
-    borderRadius: 7,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  itemLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flexWrap: "wrap",
-  },
   itemText: {
     maxWidth: "80%",
   },
