@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import weather from "../../../components/Weathers";
 import occasion from "../../../components/Occasions";
-import { API, NODEPORT } from "../../../context/API";
 import Spinner from "react-native-loading-spinner-overlay";
+import { UserContext } from "../../../context/UserIDContext";
+import { getRecommendations } from "../../utils/Fetches";
 
 occasion_mapping = {
   FF: "oc_formal",
@@ -23,25 +24,8 @@ weather_mapping = {
   T: "we_typical",
 };
 
-function initial_recommend(occasion, weather, set) {
-  return fetch(
-    `http://${API}:${NODEPORT}/recommend/123/${occasion}/${weather}`,
-    {
-      method: "PUT",
-    }
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw response;
-      }
-      return response.json();
-    })
-    .then((json) => {
-      set(json);
-    });
-}
-
 function DetailsScreen({ navigation }) {
+  const uid = React.useContext(UserContext);
   const [weatherSelected, setWeatherItem] = React.useState([]);
   const [weather_picker_open, setWeatherPickerOpen] = React.useState(false);
   const [weat, setItems] = React.useState(weather);
@@ -80,10 +64,11 @@ function DetailsScreen({ navigation }) {
       weather_mapping[weatherSelected]
     );
     Load(true);
-    initial_recommend(
+    getRecommendations(
       occasion_mapping[occasionSelected],
       weather_mapping[weatherSelected],
-      setInitial
+      setInitial,
+      uid
     );
   };
 

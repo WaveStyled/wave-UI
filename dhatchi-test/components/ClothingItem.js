@@ -11,9 +11,8 @@ import "react-native-gesture-handler";
 import { Swipeable } from "react-native-gesture-handler";
 import { API, NODEPORT } from "../context/API";
 import { ClothesContext } from "../context/AppContext";
-import { useRoute } from "@react-navigation/native";
+import { UserContext } from "../context/UserIDContext";
 import { useNavigation } from "@react-navigation/native";
-import { RotateInUpLeft } from "react-native-reanimated";
 import {
   useFonts, 
   OpenSans_300Light,
@@ -38,6 +37,7 @@ function ClothingItem(props) {
     <Spinner/>
   }
   const a = React.useContext(ClothesContext);
+  const uid = React.useContext(UserContext);
 
   const deleteItem = (key, set) => {
     to_del = a.findIndex((item) => item.pieceid === key);
@@ -47,7 +47,7 @@ function ClothingItem(props) {
       method: "POST",
     };
 
-    fetch(`http://${API}:${NODEPORT}/delete/123/` + key, requestOptions)
+    fetch(`http://${API}:${NODEPORT}/delete/${uid}/` + key, requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw response;
@@ -82,13 +82,6 @@ function ClothingItem(props) {
   };
 
   const navigation = useNavigation();
-
-  const propagate = {
-    id: props.id,
-    text: props.text,
-    date: props.date,
-    image: props.image,
-  };
 
   return (
     <TouchableOpacity

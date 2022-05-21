@@ -1,48 +1,37 @@
 import * as React from "react";
-import { View, Text, StyleSheet, ScrollView, Button, TouchableOpacity } from "react-native";
+import { View, StyleSheet, ScrollView, Button } from "react-native";
 
-import AddScreen from "./AddScreen";
-//import { ClothesContext} from '../../App';
 import ClothingItem from "../../../components/ClothingItem";
-import { useRoute } from "@react-navigation/native";
 import { ClothesContext } from "../../../context/AppContext";
-import { API, NODEPORT } from "../../../context/API";
 import type_mapping from "../../../components/type_mapping";
-
-
-
-
-function get(set) {
-  const requestOptions = {
-    method: "GET",
-  };
-  fetch(`http://${API}:${NODEPORT}/wardrobe`, requestOptions)
-    .then((response) => {
-      if (!response.ok) {
-        throw response;
-      }
-      return response.json();
-    })
-    .then((json) => {
-      set(json);
-    });
-}
 
 function update(json, set) {
   var list;
-  var typeconvert;
   if (Object.keys(json).length !== 0) {
     list = json.map((clothes) => (
       <ClothingItem
         key={clothes.pieceid}
         id={clothes.pieceid}
-        text= { type_mapping[clothes.type]   + " " + clothes.color}
+        text={type_mapping[clothes.type] + " " + clothes.color}
         update={set}
         image={clothes.image}
         dirty={clothes.dirty}
         color={clothes.color}
-        weather={[clothes.we_cold, clothes.we_hot, clothes.we_rainy, clothes.we_snowy, clothes.we_avg_tmp]}
-        occasion={[clothes.oc_formal, clothes.oc_semi_formal, clothes.oc_casual, clothes.oc_workout, clothes.oc_outdoors, clothes.oc_comfy]}
+        weather={[
+          clothes.we_cold,
+          clothes.we_hot,
+          clothes.we_rainy,
+          clothes.we_snowy,
+          clothes.we_avg_tmp,
+        ]}
+        occasion={[
+          clothes.oc_formal,
+          clothes.oc_semi_formal,
+          clothes.oc_casual,
+          clothes.oc_workout,
+          clothes.oc_outdoors,
+          clothes.oc_comfy,
+        ]}
         type={clothes.type}
       />
     ));
@@ -54,7 +43,10 @@ function addHeaderButton(navigation) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button onPress={() => navigation.navigate("Add", {update : false})} title="Add Item" />
+        <Button
+          onPress={() => navigation.navigate("Add", { update: false })}
+          title="Add Item"
+        />
       ),
     });
   });
@@ -64,17 +56,18 @@ export default function HomeScreen({ navigation, route }) {
   var context = React.useContext(ClothesContext);
   const [wd, setWd] = React.useState(context);
 
-
   const x = wd;
-  const updateWD = React.useCallback((val) => {
-    setWd(val);
-    update(wd, updateWD);
-  }, [wd]);
+  const updateWD = React.useCallback(
+    (val) => {
+      setWd(val);
+      update(wd, updateWD);
+    },
+    [wd]
+  );
 
-
-  if (wd.length !== context.length){
-     setWd(context);
-   }
+  if (wd.length !== context.length) {
+    setWd(context);
+  }
 
   const value = update(x, updateWD);
 
@@ -90,9 +83,7 @@ export default function HomeScreen({ navigation, route }) {
       >
         <View style={styles.clothsWrapper}>
           {/* <TouchableOpacity onPress={() => navigation.navigate("Details")}> */}
-          <View style={styles.items}>
-            {value != null ? value : true}
-          </View>
+          <View style={styles.items}>{value != null ? value : true}</View>
           {/* </TouchableOpacity> */}
         </View>
       </ScrollView>

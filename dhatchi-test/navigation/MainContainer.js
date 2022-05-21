@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Button } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
@@ -44,14 +43,6 @@ function getWardrobe(set, userid) {
     .then((json) => {
       set(json);
     });
-}
-
-function addHeaderButton(navigation) {
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <Button onPress={() => 0} title="Add Item" />,
-    });
-  });
 }
 
 function HomeTabs({ state, descriptors, navigation, route }) {

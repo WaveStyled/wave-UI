@@ -15,15 +15,15 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ClothesContext } from "../../../context/AppContext";
 import { UserContext } from "../../../context/UserIDContext";
 
-import { transition } from "./CalibrateUtils/SwiperTransition";
+import { transition } from "../../utils/SwiperTransition";
 
 import {
   getFits,
   fetchEndCalibration,
   fetchRecommenderTrain,
   IDtoJSX,
-} from "./CalibrateUtils/CalibrateFetches";
-import { Card } from "./CalibrateUtils/OutfitRender";
+} from "../../utils/Fetches";
+import { Card } from "../../utils/OutfitRender";
 
 const { width } = Dimensions.get("window");
 
@@ -97,16 +97,6 @@ export default function App({ route, navigation }) {
     });
   });
 
-  const CardDetails = ({ index }) => (
-    <View key={testing[index].pieceid} style={{ alignItems: "center" }}>
-      <Text style={[styles.text, styles.heading]} numberOfLines={2}>
-        <Text style={[styles.text, styles.price]}>
-          {fits[0][index].toString()}
-        </Text>
-      </Text>
-    </View>
-  );
-
   const refreshBuffer = () => {
     setChange(!change);
     setLoad(false);
@@ -149,6 +139,7 @@ export default function App({ route, navigation }) {
       refreshBuffer();
     } else {
       var y = fits;
+      
       setOccasion(y[1][index][0]);
       setWeather(y[1][index][1]);
     }

@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Image,
   StatusBar,
   StyleSheet,
   Text,
@@ -11,14 +10,22 @@ import {
 } from "react-native";
 
 import Swiper from "react-native-deck-swiper";
-import { Transitioning, Transition, set } from "react-native-reanimated";
+import { Transitioning } from "react-native-reanimated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { API, NODEPORT } from "../../../context/API";
 import { ClothesContext } from "../../../context/AppContext";
-import { DataTable } from "react-native-paper";
+import { UserContext } from "../../../context/UserIDContext";
+import { transition } from "../../utils/SwiperTransition";
+import {
+  IDtoJSX,
+  fetchEndCalibration,
+  fetchRecommenderTrain,
+  OOTD,
+  getRecommendations,
+} from "../../utils/Fetches";
+import { Card } from "../../utils/OutfitRender";
+
 const { width } = Dimensions.get("window");
 
-const stackSize = 4;
 const colors = {
   red: "#EC2379",
   blue: "#0070FF",
@@ -27,75 +34,20 @@ const colors = {
   black: "#000000",
   green: "green",
 };
-const ANIMATION_DURATION = 200;
-
-const transition = (
-  <Transition.Sequence>
-    <Transition.Out
-      type="slide-bottom"
-      durationMs={ANIMATION_DURATION}
-      interpolation="easeIn"
-    />
-    <Transition.Together>
-      <Transition.In
-        type="fade"
-        durationMs={ANIMATION_DURATION}
-        delayMs={ANIMATION_DURATION / 2}
-      />
-      <Transition.In
-        type="slide-bottom"
-        durationMs={ANIMATION_DURATION}
-        delayMs={ANIMATION_DURATION / 2}
-        interpolation="easeOut"
-      />
-    </Transition.Together>
-  </Transition.Sequence>
-);
 
 const swiperRef = React.createRef();
 const transitionRef = React.createRef();
 
-function getRecommendations(occasion, weather, set) {
-  return fetch(
-    `http://${API}:${NODEPORT}/recommend/123/${occasion}/${weather}`,
-    {
-      method: "PUT",
-    }
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw response;
-      }
-      return response.json();
-    })
-    .then((json) => {
-      console.log("BUH", json);
-      set(json);
-    });
-}
-
-function IDtoJSX(ids, a) {
-  maps = [];
-  ids.forEach(function (item, i) {
-    var keys = item.filter((value) => value !== 0);
-    const test = keys.map(function (value) {
-      var val = a.find((element) => element.pieceid === value);
-      return val;
-    });
-    maps.push(test);
-  });
-  return maps;
-}
-
 export default function App({ route, navigation }) {
   const a = React.useContext(ClothesContext);
+  const uid = React.useContext(UserContext);
 
   const [index, setIndex] = React.useState(0);
   const [fits, setFits] = React.useState(route.params.initial);
   const [likes, setLikes] = React.useState([]);
 
-  const [curWeather,] = React.useState(route.params.weather);
-  const [curOccasion,] = React.useState(route.params.occasion);
+  const [curWeather] = React.useState(route.params.weather);
+  const [curOccasion] = React.useState(route.params.occasion);
 
   const [change, setChange] = React.useState(false); // this determines whether the fits need to be fetched again
   const [testing, setOutfits] = React.useState(
@@ -104,12 +56,9 @@ export default function App({ route, navigation }) {
   const [loaded, setLoad] = React.useState(true);
 
   React.useEffect(() => {
-    console.log("HAPPENS");
     if (!loaded) {
-      console.log("UPDATE");
-      getRecommendations(curOccasion, curWeather, setFits);
+      getRecommendations(curOccasion, curWeather, setFits, uid);
     } else {
-      console.log("HERE");
       setLoad(false);
     }
   }, [change]);
@@ -141,41 +90,6 @@ export default function App({ route, navigation }) {
     });
   });
 
-  const Card = ({ card }) => {
-    var outfit;
-    if (card != null) {
-      outfit = card.map((value, idx) => (
-        <View key={idx} style={styles.item}>
-          <View style={styles.itemLeft}>
-            <View style={styles.cardImage}>
-              {/* <View key={idx} style={styles.cardImage}> */}
-              <Image
-                style={{ width: 80, height: 80 }}
-                source={{ uri: "data:image/jpeg;base64," + value.image }}
-              />
-              {/* </View> */}
-            </View>
-            <Text key={idx} style={styles.itemText}>
-              {value.type + " " + value.color}
-            </Text>
-          </View>
-        </View>
-      ));
-    }
-
-    return <View style={styles.card}>{outfit}</View>;
-  };
-
-  const CardDetails = ({ index }) => (
-    <View key={testing[index].pieceid} style={{ alignItems: "center" }}>
-      <Text style={[styles.text, styles.heading]} numberOfLines={2}>
-        <Text style={[styles.text, styles.price]}>
-          {fits[0][index].toString()}
-        </Text>
-      </Text>
-    </View>
-  );
-
   const refreshBuffer = () => {
     setChange(!change);
     setLoad(false);
@@ -185,25 +99,10 @@ export default function App({ route, navigation }) {
     send.push(likes.slice(0, index));
     send.push(fits.slice(0, index));
 
-    var w_o_vals = fits.map((_) => [curOccasion, curWeather])
+    var w_o_vals = fits.map((_) => [curOccasion, curWeather]);
     send.push(w_o_vals.slice(0, index));
 
-    console.log(send);
-
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(send),
-    };
-    // End Calibrate, getFits(), reset index, set proper variables
-    fetch(`http://${API}:${NODEPORT}/end_calibrate/123/`, requestOptions).then(
-      (response) => {
-        if (!response.ok) {
-          throw response;
-        }
-        console.log(response);
-      }
-    );
+    fetchEndCalibration(send, uid);
   };
 
   const onSwipedLeft = () => {
@@ -237,37 +136,13 @@ export default function App({ route, navigation }) {
     send.push(likes.slice(0, index));
     send.push(fits.slice(0, index));
 
-    var w_o_vals = fits.map(function(_) {return [curOccasion, curWeather]})
+    var w_o_vals = fits.map(function (_) {
+      return [curOccasion, curWeather];
+    });
     send.push(w_o_vals.slice(0, index));
 
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(send),
-    };
-    // End Calibrate, getFits(), reset index, set proper variables
-    fetch(`http://${API}:${NODEPORT}/end_calibrate/123/`, requestOptions).then(
-      (response) => {
-        if (!response.ok) {
-          throw response;
-        }
-        return response;
-      }
-    );
-
-    const trainOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-    };
-    fetch(
-      `http://${API}:${NODEPORT}/recommender_train/123/`,
-      trainOptions
-    ).then((response) => {
-      if (!response.ok) {
-        throw response;
-      }
-      return response;
-    });
+    fetchEndCalibration(send, uid);
+    fetchRecommenderTrain(uid);
 
     navigation.navigate("RecommendMain");
   };
@@ -275,25 +150,11 @@ export default function App({ route, navigation }) {
   const chooseOutfit = () => {
     // outfit selection logic here
     var data = {
-      outfit : fits[index],
-      weather : curWeather,
-      occasion : curOccasion,
-    }
-    const chooseOutfit = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      outfit: fits[index],
+      weather: curWeather,
+      occasion: curOccasion,
     };
-    fetch(
-      `http://${API}:${NODEPORT}/OOTD/123/`,
-      chooseOutfit
-    ).then((response) => {
-      if (!response.ok) {
-        throw response;
-      }
-      return response;
-    });
-
+    OOTD(data, uid);
   };
 
   return (
@@ -414,7 +275,8 @@ export default function App({ route, navigation }) {
             activeOpacity={0.3}
             color={colors.green}
             onPress={() => {
-              swiperRef.current.swipeRight();            }}
+              swiperRef.current.swipeRight();
+            }}
           />
         </View>
         <View style={styles.bottomContainerButtons}>
@@ -506,13 +368,13 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "bold",
     color: "white",
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   panelButtonTitle2: {
     fontSize: 17,
     fontWeight: "bold",
     color: "black",
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   commandButton: {
     padding: 10,

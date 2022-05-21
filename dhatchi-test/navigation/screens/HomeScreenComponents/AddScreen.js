@@ -1,16 +1,16 @@
-   import "react-native-gesture-handler";
+import "react-native-gesture-handler";
 import React, { useState } from "react";
 import {
   View,
   ScrollView,
   Text,
-  Image,
   TouchableOpacity,
   ImageBackground,
   TextInput,
   StyleSheet,
   Switch,
 } from "react-native";
+
 import { useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -18,19 +18,18 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
 import * as ImagePicker from "expo-image-picker";
-import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
+import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
 import { Platform } from "react-native-web";
 
 import clothingItems from "../../../components/Items";
-// import { ColorWheel } from 'react-native-color-wheel';
-import ColorWheel_modified from "./AddComponents/ColorWheel_modified";
-import ratings from "../../../components/Ratings";
 import weather from "../../../components/Weathers";
 import occasion from "../../../components/Occasions";
 import DropDownPicker from "react-native-dropdown-picker";
 import { ClothesContext } from "../../../context/AppContext";
-import { API, NODEPORT } from "../../../context/API";
-//import RNFS from 'react-native-fs';
+import { UserContext } from "../../../context/UserIDContext";
+
+import { addItem, updateItem } from "../../utils/Fetches";
+
 
 const occasion_mapping = {
   FF: 0,
@@ -49,7 +48,7 @@ const weather_mapping = {
   T: 4,
 };
 
-function propstoweather(p){
+function propstoweather(p) {
   const weat_map = ["C", "H", "R", "N", "T"];
   w = p.map(function (value, index) {
     if (value) {
@@ -61,7 +60,7 @@ function propstoweather(p){
   return w.filter((element) => element !== false);
 }
 
-function propstooccasion(p){
+function propstooccasion(p) {
   const occ_map = ["FF", "SF", "CS", "WK", "BD", "LZ"];
   o = p.map(function (value, index) {
     if (value) {
@@ -72,7 +71,6 @@ function propstooccasion(p){
   });
   return o.filter((element) => element !== false);
 }
-
 
 function mapOccasionToBin(ocs) {
   (arr = []).length = occasion.length;
@@ -92,42 +90,10 @@ function mapWeatherToBin(we) {
   return arr;
 }
 
-function addItem(props) {
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(props),
-  };
-  fetch(`http://${API}:${NODEPORT}/add/123/`, requestOptions).then(
-    (response) => {
-      if (!response.ok) {
-        throw response;
-      }
-    }
-  );
-  return true;
-}
-
-function updateItem(props){
-  const requestOptions2 = {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(props),
-  };
-  fetch(`http://${API}:${NODEPORT}/change/123/`, requestOptions2).then(
-    (response) => {
-      if (!response.ok) {
-        throw response;
-      }
-    }
-  );
-  return true;
-}
-
-//import ImageCropPicker from 'react-native-image-crop-picker';
-
 function AddScreen({ navigation, route }) {
   console.log(route.params.weather, route.params.occasion);
+  const uid = React.useContext(UserContext);
+
   const { colors } = useTheme();
   const [clothName, setClothName] = useState();
 
@@ -144,21 +110,22 @@ function AddScreen({ navigation, route }) {
   const [type, setType] = useState();
   const [type_open, setClothPickerOpen] = useState(false);
 
-  const [isEnabled, setIsEnabled] = useState(route.params.dirty == null ? false : Boolean(route.params.dirty));
+  const [isEnabled, setIsEnabled] = useState(
+    route.params.dirty == null ? false : Boolean(route.params.dirty)
+  );
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   const a = React.useContext(ClothesContext);
   const [image, setImage, isDirty, setDirty] = useState(image);
 
-
   React.useEffect(() => {
-    if (route.params.update){
+    if (route.params.update) {
       setWeatherItem(propstoweather(route.params.weather));
       setOccasion(propstooccasion(route.params.occasion));
       setColor(route.params.color);
       setClothName(route.params.clothName);
-      setImage(route.params.image)
-      setType(route.params.type)
+      setImage(route.params.image);
+      setType(route.params.type);
     }
   }, []);
 
@@ -192,14 +159,17 @@ function AddScreen({ navigation, route }) {
   };
 
   const adjustImage = async (im) => {
-    let manipResult = await manipulateAsync(im.uri,
+    let manipResult = await manipulateAsync(
+      im.uri,
       [
-        {resize : {
-          height: 400,
-          width: 400 ,
-        }}
+        {
+          resize: {
+            height: 400,
+            width: 400,
+          },
+        },
       ],
-      { compress: 0, format: SaveFormat.JPEG, base64 : true}
+      { compress: 0, format: SaveFormat.JPEG, base64: true }
     );
     setImage(manipResult.base64);
     return null;
@@ -211,9 +181,9 @@ function AddScreen({ navigation, route }) {
       let image = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [1,1],
+        aspect: [1, 1],
         quality: 0,
-        base64 : true
+        base64: true,
       }).then((image) => {
         if (!image.cancelled) {
           adjustImage(image);
@@ -255,20 +225,6 @@ function AddScreen({ navigation, route }) {
     </View>
   );
 
-  const renderLabel = (label, style) => {
-    return (
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Image
-          style={{ width: 42, height: 42 }}
-          source={{ uri: "https://dummyimage.com/100x100/52c25a/fff&text=S" }}
-        />
-        <View style={{ marginLeft: 10 }}>
-          <Text style={style}>{label}</Text>
-        </View>
-      </View>
-    );
-  };
-
   bs = React.createRef();
   var fall = new Animated.Value(1);
 
@@ -276,8 +232,6 @@ function AddScreen({ navigation, route }) {
     navigation.navigate("Wardrobe", { name: clothName });
   };
 
-  //CHECK: when the save button is clicked, it navigates to the detail screen, and the name/color attribute entered
-  // on the form are displayed on a details screen. Not able to transfer data from pickers yet
   const update_handler = () => {
     console.log("update");
     ws = mapWeatherToBin(weatherSelected);
@@ -302,11 +256,11 @@ function AddScreen({ navigation, route }) {
       WE_SNOWY: ws[3],
       WE_TYPICAL: ws[4],
       DIRTY: isEnabled ? 1 : 0,
-      IMAGE: image
+      IMAGE: image,
     };
 
-    updateItem(toupdate);
-    
+    updateItem(toupdate, uid);
+
     tochange = {
       pieceid: route.params.pieceid,
       color: color,
@@ -326,22 +280,22 @@ function AddScreen({ navigation, route }) {
       we_snowy: ws[3],
       we_typical: ws[4],
       dirty: isEnabled ? 1 : 0,
-      image : image
+      image: image,
     };
 
-    to_change = a.filter((value) => value.pieceid === route.params.pieceid)
+    to_change = a.filter((value) => value.pieceid === route.params.pieceid);
 
-    if (to_change.length > 0){
+    if (to_change.length > 0) {
       a[a.indexOf(to_change[0])] = tochange;
     }
     navigation.navigate("Wardrobe", { name: clothName });
   };
-  
+
   const save_handler = () => {
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
     // console.log(a)
-    if (a.length === 0){
+    if (a.length === 0) {
       id = 0;
     } else {
       id = a[0].pieceid;
@@ -366,9 +320,10 @@ function AddScreen({ navigation, route }) {
       WE_SNOWY: ws[3],
       WE_TYPICAL: ws[4],
       DIRTY: isEnabled ? 1 : 0,
-      IMAGE: image
+      IMAGE: image,
     };
-    addItem(toadd);
+
+    addItem(toadd, uid);
 
     topush = {
       pieceid: id + 1,
@@ -389,11 +344,11 @@ function AddScreen({ navigation, route }) {
       we_snowy: ws[3],
       we_typical: ws[4],
       dirty: isEnabled ? 1 : 0,
-      image : image
+      image: image,
     };
 
     //console.log(toadd);
-    
+
     //console.log(topush);
     a.unshift(topush);
     navigation.navigate("Wardrobe", { name: clothName });
@@ -424,7 +379,7 @@ function AddScreen({ navigation, route }) {
             >
               <ImageBackground
                 source={{
-                  uri : 'data:image/jpeg;base64,' + image,
+                  uri: "data:image/jpeg;base64," + image,
                 }}
                 style={{ height: 100, width: 100 }}
                 imageStyle={{ borderRadius: 15 }}
@@ -454,7 +409,9 @@ function AddScreen({ navigation, route }) {
             </View>
           </TouchableOpacity>
           <Text style={{ marginTop: 15, fontSize: 18, fontWeight: "bold" }}>
-            {route.params.update ? "Update Item in Wardrobe" : "Add Item to Wardrobe"}
+            {route.params.update
+              ? "Update Item in Wardrobe"
+              : "Add Item to Wardrobe"}
           </Text>
         </View>
         <ScrollView nestedScrollEnabled={true}>
@@ -611,30 +568,18 @@ function AddScreen({ navigation, route }) {
             </View>
           </View>
         </ScrollView>
-        <TouchableOpacity style={styles.commandButton} onPress={route.params.update ? update_handler : save_handler}>
-          <Text style={styles.panelButtonTitle}>{route.params.update ? "Update" : "Save"}</Text>
+        <TouchableOpacity
+          style={styles.commandButton}
+          onPress={route.params.update ? update_handler : save_handler}
+        >
+          <Text style={styles.panelButtonTitle}>
+            {route.params.update ? "Update" : "Save"}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 }
-
-const styles2 = StyleSheet.create({
-  //this is for the picker
-  container: {
-    flex: 1,
-    backgroundColor: "black",
-  },
-  inputStyle: {
-    width: "80%",
-    height: 40,
-    paddingHorizontal: 10,
-    borderRadius: 50,
-    backgroundColor: "#cfe2f3",
-    alignItems: "center",
-    fontSize: 200,
-  },
-});
 
 const styles = StyleSheet.create({
   container1: {
@@ -735,13 +680,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     color: "red",
   },
-  actionError: {
-    flexDirection: "row",
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#FF0000",
-    paddingBottom: 5,
-  },
   textInput: {
     flex: 1,
     marginTop: Platform.OS === "ios" ? 0 : -12,
@@ -759,30 +697,6 @@ const styles_multi = StyleSheet.create({
   multiSelectContainer: {
     height: "20%",
     width: "80%",
-  },
-});
-
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 4,
-    color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
-    justifyContent: "center",
-  },
-  inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: "purple",
-    borderRadius: 8,
-    color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
   },
 });
 
