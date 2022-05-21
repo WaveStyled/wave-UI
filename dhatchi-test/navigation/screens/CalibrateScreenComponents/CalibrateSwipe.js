@@ -10,10 +10,12 @@ import {
 } from "react-native";
 
 import Swiper from "react-native-deck-swiper";
-import { Transitioning, Transition } from "react-native-reanimated";
+import { Transitioning } from "react-native-reanimated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ClothesContext } from "../../../context/AppContext";
 import { UserContext } from "../../../context/UserIDContext";
+
+import { transition } from "./CalibrateUtils/SwiperTransition";
 
 import {
   getFits,
@@ -34,30 +36,6 @@ const colors = {
   black: "#000000",
   green: "green",
 };
-const ANIMATION_DURATION = 200;
-
-const transition = (
-  <Transition.Sequence>
-    <Transition.Out
-      type="slide-bottom"
-      durationMs={ANIMATION_DURATION}
-      interpolation="easeIn"
-    />
-    <Transition.Together>
-      <Transition.In
-        type="fade"
-        durationMs={ANIMATION_DURATION}
-        delayMs={ANIMATION_DURATION / 2}
-      />
-      <Transition.In
-        type="slide-bottom"
-        durationMs={ANIMATION_DURATION}
-        delayMs={ANIMATION_DURATION / 2}
-        interpolation="easeOut"
-      />
-    </Transition.Together>
-  </Transition.Sequence>
-);
 
 const swiperRef = React.createRef();
 const transitionRef = React.createRef();
