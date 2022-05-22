@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ImageBackground,
   View,
@@ -9,19 +9,36 @@ import {
   Platform,
   Button,
   ScrollView,
+  StatusBar,
 } from "react-native";
 //import Input from '../../components/Input.js'
 
-const API_URL = "http://10.0.0.171:5000";
+import { API, NODEPORT } from "../../../context/API";
+
+function emailchecker(email) {
+  const regex =
+    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  if (!email || regex.test(email) === false) {
+    return false;
+  }
+  return true;
+}
 
 function AuthScreen({ route, navigation }) {
+  const [validEmail, isValid] = useState(true);
+
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [uid, setUserID] = useState(-1);
 
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+
+  useEffect(() => {
+    isValid(emailchecker(email));
+  }, [email]);
 
   const onChangeHandler = () => {
     setIsLogin(!isLogin);
@@ -94,38 +111,42 @@ function AuthScreen({ route, navigation }) {
   return (
     <View style={styles.image}>
       <View style={styles.card}>
-        <ScrollView
-          contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 20 }}
-        >
-          <Text style={styles.heading}> {isLogin ? "Login" : "Signup"} </Text>
-          <View style={{ marginVertical: 20 }}>
-            <Button
-              onPress={() => navigation.navigate("MainApp", {id : 123})}
-              title="TestButtons"
-            />
-          </View>
-        </ScrollView>
-
-        {/* <Text style={styles.heading}>{isLogin ? 'Login' : 'Signup'}</Text>
-                <View style={styles.form}>
-                    <View style={styles.inputs}>
-                        <TextInput style={styles.input} placeholder="Email" autoCapitalize="none" onChangeText={setEmail}></TextInput>
-                        {!isLogin && <TextInput style={styles.input} placeholder="Name" onChangeText={setName}></TextInput>}
-                        <TextInput secureTextEntry={true} style={styles.input} placeholder="Password" onChangeText={setPassword}></TextInput>
-                        <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
-                        <TouchableOpacity style={styles.button} onPress={onSubmitHandler}>
-                            <Text style={styles.buttonText}>Done</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttonAlt} onPress={onChangeHandler}>
-                            <Text style={styles.buttonAltText}>{isLogin ? 'Sign Up' : 'Log In'}</Text>
-                        </TouchableOpacity>
-                            <Button
-                                onPress={() => navigation.navigate('MainApp')}
-                                title="TestButtons"
-                            />
-                    </View>    
-                    
-                </View> */}
+        <Text style={styles.heading}>{isLogin ? "Login" : "Signup"}</Text>
+        <StatusBar style="auto" />
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#003f5c"
+            autoCapitalize="none"
+            onChangeText={(email) => setEmail(email)}
+          />
+        </View>
+        <View style={styles.validEmail}>
+          {validEmail ? (
+            true
+          ) : (
+            <Text style={{ color: "#f44336" }}>Please Enter a Valid Email</Text>
+          )}
+        </View>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#003f5c"
+            autoCapitalize="none"
+            onChangeText={(pass) => setPassword(pass)}
+          />
+        </View>
+        <TouchableOpacity style={styles.loginBtn} onPress={onSubmitHandler}>
+          <Text style={styles.buttonText}>Done</Text>
+        </TouchableOpacity>
+        <View style={{ marginVertical: 20 }}>
+          <Button
+            onPress={() => navigation.navigate("MainApp", { id: 123 })}
+            title="TestButtons"
+          />
+        </View>
       </View>
     </View>
   );
@@ -146,11 +167,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     maxHeight: 500,
     paddingBottom: "30%",
+    alignItems: "center",
   },
   heading: {
     fontSize: 30,
     fontWeight: "bold",
-    marginLeft: "10%",
     marginTop: "5%",
     marginBottom: "30%",
     color: "black",
@@ -207,6 +228,40 @@ const styles = StyleSheet.create({
   message: {
     fontSize: 16,
     marginVertical: "5%",
+  },
+  inputView: {
+    backgroundColor: "#CCCCFF",
+    borderRadius: 30,
+    width: "70%",
+    height: 45,
+    alignItems: "center",
+  },
+  validEmail: {
+    width: "70%",
+    marginBottom: 20,
+    marginTop: 5,
+    fontSize: 10,
+    alignItems: "center",
+  },
+  TextInput: {
+    height: 50,
+    flex: 1,
+    padding: 10,
+    marginLeft: 20,
+  },
+
+  forgot_button: {
+    height: 30,
+    marginBottom: 30,
+  },
+  loginBtn: {
+    width: "80%",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    backgroundColor: "#FF1493",
   },
 });
 

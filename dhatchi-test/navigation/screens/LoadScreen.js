@@ -8,7 +8,7 @@ export default function LoadScreen({ navigation }) {
     // createChannels();
     setTimeout(() => {
       navigation.replace("LogIn");
-    }, 2000);
+    }, 100);
   }, []);
 
   const createChannels = () => {
