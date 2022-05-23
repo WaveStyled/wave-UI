@@ -6,14 +6,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Platform,
   Button,
-  ScrollView,
   StatusBar,
 } from "react-native";
-//import Input from '../../components/Input.js'
-
-import { API, NODEPORT } from "../../../context/API";
 
 function emailchecker(email) {
   const regex =
@@ -25,94 +20,61 @@ function emailchecker(email) {
 }
 
 function AuthScreen({ route, navigation }) {
-  const [validEmail, isValid] = useState(true);
+  const [validEmail, isValid] = useState(false);
+  const [emptyName, isFilled] = useState(false);
 
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [uid, setUserID] = useState(-1);
 
-  const [isError, setIsError] = useState(false);
-  const [message, setMessage] = useState("");
-  const [isLogin, setIsLogin] = useState(true);
+  const [login, setLogin] = useState(true);
 
   useEffect(() => {
     isValid(emailchecker(email));
   }, [email]);
 
-  const onChangeHandler = () => {
-    setIsLogin(!isLogin);
-    setMessage("");
+  useEffect(() => {
+    isFilled(name.length > 0);
+  }, [name]);
+
+  const signup = () => {
+    setLogin(!login);
   };
 
-  const onLoggedIn = (token) => {
-    fetch(`${API_URL}/private`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(async (res) => {
-        try {
-          const jsonRes = await res.json();
-          if (res.status === 200) {
-            setMessage(jsonRes.message);
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const onSubmitHandler = () => {
-    const payload = {
-      email,
-      name,
-      password,
-    };
-    fetch(`${API_URL}/${isLogin ? "login" : "signup"}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then(async (res) => {
-        try {
-          console.log(res);
-
-          const jsonRes = await res.json();
-          if (res.status !== 200) {
-            setIsError(true);
-            setMessage(jsonRes.message);
-          } else {
-            onLoggedIn(jsonRes.token);
-            setIsError(false);
-            setMessage(jsonRes.message);
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const getMessage = () => {
-    const status = isError ? `Error: ` : `Success: `;
-    return status + message;
+  const loginHandler = () => {
+    console.log("here");
   };
 
   return (
     <View style={styles.image}>
       <View style={styles.card}>
-        <Text style={styles.heading}>{isLogin ? "Login" : "Signup"}</Text>
+        <Text style={styles.heading}>{login ? "Login" : "Signup"}</Text>
         <StatusBar style="auto" />
+        {login ? (
+          true
+        ) : (
+          <View style={styles.inputView}>
+            <TextInput
+              style={styles.input}
+              placeholder="Name"
+              placeholderTextColor="#003f5c"
+              onChangeText={(name) => setName(name)}
+            />
+          </View>
+        )}
+        {login ? (
+          true
+        ) : (
+          <View style={styles.validEmail}>
+            {emptyName ? (
+              true
+            ) : (
+              <Text style={{ color: "#f44336" }}>Please Enter Your Name</Text>
+            )}
+          </View>
+        )}
+
         <View style={styles.inputView}>
           <TextInput
             style={styles.input}
@@ -138,8 +100,19 @@ function AuthScreen({ route, navigation }) {
             onChangeText={(pass) => setPassword(pass)}
           />
         </View>
-        <TouchableOpacity style={styles.loginBtn} onPress={onSubmitHandler}>
-          <Text style={styles.buttonText}>Done</Text>
+        {!login ? (
+          true
+        ) : (
+          <TouchableOpacity
+            style={styles.loginBtn}
+            onPress={loginHandler}
+            disabled={!validEmail}
+          >
+            <Text style={styles.buttonText}>Done</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity style={styles.signupBtn} onPress={login ? signup : loginHandler}>
+          <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
         <View style={{ marginVertical: 20 }}>
           <Button
@@ -255,13 +228,22 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   loginBtn: {
-    width: "80%",
+    width: "75%",
     borderRadius: 25,
     height: 50,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 40,
-    backgroundColor: "#FF1493",
+    backgroundColor: "#40B5AD",
+  },
+  signupBtn: {
+    width: "45%",
+    borderRadius: 25,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    backgroundColor: "#40B5AD",
   },
 });
 
