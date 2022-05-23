@@ -16,17 +16,21 @@ export const Card = ({ card }) => {
     outfit = card.map((value, idx) => (
       <View key={idx} style={styles.item}>
         <View style={styles.itemLeft}>
+     
+         
+        
           <View style={styles.cardImage}>
             {/* <View key={idx} style={styles.cardImage}> */}
             <Image
               style={{ width: 80, height: 80 }}
               source={{ uri: "data:image/jpeg;base64," + value.image }}
             />
-            {/* </View> */}
-          </View>
-          <Text key={idx} style={styles.itemText}>
+             <Text key={idx} style={styles.itemText}>
             {type_mapping[value.type] + " " + value.color}
           </Text>
+            {/* </View> */}
+          </View>
+         
         </View>
       </View>
     ));
@@ -49,6 +53,8 @@ const styles = StyleSheet.create({
     width: 160,
     flex: 1,
     resizeMode: "contain",
+    paddingLeft: 130,
+    paddingTop: 10
   },
   card: {
     flex: 0.45,
@@ -67,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   item: {
-    backgroundColor: "#FFF",
+    backgroundColor: "yellow",
     borderRadius: 7,
     flexDirection: "row",
     alignItems: "center",
