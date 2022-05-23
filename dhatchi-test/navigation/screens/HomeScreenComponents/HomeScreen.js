@@ -52,6 +52,19 @@ function addHeaderButton(navigation) {
   });
 }
 
+function addLogoutButton(navigation) {
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Button
+          onPress={() => navigation.navigate("LogIn", { update: false })}
+          title="Logout"
+        />
+      ),
+    });
+  });
+}
+
 export default function HomeScreen({ navigation, route }) {
   var context = React.useContext(ClothesContext);
   const [wd, setWd] = React.useState(context);
@@ -72,6 +85,7 @@ export default function HomeScreen({ navigation, route }) {
   const value = update(x, updateWD);
 
   addHeaderButton(navigation);
+  addLogoutButton(navigation);
 
   return (
     <View style={styles.container}>

@@ -10,6 +10,9 @@ import {
   StatusBar,
 } from "react-native";
 
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
+
 function emailchecker(email) {
   const regex =
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -54,13 +57,16 @@ function AuthScreen({ route, navigation }) {
         {login ? (
           true
         ) : (
-          <View style={styles.inputView}>
-            <TextInput
-              style={styles.input}
-              placeholder="Name"
-              placeholderTextColor="#003f5c"
-              onChangeText={(name) => setName(name)}
-            />
+          <View style={styles.action}>
+            <Ionicons name="person-outline" size={40} />
+            <View style={styles.inputView}>
+              <TextInput
+                style={styles.input}
+                placeholder="Name"
+                placeholderTextColor="#003f5c"
+                onChangeText={(name) => setName(name)}
+              />
+            </View>
           </View>
         )}
         {login ? (
@@ -75,15 +81,19 @@ function AuthScreen({ route, navigation }) {
           </View>
         )}
 
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor="#003f5c"
-            autoCapitalize="none"
-            onChangeText={(email) => setEmail(email)}
-          />
+        <View style={styles.action}>
+          <Ionicons name="mail-outline" size={40} />
+          <View style={styles.inputView}>
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              placeholderTextColor="#003f5c"
+              autoCapitalize="none"
+              onChangeText={(email) => setEmail(email)}
+            />
+          </View>
         </View>
+
         <View style={styles.validEmail}>
           {validEmail ? (
             true
@@ -91,14 +101,18 @@ function AuthScreen({ route, navigation }) {
             <Text style={{ color: "#f44336" }}>Please Enter a Valid Email</Text>
           )}
         </View>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor="#003f5c"
-            autoCapitalize="none"
-            onChangeText={(pass) => setPassword(pass)}
-          />
+        <View style={styles.action}>
+          <Ionicons name="lock-closed-outline" size={40} />
+          <View style={styles.inputView}>
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              placeholderTextColor="#003f5c"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              onChangeText={(pass) => setPassword(pass)}
+            />
+          </View>
         </View>
         {!login ? (
           true
@@ -111,12 +125,18 @@ function AuthScreen({ route, navigation }) {
             <Text style={styles.buttonText}>Done</Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity style={styles.signupBtn} onPress={login ? signup : loginHandler}>
+        <TouchableOpacity
+          style={styles.signupBtn}
+          onPress={login ? signup : loginHandler}
+        >
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
         <View style={{ marginVertical: 20 }}>
           <Button
-            onPress={() => navigation.navigate("MainApp", { id: 123 })}
+            onPress={() => {
+              navigation.navigate("MainApp", { id: 123 });
+              setLogin(!login);
+            }}
             title="TestButtons"
           />
         </View>
@@ -143,10 +163,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   heading: {
+    paddingTop : "15%",
     fontSize: 30,
     fontWeight: "bold",
     marginTop: "5%",
-    marginBottom: "30%",
+    marginBottom: "10%",
     color: "black",
   },
   form: {
@@ -155,16 +176,15 @@ const styles = StyleSheet.create({
     paddingBottom: "5%",
   },
   inputs: {
-    width: "100%",
+    width: "5%",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingTop: "10%",
+    paddingLeft: 40,
   },
   input: {
     width: "80%",
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
     paddingTop: 10,
     fontSize: 16,
     minHeight: 40,
@@ -203,11 +223,13 @@ const styles = StyleSheet.create({
     marginVertical: "5%",
   },
   inputView: {
+    flexDirection: "row",
     backgroundColor: "#CCCCFF",
     borderRadius: 30,
-    width: "70%",
+    width: "80%",
     height: 45,
     alignItems: "center",
+    paddingHorizontal : 10,
   },
   validEmail: {
     width: "70%",
@@ -220,7 +242,6 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     padding: 10,
-    marginLeft: 20,
   },
 
   forgot_button: {
@@ -244,6 +265,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 40,
     backgroundColor: "#40B5AD",
+  },
+  action: {
+    flexDirection: "row",
+    paddingRight: 10,
   },
 });
 
