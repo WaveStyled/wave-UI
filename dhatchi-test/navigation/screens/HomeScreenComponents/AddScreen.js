@@ -91,7 +91,7 @@ function mapWeatherToBin(we) {
 }
 
 function AddScreen({ navigation, route }) {
-  console.log(route.params.weather, route.params.occasion);
+  
   const uid = React.useContext(UserContext);
 
   const { colors } = useTheme();
@@ -129,11 +129,6 @@ function AddScreen({ navigation, route }) {
     }
   }, []);
 
-  console.log("######");
-  console.log(weatherSelected);
-  console.log(occasionSelected);
-  console.log(type);
-  console.log("Dirty? ", isEnabled);
 
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
@@ -146,7 +141,6 @@ function AddScreen({ navigation, route }) {
         aspect: [4, 3],
         quality: 1,
       }).then((image) => {
-        //console.log(image);
         if (!image.cancelled) {
           setImage(image.uri);
         }
@@ -233,7 +227,7 @@ function AddScreen({ navigation, route }) {
   };
 
   const update_handler = () => {
-    console.log("update");
+    
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
 
@@ -294,7 +288,6 @@ function AddScreen({ navigation, route }) {
   const save_handler = () => {
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
-    // console.log(a)
     if (a.length === 0) {
       id = 0;
     } else {
@@ -346,10 +339,6 @@ function AddScreen({ navigation, route }) {
       dirty: isEnabled ? 1 : 0,
       image: image,
     };
-
-    //console.log(toadd);
-
-    //console.log(topush);
     a.unshift(topush);
     navigation.navigate("Wardrobe", { name: clothName });
   };
