@@ -28,7 +28,9 @@ function AuthScreen({ route, navigation }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeat] = useState("");
   const [name, setName] = useState("");
+  const [reenter, setReenter] = useState(true);
   const [uid, setUserID] = useState(-1);
 
   const [login, setLogin] = useState(true);
@@ -40,6 +42,14 @@ function AuthScreen({ route, navigation }) {
   useEffect(() => {
     isFilled(name.length > 0);
   }, [name]);
+
+  useEffect(() => {
+    if (!login && password !== repeatPassword) {
+      setReenter(true);
+    } else {
+      setReenter(false);
+    }
+  }, [password, repeatPassword]);
 
   const signup = () => {
     setLogin(!login);
@@ -114,6 +124,34 @@ function AuthScreen({ route, navigation }) {
             />
           </View>
         </View>
+        {login ? (
+          true
+        ) : (
+          <View style={styles.action2}>
+            <Ionicons name="lock-closed-outline" size={40} />
+            <View style={styles.inputView}>
+              <TextInput
+                style={styles.input}
+                placeholder="Repeat Password"
+                placeholderTextColor="#003f5c"
+                autoCapitalize="none"
+                secureTextEntry={true}
+                onChangeText={(pass) => setRepeat(pass)}
+              />
+            </View>
+          </View>
+        )}
+        {login ? (
+          true
+        ) : (
+          <View style={styles.validEmail}>
+            {!reenter ? (
+              true
+            ) : (
+              <Text style={{ color: "#f44336" }}>Passwords Do Not Match</Text>
+            )}
+          </View>
+        )}
         {!login ? (
           true
         ) : (
@@ -163,7 +201,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   heading: {
-    paddingTop : "15%",
+    paddingTop: "15%",
     fontSize: 30,
     fontWeight: "bold",
     marginTop: "5%",
@@ -229,7 +267,7 @@ const styles = StyleSheet.create({
     width: "80%",
     height: 45,
     alignItems: "center",
-    paddingHorizontal : 10,
+    paddingHorizontal: 10,
   },
   validEmail: {
     width: "70%",
@@ -242,6 +280,7 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     padding: 10,
+    width : "80%"
   },
 
   forgot_button: {
@@ -263,12 +302,16 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
     backgroundColor: "#40B5AD",
   },
   action: {
     flexDirection: "row",
     paddingRight: 10,
+  },
+  action2: {
+    flexDirection: "row",
+    paddingRight: 10,
+    marginTop: 10,
   },
 });
 
