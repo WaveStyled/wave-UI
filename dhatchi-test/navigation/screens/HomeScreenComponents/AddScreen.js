@@ -9,6 +9,7 @@ import {
   TextInput,
   StyleSheet,
   Switch,
+  Alert,
 } from "react-native";
 
 import { useTheme } from "react-native-paper";
@@ -293,7 +294,11 @@ function AddScreen({ navigation, route }) {
     } else {
       id = a[0].pieceid;
     }
-
+    if(!image){
+      console.log("here")
+      Alert.alert("No image selected")
+      return
+    }
     toadd = {
       PIECEID: id + 1,
       COLOR: color,
