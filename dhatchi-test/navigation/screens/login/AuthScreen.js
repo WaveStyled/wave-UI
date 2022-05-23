@@ -62,6 +62,13 @@ function AuthScreen({ route, navigation }) {
   return (
     <View style={styles.image}>
       <View style={styles.card}>
+        {login ? (
+          true
+        ) : (
+          <View style={{ alignSelf: "flex-start"}}>
+            <Button onPress={() => setLogin(!login)} title="Back" />
+          </View>
+        )}
         <Text style={styles.heading}>{login ? "Login" : "Signup"}</Text>
         <StatusBar style="auto" />
         {login ? (
@@ -201,7 +208,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   heading: {
-    paddingTop: "15%",
+    paddingTop: "5%",
     fontSize: 30,
     fontWeight: "bold",
     marginTop: "5%",
@@ -280,7 +287,7 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     padding: 10,
-    width : "80%"
+    width: "80%",
   },
 
   forgot_button: {
@@ -295,6 +302,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 40,
     backgroundColor: "#40B5AD",
+    marginBottom: 30,
   },
   signupBtn: {
     width: "45%",
