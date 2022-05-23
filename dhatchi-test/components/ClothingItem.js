@@ -29,7 +29,6 @@ import {
 import Spinner from "react-native-loading-spinner-overlay";
 
 function ClothingItem(props) {
-
   let[fontsLoaded, error] = useFonts({
     "OpenSans":OpenSans_400Regular,
   });

@@ -12,6 +12,10 @@ import {
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { auth } from "./FireBaseData";
+import { getAuth, updateProfile } from "firebase/auth";
+
+// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 function emailchecker(email) {
   const regex =
@@ -32,8 +36,20 @@ function AuthScreen({ route, navigation }) {
   const [name, setName] = useState("");
   const [reenter, setReenter] = useState(true);
   const [uid, setUserID] = useState(-1);
+  const [error, setError] = useState("");
+  const [isError, tryAgain] = useState(true);
 
   const [login, setLogin] = useState(true);
+
+  //console.log(uid);
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.navigate("MainApp", { id: user.uid });
+      }
+    });
+  }, []);
 
   useEffect(() => {
     isValid(emailchecker(email));
@@ -52,11 +68,45 @@ function AuthScreen({ route, navigation }) {
   }, [password, repeatPassword]);
 
   const signup = () => {
-    setLogin(!login);
+    console.log("here");
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        setUserID(user.uid);
+        setLogin(!login);
+        setError("");
+        tryAgain(false)
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setError(errorMessage);
+        tryAgain(true);
+        console.log(errorMessage);
+      });
   };
 
   const loginHandler = () => {
-    console.log("here");
+    setLogin(!login);
+    setError("");
+  };
+
+  const signin = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        setUserID(user.uid);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setError(errorMessage);
+        console.log(errorMessage);
+      });
   };
 
   return (
@@ -65,7 +115,7 @@ function AuthScreen({ route, navigation }) {
         {login ? (
           true
         ) : (
-          <View style={{ alignSelf: "flex-start"}}>
+          <View style={{ alignSelf: "flex-start" }}>
             <Button onPress={() => setLogin(!login)} title="Back" />
           </View>
         )}
@@ -113,7 +163,7 @@ function AuthScreen({ route, navigation }) {
 
         <View style={styles.validEmail}>
           {validEmail ? (
-            true
+            (true)
           ) : (
             <Text style={{ color: "#f44336" }}>Please Enter a Valid Email</Text>
           )}
@@ -164,27 +214,23 @@ function AuthScreen({ route, navigation }) {
         ) : (
           <TouchableOpacity
             style={styles.loginBtn}
-            onPress={loginHandler}
-            disabled={!validEmail}
+            onPress={signin}
+            disabled={!validEmail || (error.length > 0)}
           >
-            <Text style={styles.buttonText}>Done</Text>
+            <Text style={styles.buttonText}>Log In</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity
           style={styles.signupBtn}
-          onPress={login ? signup : loginHandler}
+          onPress={login ? loginHandler : signup}
+          disabled={!login ? (!isError) : false}
         >
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
-        <View style={{ marginVertical: 20 }}>
-          <Button
-            onPress={() => {
-              navigation.navigate("MainApp", { id: 123 });
-              setLogin(!login);
-            }}
-            title="TestButtons"
-          />
-        </View>
+
+        {error.length > 0 ?  <Text style={{ color: "#f44336", width : "60%", paddingVertical : 10 }}>
+              {error.length > 0 ? error : true}{" "}
+            </Text> : true}
       </View>
     </View>
   );

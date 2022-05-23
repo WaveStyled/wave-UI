@@ -4,6 +4,7 @@ import { View, StyleSheet, ScrollView, Button } from "react-native";
 import ClothingItem from "../../../components/ClothingItem";
 import { ClothesContext } from "../../../context/AppContext";
 import type_mapping from "../../../components/type_mapping";
+import { auth } from "../login/FireBaseData";
 
 function update(json, set) {
   var list;
@@ -57,7 +58,11 @@ function addLogoutButton(navigation) {
     navigation.setOptions({
       headerLeft: () => (
         <Button
-          onPress={() => navigation.navigate("LogIn", { update: false })}
+          onPress={() => {
+            auth.signOut().then(() => {
+              navigation.replace("LogIn");
+            });
+          }}
           title="Logout"
         />
       ),

@@ -100,11 +100,16 @@ function HomeTabs({ state, descriptors, navigation, route }) {
 
 function MainContainer({ route, navigation }) {
   const id = route.params.id
+
+  console.log("ID: ", id);
   const [wardrobeContext, setWardrobeContext] = React.useState([]);
   const [userid, setuserid] = React.useState(id);
+
   React.useEffect(() => {
     getWardrobe(setWardrobeContext, id);
-  }, []);
+    setuserid(id);
+  }, [userid]);
+
   return (
     <UserContext.Provider value={userid}>
       <ClothesContext.Provider value={wardrobeContext}>
