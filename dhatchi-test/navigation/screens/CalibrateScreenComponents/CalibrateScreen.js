@@ -1,20 +1,24 @@
 import * as React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import {UserContext} from '../../../context/UserIDContext'
+import { ClothesContext } from "../../../context/AppContext";
 import { getFits } from "../../utils/Fetches";
 
 export default function SettingsScreen({ navigation }) {
   const uid = React.useContext(UserContext);
-
+  const clothes = React.useContext(ClothesContext)
   const [preloadFits, setFits] = React.useState([
     [[], []],
     [[], []],
   ]);
-
+  var buttonDisabled = false
   React.useEffect(() => {
     getFits(setFits, uid);
   }, []);
-
+  if(preloadFits[0].length == 0){
+    Alert.alert("Not enough clothing items to generate outfits.")
+    buttonDisabled = true
+  }
   const getCalibration = () => {
     navigation.navigate("Get", { initial: preloadFits });
   };
@@ -25,7 +29,7 @@ export default function SettingsScreen({ navigation }) {
       <TouchableOpacity
         style={styles.commandButton}
         onPress={getCalibration}
-        disabled={false}
+        disabled={buttonDisabled}
       >
         <Text style={styles.panelButtonTitle}>Get Calibrated!</Text>
       </TouchableOpacity>

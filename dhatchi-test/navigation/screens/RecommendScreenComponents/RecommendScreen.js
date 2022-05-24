@@ -1,11 +1,12 @@
 import * as React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import weather from "../../../components/Weathers";
 import occasion from "../../../components/Occasions";
 import Spinner from "react-native-loading-spinner-overlay";
 import { UserContext } from "../../../context/UserIDContext";
 import { getRecommendations } from "../../utils/Fetches";
+import LoadScreen from "../LoadScreen";
 
 occasion_mapping = {
   FF: "oc_formal",
@@ -26,11 +27,11 @@ weather_mapping = {
 
 function DetailsScreen({ navigation }) {
   const uid = React.useContext(UserContext);
-  const [weatherSelected, setWeatherItem] = React.useState([]);
+  const [weatherSelected, setWeatherItem] = React.useState("none");
   const [weather_picker_open, setWeatherPickerOpen] = React.useState(false);
   const [weat, setItems] = React.useState(weather);
 
-  const [occasionSelected, setOccasion] = React.useState([]);
+  const [occasionSelected, setOccasion] = React.useState("none");
   const [occasion_open, setOccasionPickerOpen] = React.useState(false);
   const [occa, setOccasions] = React.useState(occasion);
 
@@ -39,7 +40,7 @@ function DetailsScreen({ navigation }) {
   const [recommend_ready, setRecommendReady] = React.useState(false);
 
   const [loading, Load] = React.useState(false);
-
+  var button = true
   React.useEffect(() => {
     if (nav) {
       Load(false);
@@ -54,22 +55,34 @@ function DetailsScreen({ navigation }) {
 
   React.useEffect(() => {
     if (recommend != null) {
-      setNav(true);
+     
+      if(recommend.length == 0){
+        Alert.alert("Not enough items to generate outfit")
+        Load(false)
+
+      }
+      else{
+        setNav(true);
+      }
+      
     }
   }, [recommend]);
+  
+      if(occasionSelected != "none" && weatherSelected  != "none"){
+        button = false
+      }
+      
 
+ 
   const getFits = () => {
-    console.log(
-      occasion_mapping[occasionSelected],
-      weather_mapping[weatherSelected]
-    );
-    Load(true);
+   
     getRecommendations(
       occasion_mapping[occasionSelected],
       weather_mapping[weatherSelected],
       setInitial,
       uid
     );
+    Load(true);
   };
 
   renderHeader = () => (
@@ -163,8 +176,6 @@ function DetailsScreen({ navigation }) {
     />
   );
 
-  console.log(loading);
-
   refer = React.createRef();
   return (
     <View style={styles.container}>
@@ -181,7 +192,10 @@ function DetailsScreen({ navigation }) {
         >
           More calibrations, the better the recommendations
         </Text>
-        <TouchableOpacity style={styles.commandButton} onPress={getFits}>
+        <TouchableOpacity style={styles.commandButton} 
+        onPress={getFits} 
+        disabled = {button}>
+        
           <Text style={styles.panelButtonTitle}>Get Fit</Text>
         </TouchableOpacity>
       </View>
