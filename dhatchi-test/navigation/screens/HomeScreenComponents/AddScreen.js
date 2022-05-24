@@ -299,6 +299,18 @@ function AddScreen({ navigation, route }) {
       Alert.alert("No image selected")
       return
     }
+    if(!type){
+      Alert.alert("No Clothing Type Selected")
+      return
+    }
+    if(weatherSelected.length == 0){
+      Alert.alert("No Weather selected")
+      return
+    }
+    if(occasionSelected.length == 0){
+      Alert.alert("No Occassion selected")
+      return
+    }
     toadd = {
       PIECEID: id + 1,
       COLOR: color,
