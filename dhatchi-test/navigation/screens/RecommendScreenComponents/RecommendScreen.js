@@ -85,7 +85,7 @@ function DetailsScreen({ navigation }) {
     Load(true);
     setTimeout(() => {
       Load(false);
-    }, 3000);
+    }, 8000);
   };
 
   renderHeader = () => (
