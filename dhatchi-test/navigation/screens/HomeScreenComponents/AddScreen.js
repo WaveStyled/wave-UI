@@ -229,6 +229,27 @@ function AddScreen({ navigation, route }) {
 
   const update_handler = () => {
     
+     //If user gives no image 
+     if(!image){
+      console.log("here")
+      Alert.alert("No image selected")
+      return
+    }
+    //If user does not select a clothing type
+    if(!type){
+      Alert.alert("No Clothing Type Selected")
+      return
+    }
+    //If user does not select a weather
+    if(weatherSelected.length == 0){
+      Alert.alert("No Weather selected")
+      return
+    }
+    //If user does not provide an occassion
+    if(occasionSelected.length == 0){
+      Alert.alert("No Occassion selected")
+      return
+    }
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
 
@@ -294,19 +315,24 @@ function AddScreen({ navigation, route }) {
     } else {
       id = a[0].pieceid;
     }
+
+    //If user gives no image 
     if(!image){
       console.log("here")
       Alert.alert("No image selected")
       return
     }
+    //If user does not select a clothing type
     if(!type){
       Alert.alert("No Clothing Type Selected")
       return
     }
+    //If user does not select a weather
     if(weatherSelected.length == 0){
       Alert.alert("No Weather selected")
       return
     }
+    //If user does not provide an occassion
     if(occasionSelected.length == 0){
       Alert.alert("No Occassion selected")
       return
