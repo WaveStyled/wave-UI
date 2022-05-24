@@ -14,7 +14,8 @@ import { Transitioning } from "react-native-reanimated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ClothesContext } from "../../../context/AppContext";
 import { UserContext } from "../../../context/UserIDContext";
-
+import weather_mapping from "../../../components/weather_mapping";
+import occasion_mapping from "../../../components/occasion_mapping";
 import { transition } from "../../utils/SwiperTransition";
 
 import {
@@ -92,8 +93,9 @@ export default function App({ route, navigation }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      headerRight: () => <Text>{curWeather}</Text>,
-      headerLeft: () => <Text>{curOccasion}</Text>,
+      
+      // headerRight: () => <Text> Weather: {weather_mapping[curWeather]}</Text>,
+      // headerLeft: () => <Text> Occasion: {occasion_mapping[curOccasion]}</Text>,
     });
   });
 
@@ -235,8 +237,13 @@ export default function App({ route, navigation }) {
             },
           }}
         />
+     
       </View>
+     
+      
+  
       <View style={styles.bottomContainer}>
+     
         <Transitioning.View
           ref={transitionRef}
           transition={transition}
@@ -244,7 +251,17 @@ export default function App({ route, navigation }) {
         >
           {/* <CardDetails index={index} /> */}
         </Transitioning.View>
+       
         <View style={styles.bottomContainerButtons}>
+        {/* <View>
+        <Text> Weather: {weather_mapping[curWeather]}, Occasion: {occasion_mapping[curOccasion]}</Text>
+        </View> */}
+     
+
+
+     <View>
+      <Text>        Weather: {weather_mapping[curWeather]}   Occasion: {occasion_mapping[curOccasion]}</Text>
+      </View>
           <MaterialCommunityIcons.Button
             name="close"
             size={94}
@@ -283,10 +300,13 @@ export default function App({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.yellow,
+    paddingTop: 250,
+    paddingBottom: 200
   },
   swiperContainer: {
     flex: 0.55,
+    paddingTop: 140
   },
   bottomContainer: {
     flex: 0.45,
@@ -296,6 +316,7 @@ const styles = StyleSheet.create({
   bottomContainerButtons: {
     flexDirection: "row",
     justifyContent: "space-evenly",
+    paddingTop: 100
   },
   text: {
     textAlign: "center",
