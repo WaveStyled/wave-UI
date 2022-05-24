@@ -53,7 +53,8 @@ export default function OOTD({ route, navigation }) {
     const unsubscribe = navigation.addListener('focus', () => {
       getOOTD(uid, setOOTD);
     })
-  }, [])
+    return unsubscribe;
+  }, [navigation])
 
   React.useEffect(() => {
     if (ootd.length > 0){
