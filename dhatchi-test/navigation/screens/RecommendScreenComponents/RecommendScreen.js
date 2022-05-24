@@ -83,6 +83,9 @@ function DetailsScreen({ navigation }) {
       uid
     );
     Load(true);
+    setTimeout(() => {
+      Load(false);
+    }, 3000);
   };
 
   renderHeader = () => (
@@ -173,7 +176,11 @@ function DetailsScreen({ navigation }) {
       visible={loading}
       textContent={"Loading Recommendations..."}
       textStyle={styles.spinnerTextStyle}
+      cancelable = {true}
+      
     />
+
+   
   );
 
   refer = React.createRef();
