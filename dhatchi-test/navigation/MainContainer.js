@@ -9,6 +9,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import RecommendScreen from "./screens/RecommendContainerScreen";
 import CalibrateScreen from "./screens/CalibrateContainerScreen";
 import HomeContainerScreen from "./screens/HomeContainerScreen";
+import OOTD from './screens/OOTD';
 
 import { ClothesContext } from "../context/AppContext";
 import { UserContext } from "../context/UserIDContext";
@@ -71,7 +72,17 @@ function HomeTabs({ state, descriptors, navigation, route }) {
           ),
         })}
       />
-
+      <Tab.Screen
+        name={"OOTD"}
+        component={OOTD}
+        options={{
+          headerShown: false,
+          tabBarLabel: "Outfit Of the Day",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="hanger" color={color} size={26} />
+          ),
+        }}
+      />
       <Tab.Screen
         name={RecommendName}
         component={RecommendScreen}

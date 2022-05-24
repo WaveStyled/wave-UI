@@ -115,6 +115,24 @@ export function OOTD(data, userid) {
   );
 }
 
+export function getOOTD(userid, set) {
+  const props = {weather : "", occasion : "", date : ""};
+  const chooseOutfit = {
+    method: "GET",
+  };
+  const ootd = fetch(`http://${API}:${NODEPORT}/OOTD/${userid}/`, chooseOutfit).then(
+    (response) => {
+      if (!response.ok) {
+        throw response;
+      }
+      console.log("RETURNS", response);
+      return response.json();
+    }
+  ).then((json) => {
+    set(json);
+  });
+}
+
 export function IDtoJSX(ids, a) {
   maps = [];
   ids.forEach(function (item, i) {
