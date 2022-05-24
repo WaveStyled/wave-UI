@@ -44,6 +44,10 @@ function AuthScreen({ route, navigation }) {
   //console.log(uid);
 
   useEffect(() => {
+    setError("");
+  }, [email, password]);
+
+  useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
         navigation.navigate("MainApp", { id: user.uid });
