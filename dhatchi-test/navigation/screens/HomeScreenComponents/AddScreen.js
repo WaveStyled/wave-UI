@@ -1,5 +1,4 @@
 /*
-
 Screen: AddScreen
 Purpose: Screen that handles the ability to enter information about new clothing item. User can: take a photo, add name, choose color, choose weather, occasion and indicate
 whether it is dirty or not 
@@ -36,7 +35,17 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { ClothesContext } from "../../../context/AppContext";
 import { UserContext } from "../../../context/UserIDContext";
 import { addItem, updateItem } from "../../utils/Fetches";
-import { propstooccasion, propstoweather, mapOccasionToBin, mapWeatherToBin } from "./AddComponents/AddFormHelpers";
+import {
+  propstooccasion,
+  propstoweather,
+  mapOccasionToBin,
+  mapWeatherToBin,
+} from "./AddComponents/AddFormHelpers";
+
+import {
+  styles,
+  styles_multi,
+} from "../../../assets/StyleSheets/AddScreenStyle";
 
 /*
 Function: AddScreen
@@ -44,8 +53,7 @@ Purpose: Main function that handles functionaility and rendering of the screen
 */
 
 function AddScreen({ navigation, route }) {
-  
-  // Initiate Context's 
+  // Initiate Context's
   const uid = React.useContext(UserContext);
   const wardrobe = React.useContext(ClothesContext);
 
@@ -53,18 +61,18 @@ function AddScreen({ navigation, route }) {
   const { colors } = useTheme();
 
   // Initiation of state variables used throughout the screen
-  
-  // Name Selected 
+
+  // Name Selected
   const [clothName, setClothName] = useState();
   // color selected
   const [color, setColor] = useState();
-  // Current weather selected 
+  // Current weather selected
   const [weatherSelected, setWeatherItem] = useState([]);
   // Whether the weather picker is open
   const [weather_picker_open, setWeatherPickerOpen] = useState(false);
-  
+
   const [weat, setItems] = useState(weather);
-  // Current occasion selected 
+  // Current occasion selected
   const [occasionSelected, setOccasion] = useState([]);
   // whether occasion picker is open
   const [occasion_open, setOccasionPickerOpen] = useState(false);
@@ -79,13 +87,13 @@ function AddScreen({ navigation, route }) {
   const [isEnabled, setIsEnabled] = useState(
     route.params.dirty == null ? false : Boolean(route.params.dirty)
   );
-  
-  // Not sure lol @jaysan6
+
+  // Dirty/clean switch toggle
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   // Ensures permissions to access camera
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
-  
+
   // If Update version of screen is being used, load in the already set details about the clothing item
   React.useEffect(() => {
     if (route.params.update) {
@@ -98,11 +106,11 @@ function AddScreen({ navigation, route }) {
     }
   }, []);
 
-  // Function: TakeImage 
+  // Function: TakeImage
   // Purpose:
   const takeImage = async () => {
     const permission = await ImagePicker.requestCameraPermissionsAsync();
-    if (permission === true) {
+    if (permission === true || true) {
       let image = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
@@ -195,27 +203,26 @@ function AddScreen({ navigation, route }) {
   };
 
   const update_handler = () => {
-    
-     //If user gives no image 
-     if(!image){
-      console.log("here")
-      Alert.alert("No image selected")
-      return
+    //If user gives no image
+    if (!image) {
+      console.log("here");
+      Alert.alert("No image selected");
+      return;
     }
     //If user does not select a clothing type
-    if(!type){
-      Alert.alert("No Clothing Type Selected")
-      return
+    if (!type) {
+      Alert.alert("No Clothing Type Selected");
+      return;
     }
     //If user does not select a weather
-    if(weatherSelected.length == 0){
-      Alert.alert("No Weather selected")
-      return
+    if (weatherSelected.length == 0) {
+      Alert.alert("No Weather selected");
+      return;
     }
     //If user does not provide an occassion
-    if(occasionSelected.length == 0){
-      Alert.alert("No Occassion selected")
-      return
+    if (occasionSelected.length == 0) {
+      Alert.alert("No Occassion selected");
+      return;
     }
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
@@ -266,14 +273,16 @@ function AddScreen({ navigation, route }) {
       image: image,
     };
 
-    to_change = wardrobe.filter((value) => value.pieceid === route.params.pieceid);
+    to_change = wardrobe.filter(
+      (value) => value.pieceid === route.params.pieceid
+    );
 
     if (to_change.length > 0) {
       wardrobe[wardrobe.indexOf(to_change[0])] = tochange;
     }
     navigation.navigate("Wardrobe", { name: clothName });
   };
-  
+
   /*
   save_handler(): Saves all data entered by user and sends data to backend. Warns user if required fields are not 
   filled out
@@ -290,26 +299,26 @@ function AddScreen({ navigation, route }) {
       id = wardrobe[0].pieceid;
     }
 
-    //If user gives no image 
-    if(!image){
-      console.log("here")
-      Alert.alert("No image selected")
-      return
+    //If user gives no image
+    if (!image) {
+      console.log("here");
+      Alert.alert("No image selected");
+      return;
     }
     //If user does not select a clothing type
-    if(!type){
-      Alert.alert("No Clothing Type Selected")
-      return
+    if (!type) {
+      Alert.alert("No Clothing Type Selected");
+      return;
     }
     //If user does not select a weather
-    if(weatherSelected.length == 0){
-      Alert.alert("No Weather selected")
-      return
+    if (weatherSelected.length == 0) {
+      Alert.alert("No Weather selected");
+      return;
     }
     //If user does not provide an occassion
-    if(occasionSelected.length == 0){
-      Alert.alert("No Occassion selected")
-      return
+    if (occasionSelected.length == 0) {
+      Alert.alert("No Occassion selected");
+      return;
     }
     //data to send to the backend
     toadd = {
@@ -335,7 +344,7 @@ function AddScreen({ navigation, route }) {
     };
     //send data to the backend so it can be stored/used by model to train
     addItem(toadd, uid);
-    
+
     //data to send back to the homescreen so user can view/edit clothing item details
     topush = {
       pieceid: id + 1,
@@ -587,124 +596,5 @@ function AddScreen({ navigation, route }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container1: {
-    flex: 1,
-    paddingHorizontal: "10%",
-    justifyContent: "center",
-    backgroundColor: "#dfe3ee",
-    paddingVertical: "8%",
-  },
-  container: {
-    flex: 1,
-  },
-  commandButton: {
-    padding: 10,
-    borderRadius: 20,
-    backgroundColor: "#2874A6",
-    alignItems: "center",
-    marginTop: 15,
-  },
-  panel: {
-    padding: 20,
-    backgroundColor: "#58D68D",
-    paddingTop: 20,
-    // borderTopLeftRadius: 20,
-    // borderTopRightRadius: 20,
-    // shadowColor: '#000000',
-    // shadowOffset: {width: 0, height: 0},
-    // shadowRadius: 5,
-    // shadowOpacity: 0.4,
-  },
-  header: {
-    backgroundColor: "#E8EAED",
-    shadowColor: "#333333",
-    shadowOffset: { width: -1, height: -3 },
-    shadowRadius: 2,
-    shadowOpacity: 0.4,
-    // elevation: 5,
-    paddingTop: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingVertical: "5%",
-  },
-  panelHeader: {
-    alignItems: "center",
-  },
-  panelHandle: {
-    width: 40,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#00000040",
-    marginBottom: 10,
-  },
-  panelTitle: {
-    fontSize: 27,
-    height: 35,
-  },
-  panelSubtitle: {
-    fontSize: 14,
-    color: "gray",
-    height: 30,
-    marginBottom: 10,
-  },
-  panelButton: {
-    padding: 13,
-    borderRadius: 10,
-    backgroundColor: "#45B39D",
-    alignItems: "center",
-    marginVertical: 7,
-  },
-  panelButtonTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "white",
-  },
-  dirtyTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "#df4e4f",
-  },
-  action: {
-    flexDirection: "row",
-    marginTop: 10,
-    marginBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
-    paddingBottom: 5,
-    paddingTop: 20,
-    paddingHorizontal: 10,
-    alignItems: "center",
-    marginLeft: 15,
-  },
-  action2: {
-    flexDirection: "row",
-    borderBottomColor: "#f2f2f2",
-    alignItems: "center",
-    marginLeft: 15,
-    justifyContent: "center",
-    paddingHorizontal: 30,
-    color: "red",
-  },
-  textInput: {
-    flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : -12,
-    paddingLeft: 10,
-    color: "#05375a",
-  },
-});
-
-const styles_multi = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#F5FCFF",
-  },
-  multiSelectContainer: {
-    height: "20%",
-    width: "80%",
-  },
-});
 
 export default AddScreen;

@@ -1,22 +1,33 @@
+/*
+Screen: AuthScreen
+Purpose: Screen that facilitates user login and signup and controls access to 
+a user's wardrobe/outfits 
+*/
+
+// Imports
 import React, { useState, useEffect } from "react";
 import {
-  ImageBackground,
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   TextInput,
   Button,
   StatusBar,
 } from "react-native";
-
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
+
+// Local Imports
 import { auth } from "./FireBaseData";
-import { getAuth, updateProfile } from "firebase/auth";
+import {styles} from "../../../assets/StyleSheets/AuthScreenStyle"
 
-// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+/*
+Function: emailchecker
 
+Purpose: validates that the given string is a valid email address
+
+Input : email --> email to check
+Outfit : True if valid False otherwise
+*/
 function emailchecker(email) {
   const regex =
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -40,8 +51,6 @@ function AuthScreen({ route, navigation }) {
   const [isError, tryAgain] = useState(true);
 
   const [login, setLogin] = useState(true);
-
-  //console.log(uid);
 
   useEffect(() => {
     setError("");
@@ -81,7 +90,7 @@ function AuthScreen({ route, navigation }) {
         setUserID(user.uid);
         setLogin(!login);
         setError("");
-        tryAgain(false)
+        tryAgain(false);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -167,7 +176,7 @@ function AuthScreen({ route, navigation }) {
 
         <View style={styles.validEmail}>
           {validEmail ? (
-            (true)
+            true
           ) : (
             <Text style={{ color: "#f44336" }}>Please Enter a Valid Email</Text>
           )}
@@ -219,7 +228,7 @@ function AuthScreen({ route, navigation }) {
           <TouchableOpacity
             style={styles.loginBtn}
             onPress={signin}
-            disabled={!validEmail || (error.length > 0)}
+            disabled={!validEmail || error.length > 0}
           >
             <Text style={styles.buttonText}>Log In</Text>
           </TouchableOpacity>
@@ -227,150 +236,22 @@ function AuthScreen({ route, navigation }) {
         <TouchableOpacity
           style={styles.signupBtn}
           onPress={login ? loginHandler : signup}
-          disabled={!login ? (!isError) : false}
+          disabled={!login ? !isError : false}
         >
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
 
-        {error.length > 0 ?  <Text style={{ color: "#f44336", width : "60%", paddingVertical : 10 }}>
-              {error.length > 0 ? error : true}{" "}
-            </Text> : true}
+        {error.length > 0 ? (
+          <Text style={{ color: "#f44336", width: "60%", paddingVertical: 10 }}>
+            {error.length > 0 ? error : true}{" "}
+          </Text>
+        ) : (
+          true
+        )}
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  image: {
-    flex: 1,
-    width: "100%",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,238,0.5)",
-  },
-  card: {
-    flex: 1,
-    backgroundColor: "rgba(255, 255, 255, 0.4)",
-    width: "80%",
-    marginTop: "40%",
-    borderRadius: 20,
-    maxHeight: 500,
-    paddingBottom: "30%",
-    alignItems: "center",
-  },
-  heading: {
-    paddingTop: "5%",
-    fontSize: 30,
-    fontWeight: "bold",
-    marginTop: "5%",
-    marginBottom: "10%",
-    color: "black",
-  },
-  form: {
-    flex: 1,
-    justifyContent: "space-between",
-    paddingBottom: "5%",
-  },
-  inputs: {
-    width: "5%",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: "10%",
-    paddingLeft: 40,
-  },
-  input: {
-    width: "80%",
-    paddingTop: 10,
-    fontSize: 16,
-    minHeight: 40,
-  },
-  button: {
-    width: "80%",
-    backgroundColor: "black",
-    height: 40,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 5,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "400",
-  },
-  buttonAlt: {
-    width: "80%",
-    borderWidth: 1,
-    height: 40,
-    borderRadius: 50,
-    borderColor: "black",
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 5,
-  },
-  buttonAltText: {
-    color: "black",
-    fontSize: 16,
-    fontWeight: "400",
-  },
-  message: {
-    fontSize: 16,
-    marginVertical: "5%",
-  },
-  inputView: {
-    flexDirection: "row",
-    backgroundColor: "#CCCCFF",
-    borderRadius: 30,
-    width: "80%",
-    height: 45,
-    alignItems: "center",
-    paddingHorizontal: 10,
-  },
-  validEmail: {
-    width: "70%",
-    marginBottom: 20,
-    marginTop: 5,
-    fontSize: 10,
-    alignItems: "center",
-  },
-  TextInput: {
-    height: 50,
-    flex: 1,
-    padding: 10,
-    width: "80%",
-  },
-
-  forgot_button: {
-    height: 30,
-    marginBottom: 30,
-  },
-  loginBtn: {
-    width: "75%",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    backgroundColor: "#40B5AD",
-    marginBottom: 30,
-  },
-  signupBtn: {
-    width: "45%",
-    borderRadius: 25,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#40B5AD",
-  },
-  action: {
-    flexDirection: "row",
-    paddingRight: 10,
-  },
-  action2: {
-    flexDirection: "row",
-    paddingRight: 10,
-    marginTop: 10,
-  },
-});
 
 export default AuthScreen;
