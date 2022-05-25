@@ -1,13 +1,14 @@
-// Import the functions you need from the SDKs you need
+/*
+Component: FireBaseData
+Purpose: Connects app to the Firebase authentication server
+*/
 
+// Imports
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// lays the firebase configuration for connection
 const firebaseConfig = {
   apiKey: "AIzaSyB1i9zeFof5ejchWE0VlEmuXlAvgXk__gM",
   authDomain: "wavestyled-8fcb5.firebaseapp.com",
@@ -18,8 +19,8 @@ const firebaseConfig = {
   measurementId: "G-8CGTGW2PCQ"
 };
 
+// create a new app if no firebase apps exist
 let app;
-
 if (firebase.apps.length === 0) {
   app = firebase.initializeApp(firebaseConfig)
 } else {

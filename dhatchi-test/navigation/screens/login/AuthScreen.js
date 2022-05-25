@@ -18,7 +18,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 // Local Imports
 import { auth } from "./FireBaseData";
-import {styles} from "../../../assets/StyleSheets/AuthScreenStyle"
+import { styles } from "../../../assets/StyleSheets/AuthScreenStyle";
 
 /*
 Function: emailchecker
@@ -38,24 +38,25 @@ function emailchecker(email) {
 }
 
 function AuthScreen({ route, navigation }) {
-  const [validEmail, isValid] = useState(false);
+  const [validEmail, isValid] = useState(false); // boolean checks for email, name, password validity
   const [emptyName, isFilled] = useState(false);
+  const [reenter, setReenter] = useState(true);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeat] = useState("");
   const [name, setName] = useState("");
-  const [reenter, setReenter] = useState(true);
   const [uid, setUserID] = useState(-1);
   const [error, setError] = useState("");
   const [isError, tryAgain] = useState(true);
 
-  const [login, setLogin] = useState(true);
+  const [login, setLogin] = useState(true); // login page (true) or signup page (false)
 
   useEffect(() => {
     setError("");
   }, [email, password]);
 
+  // if the authorization goes successfully, then log into the main app with the user id
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -72,6 +73,7 @@ function AuthScreen({ route, navigation }) {
     isFilled(name.length > 0);
   }, [name]);
 
+  // handles password verification
   useEffect(() => {
     if (!login && password !== repeatPassword) {
       setReenter(true);
@@ -80,8 +82,8 @@ function AuthScreen({ route, navigation }) {
     }
   }, [password, repeatPassword]);
 
+  // signs a user up for the app if createUser is successful via firebase
   const signup = () => {
-    console.log("here");
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
@@ -101,11 +103,14 @@ function AuthScreen({ route, navigation }) {
       });
   };
 
+  // switches the screen from login to signup and vice versa & clears errors
   const loginHandler = () => {
     setLogin(!login);
     setError("");
   };
 
+  // Signs user into the app with the current email and password. Once auth goes through
+  // the page will navigate to the wardrobe
   const signin = () => {
     auth
       .signInWithEmailAndPassword(email, password)
@@ -125,6 +130,7 @@ function AuthScreen({ route, navigation }) {
   return (
     <View style={styles.image}>
       <View style={styles.card}>
+        {/* If on the sign up page, renders a button to go back to login */}
         {login ? (
           true
         ) : (
@@ -134,6 +140,7 @@ function AuthScreen({ route, navigation }) {
         )}
         <Text style={styles.heading}>{login ? "Login" : "Signup"}</Text>
         <StatusBar style="auto" />
+        {/* If on the sign up page, renders a text input to provide user's name */}
         {login ? (
           true
         ) : (
@@ -149,6 +156,7 @@ function AuthScreen({ route, navigation }) {
             </View>
           </View>
         )}
+        {/* If on the sign up page, ensures a name is entered to complete sign up */}
         {login ? (
           true
         ) : (
@@ -175,6 +183,7 @@ function AuthScreen({ route, navigation }) {
         </View>
 
         <View style={styles.validEmail}>
+          {/* If on any page, prints an error if email is invalid */}
           {validEmail ? (
             true
           ) : (
@@ -194,6 +203,8 @@ function AuthScreen({ route, navigation }) {
             />
           </View>
         </View>
+
+        {/* If signup, asks user to re-enter password to ensure its correct*/}
         {login ? (
           true
         ) : (
@@ -211,6 +222,8 @@ function AuthScreen({ route, navigation }) {
             </View>
           </View>
         )}
+
+        {/* If on signup page, prints an error if passwords do not match */}
         {login ? (
           true
         ) : (
@@ -222,6 +235,8 @@ function AuthScreen({ route, navigation }) {
             )}
           </View>
         )}
+
+        {/* If on login page, renders the login button */}
         {!login ? (
           true
         ) : (
@@ -252,6 +267,5 @@ function AuthScreen({ route, navigation }) {
     </View>
   );
 }
-
 
 export default AuthScreen;
