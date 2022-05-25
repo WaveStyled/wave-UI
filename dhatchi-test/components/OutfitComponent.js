@@ -1,3 +1,8 @@
+/*
+Component: OutfitComponent DEPRECATED
+Purpose: Renders a single Clothing Item
+*/
+
 import React from "react";
 import {
   View,

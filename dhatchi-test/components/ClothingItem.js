@@ -17,7 +17,7 @@ import "react-native-gesture-handler";
 import { Swipeable } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import {
-  useFonts, 
+  useFonts,
   OpenSans_300Light,
   OpenSans_300Light_Italic,
   OpenSans_400Regular,
@@ -27,8 +27,8 @@ import {
   OpenSans_700Bold,
   OpenSans_700Bold_Italic,
   OpenSans_800ExtraBold,
-  OpenSans_800ExtraBold_Italic 
-} from '@expo-google-fonts/open-sans'
+  OpenSans_800ExtraBold_Italic,
+} from "@expo-google-fonts/open-sans";
 import Spinner from "react-native-loading-spinner-overlay";
 
 // local imports
@@ -36,20 +36,20 @@ import { API, NODEPORT } from "../context/API";
 import { ClothesContext } from "../context/AppContext";
 import { UserContext } from "../context/UserIDContext";
 
-// 
+//
 function ClothingItem(props) {
   // Load contexts
   const wardrobe = React.useContext(ClothesContext);
   const uid = React.useContext(UserContext);
-  
+
   // Tell component to access navigation methods
   const navigation = useNavigation();
-  
+
   // Load font
-  let[fontsLoaded, error] = useFonts({
-    "OpenSans":OpenSans_400Regular,
+  let [fontsLoaded, error] = useFonts({
+    OpenSans: OpenSans_400Regular,
   });
-  
+
   /*
    Function: DeleteItem
    Purpose: Handles removal of an item from the wardrobe
@@ -60,7 +60,7 @@ function ClothingItem(props) {
     wardrobe.splice(to_del, 1);
 
     // Post to the Node server with the item to delete
-    fetch(`http://${API}:${NODEPORT}/delete/${uid}/` + key, {method: "POST"})
+    fetch(`http://${API}:${NODEPORT}/delete/${uid}/` + key, { method: "POST" })
       .then((response) => {
         if (!response.ok) {
           throw response;
@@ -103,17 +103,21 @@ function ClothingItem(props) {
     return (
       <>
         {/* Defines button that calls delete function on press */}
-        <TouchableOpacity onPress={() => navigation.navigate("Add", {
-          update: true,
-          clothName : null,
-          color : props.color,
-          weather : props.weather,
-          occasion : props.occasion,
-          type : props.type,
-          dirty : props.dirty,
-          image : props.image,
-          pieceid : props.id
-        })}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Add", {
+              update: true,
+              clothName: null,
+              color: props.color,
+              weather: props.weather,
+              occasion: props.occasion,
+              type: props.type,
+              dirty: props.dirty,
+              image: props.image,
+              pieceid: props.id,
+            })
+          }
+        >
           <View style={styles.updateSquare}>
             <Animated.Text
               style={{
@@ -129,33 +133,31 @@ function ClothingItem(props) {
         </TouchableOpacity>
       </>
     );
-  }
+  };
   // Defines clothing item object as it is displayed and the swiping functionality
   return (
-
-      <Swipeable
-        renderRightActions={() => rightActions(props.id, props.update)}
-        renderLeftActions={() => leftActions()}
-      >
-        <View style={props.dirty ? styles.dirtyitem : styles.item}>
-          <View style={styles.itemLeft}>
-            <View style={styles.container}>
-              <Image
-                style={{ width: 100, height: 100 }}
-                source={{ uri: "data:image/jpeg;base64," + props.image }}
-              />
-            </View>
-            <Text style={styles.itemText}>{props.text}</Text>
-          </View>
+    <Swipeable
+      renderRightActions={() => rightActions(props.id, props.update)}
+      renderLeftActions={() => leftActions()}
+    >
+      <View style={props.dirty ? styles.dirtyitem : styles.item}>
+        <View style={styles.itemLeft}>
           <View style={styles.container}>
-            <Text style={props.dirty ? styles.itemDirty : styles.itemSanitary}>
-              {props.dirty ? "\nDIRTY" : "\nCLEAN"}
-            </Text>
+            <Image
+              style={{ width: 100, height: 100 }}
+              source={{ uri: "data:image/jpeg;base64," + props.image }}
+            />
           </View>
-          <View style={styles.circular}></View>
+          <Text style={styles.itemText}>{props.text}</Text>
         </View>
-      </Swipeable>
-  
+        <View style={styles.container}>
+          <Text style={props.dirty ? styles.itemDirty : styles.itemSanitary}>
+            {props.dirty ? "\nDIRTY" : "\nCLEAN"}
+          </Text>
+        </View>
+        <View style={styles.circular}></View>
+      </View>
+    </Swipeable>
   );
 }
 
@@ -218,7 +220,7 @@ const styles = StyleSheet.create({
   itemText: {
     maxWidth: "50%",
     paddingLeft: 15,
-    fontFamily: 'OpenSans',
+    fontFamily: "OpenSans",
   },
   itemSanitary: {
     fontWeight: "bold",
