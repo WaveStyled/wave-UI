@@ -37,6 +37,11 @@ function emailchecker(email) {
   return true;
 }
 
+/*
+Function: AuthScreen
+Purpose: Main function that handles functionaility and rendering of the screen
+*/
+
 function AuthScreen({ route, navigation }) {
   const [validEmail, isValid] = useState(false); // boolean checks for email, name, password validity
   const [emptyName, isFilled] = useState(false);
