@@ -86,7 +86,7 @@ function AddScreen({ navigation, route }) {
   // Ensures permissions to access camera
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
   
-  
+  // If Update version of screen is being used, load in the already set details about the clothing item
   React.useEffect(() => {
     if (route.params.update) {
       setWeatherItem(propstoweather(route.params.weather));
@@ -98,7 +98,8 @@ function AddScreen({ navigation, route }) {
     }
   }, []);
 
-
+  // Function: TakeImage 
+  // Purpose:
   const takeImage = async () => {
     const permission = await ImagePicker.requestCameraPermissionsAsync();
     if (permission === true) {
@@ -265,10 +266,10 @@ function AddScreen({ navigation, route }) {
       image: image,
     };
 
-    to_change = a.filter((value) => value.pieceid === route.params.pieceid);
+    to_change = wardrobe.filter((value) => value.pieceid === route.params.pieceid);
 
     if (to_change.length > 0) {
-      a[a.indexOf(to_change[0])] = tochange;
+      wardrobe[wardrobe.indexOf(to_change[0])] = tochange;
     }
     navigation.navigate("Wardrobe", { name: clothName });
   };
@@ -283,10 +284,10 @@ function AddScreen({ navigation, route }) {
     ws = mapWeatherToBin(weatherSelected);
     //list of occassions chosen by user in occasion picker
     ocs = mapOccasionToBin(occasionSelected);
-    if (a.length === 0) {
+    if (wardrobe.length === 0) {
       id = 0;
     } else {
-      id = a[0].pieceid;
+      id = wardrobe[0].pieceid;
     }
 
     //If user gives no image 
@@ -357,7 +358,7 @@ function AddScreen({ navigation, route }) {
       dirty: isEnabled ? 1 : 0,
       image: image,
     };
-    a.unshift(topush);
+    wardrobe.unshift(topush);
     navigation.navigate("Wardrobe", { name: clothName });
   };
 
