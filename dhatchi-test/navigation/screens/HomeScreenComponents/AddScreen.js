@@ -1,3 +1,4 @@
+// imports
 import "react-native-gesture-handler";
 import React, { useState } from "react";
 import {
@@ -22,74 +23,16 @@ import * as ImagePicker from "expo-image-picker";
 import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
 import { Platform } from "react-native-web";
 
+// local imports
 import clothingItems from "../../../components/Items";
 import weather from "../../../components/Weathers";
 import occasion from "../../../components/Occasions";
 import DropDownPicker from "react-native-dropdown-picker";
 import { ClothesContext } from "../../../context/AppContext";
 import { UserContext } from "../../../context/UserIDContext";
-
 import { addItem, updateItem } from "../../utils/Fetches";
+import { propstooccasion, propstoweather, mapOccasionToBin, mapWeatherToBin } from "./AddComponents/AddFormHelpers";
 
-
-const occasion_mapping = {
-  FF: 0,
-  SF: 1,
-  CS: 2,
-  WK: 3,
-  BD: 4,
-  LZ: 5,
-};
-
-const weather_mapping = {
-  C: 0,
-  H: 1,
-  R: 2,
-  N: 3,
-  T: 4,
-};
-
-function propstoweather(p) {
-  const weat_map = ["C", "H", "R", "N", "T"];
-  w = p.map(function (value, index) {
-    if (value) {
-      return weat_map[index];
-    } else {
-      return false;
-    }
-  });
-  return w.filter((element) => element !== false);
-}
-
-function propstooccasion(p) {
-  const occ_map = ["FF", "SF", "CS", "WK", "BD", "LZ"];
-  o = p.map(function (value, index) {
-    if (value) {
-      return occ_map[index];
-    } else {
-      return false;
-    }
-  });
-  return o.filter((element) => element !== false);
-}
-
-function mapOccasionToBin(ocs) {
-  (arr = []).length = occasion.length;
-  arr.fill(0);
-  for (var i = 0; i < ocs.length; i++) {
-    arr[occasion_mapping[ocs[i]]] = 1;
-  }
-  return arr;
-}
-
-function mapWeatherToBin(we) {
-  (arr = []).length = weather.length;
-  arr.fill(0);
-  for (var i = 0; i < we.length; i++) {
-    arr[weather_mapping[we[i]]] = 1;
-  }
-  return arr;
-}
 
 function AddScreen({ navigation, route }) {
   
@@ -229,27 +172,6 @@ function AddScreen({ navigation, route }) {
 
   const update_handler = () => {
     
-     //If user gives no image 
-     if(!image){
-      console.log("here")
-      Alert.alert("No image selected")
-      return
-    }
-    //If user does not select a clothing type
-    if(!type){
-      Alert.alert("No Clothing Type Selected")
-      return
-    }
-    //If user does not select a weather
-    if(weatherSelected.length == 0){
-      Alert.alert("No Weather selected")
-      return
-    }
-    //If user does not provide an occassion
-    if(occasionSelected.length == 0){
-      Alert.alert("No Occassion selected")
-      return
-    }
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
 
@@ -306,45 +228,20 @@ function AddScreen({ navigation, route }) {
     }
     navigation.navigate("Wardrobe", { name: clothName });
   };
-  
-  /*
-  save_handler(): Saves all data entered by user and sends data to backend. Warns user if required fields are not 
-  filled out
-  
-  */
+
   const save_handler = () => {
-    //list of weathers chosen by user in weather picker
     ws = mapWeatherToBin(weatherSelected);
-    //list of occassions chosen by user in occasion picker
     ocs = mapOccasionToBin(occasionSelected);
     if (a.length === 0) {
       id = 0;
     } else {
       id = a[0].pieceid;
     }
-
-    //If user gives no image 
+    // If no image is selected, do not allow add to happen
     if(!image){
-      console.log("here")
       Alert.alert("No image selected")
       return
     }
-    //If user does not select a clothing type
-    if(!type){
-      Alert.alert("No Clothing Type Selected")
-      return
-    }
-    //If user does not select a weather
-    if(weatherSelected.length == 0){
-      Alert.alert("No Weather selected")
-      return
-    }
-    //If user does not provide an occassion
-    if(occasionSelected.length == 0){
-      Alert.alert("No Occassion selected")
-      return
-    }
-    //data to send to the backend
     toadd = {
       PIECEID: id + 1,
       COLOR: color,
@@ -366,10 +263,9 @@ function AddScreen({ navigation, route }) {
       DIRTY: isEnabled ? 1 : 0,
       IMAGE: image,
     };
-    //send data to the backend so it can be stored/used by model to train
+
     addItem(toadd, uid);
-    
-    //data to send back to the homescreen so user can view/edit clothing item details
+
     topush = {
       pieceid: id + 1,
       color: color,
@@ -467,6 +363,7 @@ function AddScreen({ navigation, route }) {
                   color: colors.text,
                 },
               ]}
+              //CHECK: how userinput is stored in a variable
               value={clothName}
               onChangeText={(text) => setClothName(text)}
             />

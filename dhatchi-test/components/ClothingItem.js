@@ -35,6 +35,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 import { API, NODEPORT } from "../context/API";
 import { ClothesContext } from "../context/AppContext";
 import { UserContext } from "../context/UserIDContext";
+import Styles from '../assets/StyleSheets/ClothingItemStyle'
 
 //
 function ClothingItem(props) {
@@ -83,7 +84,7 @@ function ClothingItem(props) {
       <>
         {/* Defines button that calls delete function on press */}
         <TouchableOpacity onPress={() => deleteItem(key, set)}>
-          <View style={styles.delSquare}>
+          <View style={Styles.delSquare}>
             <Animated.Text
               style={{
                 color: "white",
@@ -118,7 +119,7 @@ function ClothingItem(props) {
             })
           }
         >
-          <View style={styles.updateSquare}>
+          <View style={Styles.updateSquare}>
             <Animated.Text
               style={{
                 color: "white",
@@ -140,108 +141,25 @@ function ClothingItem(props) {
       renderRightActions={() => rightActions(props.id, props.update)}
       renderLeftActions={() => leftActions()}
     >
-      <View style={props.dirty ? styles.dirtyitem : styles.item}>
-        <View style={styles.itemLeft}>
-          <View style={styles.container}>
+      <View style={props.dirty ? Styles.dirtyitem : Styles.item}>
+        <View style={Styles.itemLeft}>
+          <View style={Styles.container}>
             <Image
               style={{ width: 100, height: 100 }}
               source={{ uri: "data:image/jpeg;base64," + props.image }}
             />
           </View>
-          <Text style={styles.itemText}>{props.text}</Text>
+          <Text style={Styles.itemText}>{props.text}</Text>
         </View>
-        <View style={styles.container}>
-          <Text style={props.dirty ? styles.itemDirty : styles.itemSanitary}>
+        <View style={Styles.container}>
+          <Text style={props.dirty ? Styles.itemDirty : Styles.itemSanitary}>
             {props.dirty ? "\nDIRTY" : "\nCLEAN"}
           </Text>
         </View>
-        <View style={styles.circular}></View>
+        <View style={Styles.circular}></View>
       </View>
     </Swipeable>
   );
 }
-
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: "#FFF",
-    padding: 10,
-    borderRadius: 7,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 10,
-  },
-  dirtyitem: {
-    backgroundColor: "#FFF",
-    padding: 10,
-    borderRadius: 7,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 10,
-    opacity: 0.8,
-    backgroundColor: "#EDC9AF",
-  },
-  itemLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flexWrap: "wrap",
-  },
-  delSquare: {
-    flexDirection: "row",
-
-    alignItems: "center",
-    justifyContent: "space-between",
-
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 7,
-    marginBottom: 10,
-  },
-  updateSquare: {
-    flexDirection: "row",
-
-    alignItems: "center",
-    justifyContent: "space-between",
-
-    backgroundColor: "green",
-    padding: 10,
-    borderRadius: 7,
-    marginBottom: 10,
-  },
-  square: {
-    width: 80,
-    height: 100,
-    backgroundColor: "#55BCF6",
-    opacity: 0.4,
-    borderRadius: 5,
-    marginRight: 15,
-  },
-  itemText: {
-    maxWidth: "50%",
-    paddingLeft: 15,
-    fontFamily: "OpenSans",
-  },
-  itemSanitary: {
-    fontWeight: "bold",
-    fontSize: 10,
-    backgroundColor: "transparent",
-    justifyContent: "center",
-  },
-  itemDirty: {
-    fontWeight: "bold",
-    fontSize: 10,
-    backgroundColor: "transparent",
-    justifyContent: "center",
-    color: "red",
-  },
-  circular: {
-    width: 12,
-    height: 12,
-    borderColor: "#55BCF6",
-    borderWidth: 2,
-    borderRadius: 5,
-  },
-});
 
 export default ClothingItem;
