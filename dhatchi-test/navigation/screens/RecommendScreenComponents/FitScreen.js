@@ -1,20 +1,29 @@
+/*
+Screen: FitScreen
+Purpose: Screen that displays Recommendations to the user, where the user can 
+like, dislike and choose their outfit for the day given a weather and occasion
+*/
+
+// Imports
 import React from "react";
 import {
   StatusBar,
-  StyleSheet,
   Text,
   View,
   SafeAreaView,
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-
 import Swiper from "react-native-deck-swiper";
 import { Transitioning } from "react-native-reanimated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+// Local Imports
 import { ClothesContext } from "../../../context/AppContext";
 import { UserContext } from "../../../context/UserIDContext";
 import { transition } from "../../utils/SwiperTransition";
+import { Card } from "../../utils/OutfitRender";
+import { styles } from "../../../assets/StyleSheets/FitScreenStyle";
 import {
   IDtoJSX,
   fetchEndCalibration,
@@ -22,7 +31,6 @@ import {
   OOTD,
   getRecommendations,
 } from "../../utils/Fetches";
-import { Card } from "../../utils/OutfitRender";
 
 const { width } = Dimensions.get("window");
 
@@ -35,11 +43,16 @@ const colors = {
   green: "green",
 };
 
+// swiper and transition references for the swiping animation
 const swiperRef = React.createRef();
 const transitionRef = React.createRef();
 
-export default function App({ route, navigation }) {
-  const a = React.useContext(ClothesContext);
+/*
+Function: Recommender
+Purpose: Main function that handles functionaility and rendering of the screen
+*/
+export default function Recommender({ route, navigation }) {
+  const wardrobe = React.useContext(ClothesContext);
   const uid = React.useContext(UserContext);
 
   const [index, setIndex] = React.useState(0);
@@ -50,11 +63,14 @@ export default function App({ route, navigation }) {
   const [curOccasion] = React.useState(route.params.occasion);
 
   const [change, setChange] = React.useState(false); // this determines whether the fits need to be fetched again
+  
+  // convert the initial fits to JSX objects
   const [testing, setOutfits] = React.useState(
-    IDtoJSX(route.params.initial, a)
-  ); // this stores the JSX objects
-  const [loaded, setLoad] = React.useState(true);
+    IDtoJSX(route.params.initial, wardrobe)
+  );                                            
+  const [loaded, setLoad] = React.useState(true);  // boolean that indicates if fits have actually been loaded
 
+  // only get new fits if the buffer runs out (or change is true) and if the fits have been rendered
   React.useEffect(() => {
     if (!loaded) {
       getRecommendations(curOccasion, curWeather, setFits, uid);
@@ -63,13 +79,14 @@ export default function App({ route, navigation }) {
     }
   }, [change]);
 
+  // converts the pieceids to their JSON form using the context on load demand
   React.useEffect(() => {
     if (!loaded) {
       maps = [];
-      fits.forEach(function (item, i) {
+      fits.forEach(function (item, _) {
         var ids = item.filter((value) => value !== 0);
         const test = ids.map(function (value) {
-          var val = a.find((element) => element.pieceid === value);
+          var val = wardrobe.find((element) => element.pieceid === value);
           return val;
         });
         maps.push(test);
@@ -78,6 +95,7 @@ export default function App({ route, navigation }) {
     }
   }, [fits, change]); // updates only when a new fetch comes
 
+  // displays weather and occasion on the top of the screen
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -90,6 +108,10 @@ export default function App({ route, navigation }) {
     });
   });
 
+  /*
+  Fetches a new batch of fits when there is one fit remaining
+  Output : resets the fits buffer with the next set of fits
+  */
   const refreshBuffer = () => {
     setChange(!change);
     setLoad(false);
@@ -105,6 +127,10 @@ export default function App({ route, navigation }) {
     fetchEndCalibration(send, uid);
   };
 
+  /*
+  Registers a dislike rating (0) when a user swipes left
+  Output : adds the rating and cycles to the next outfit
+  */
   const onSwipedLeft = () => {
     transitionRef.current.animateNextTransition();
     console.log("Left");
@@ -118,6 +144,10 @@ export default function App({ route, navigation }) {
     }
   };
 
+  /*
+  Registers a like rating (1) when a user swipes right
+  Output : adds the rating and cycles to the next outfit
+  */
   const onSwipedRight = () => {
     transitionRef.current.animateNextTransition();
     console.log("Right");
@@ -131,6 +161,11 @@ export default function App({ route, navigation }) {
     }
   };
 
+  /*
+  When the user presses the Finish button, puts the fits rating and sends it
+  to the model so it learns from this phase as well
+  Output : Trains the model and navigates back to the main Recommend screen
+  */
   const Finish = () => {
     var send = [];
     send.push(likes.slice(0, index));
@@ -147,6 +182,10 @@ export default function App({ route, navigation }) {
     navigation.navigate("RecommendMain");
   };
 
+  /*
+  Registeres the chosen Outfit of the Day (hanger)
+  Output : sends the OOTD to the backend
+  */
   const chooseOutfit = () => {
     // outfit selection logic here
     var data = {
@@ -159,6 +198,7 @@ export default function App({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* renders the background image */}
       <MaterialCommunityIcons
         name="crop-square"
         size={width}
@@ -172,6 +212,7 @@ export default function App({ route, navigation }) {
         }}
       />
       <StatusBar hidden={true} />
+      {/* renders the swiper with the outfits on the Cards */}
       <View style={styles.swiperContainer}>
         <Swiper
           ref={swiperRef}
@@ -301,87 +342,3 @@ export default function App({ route, navigation }) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ADD8E6",
-    justifyContent: "center",
-  },
-  swiperContainer: {
-    flex: 0.55,
-  },
-  bottomContainer: {
-    flex: 0.45,
-    justifyContent: "space-evenly",
-  },
-  bottomContainerMeta: { alignContent: "flex-end", alignItems: "center" },
-  bottomContainerButtons: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-  },
-  cardImage: {
-    width: 160,
-    flex: 1,
-    resizeMode: "contain",
-  },
-  card: {
-    flex: 0.45,
-    borderRadius: 8,
-    shadowRadius: 25,
-    shadowColor: colors.black,
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 0 },
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.white,
-  },
-  text: {
-    textAlign: "center",
-    fontSize: 15,
-    backgroundColor: "transparent",
-  },
-  done: {
-    textAlign: "center",
-    fontSize: 30,
-    color: colors.white,
-    backgroundColor: "transparent",
-  },
-  heading: { fontSize: 24, marginBottom: 10, color: colors.gray },
-  price: { color: colors.blue, fontSize: 32, fontWeight: "500" },
-  item: {
-    backgroundColor: "#FFF",
-    borderRadius: 7,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  itemLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flexWrap: "wrap",
-  },
-  itemText: {
-    maxWidth: "80%",
-  },
-  panelButtonTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "white",
-    justifyContent: "center",
-  },
-  panelButtonTitle2: {
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "black",
-    justifyContent: "center",
-  },
-  commandButton: {
-    padding: 10,
-    borderRadius: 20,
-    backgroundColor: "#2874A6",
-    alignItems: "center",
-    width: "60%",
-    justifyContent: "center",
-  },
-});

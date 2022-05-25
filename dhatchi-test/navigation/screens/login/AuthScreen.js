@@ -41,7 +41,6 @@ function emailchecker(email) {
 Function: AuthScreen
 Purpose: Main function that handles functionaility and rendering of the screen
 */
-
 function AuthScreen({ route, navigation }) {
   const [validEmail, isValid] = useState(false); // boolean checks for email, name, password validity
   const [emptyName, isFilled] = useState(false);
@@ -62,6 +61,7 @@ function AuthScreen({ route, navigation }) {
   }, [email, password]);
 
   // if the authorization goes successfully, then log into the main app with the user id
+  // Output : screen will go to the Home page of the app if authorization goes through
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -88,6 +88,8 @@ function AuthScreen({ route, navigation }) {
   }, [password, repeatPassword]);
 
   // signs a user up for the app if createUser is successful via firebase
+  // Output : sends user back to login page and clear errors if successful
+  //         if not, then shows the error and asks user to try again
   const signup = () => {
     auth
       .createUserWithEmailAndPassword(email, password)
@@ -108,7 +110,7 @@ function AuthScreen({ route, navigation }) {
       });
   };
 
-  // switches the screen from login to signup and vice versa & clears errors
+  // Output: switches the screen from login to signup and vice versa & clears errors
   const loginHandler = () => {
     setLogin(!login);
     setError("");
@@ -116,6 +118,7 @@ function AuthScreen({ route, navigation }) {
 
   // Signs user into the app with the current email and password. Once auth goes through
   // the page will navigate to the wardrobe
+  // Output : if user is successful, naviagates otherwise try again
   const signin = () => {
     auth
       .signInWithEmailAndPassword(email, password)
