@@ -86,7 +86,7 @@ function AddScreen({ navigation, route }) {
   // Ensures permissions to access camera
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
   
-
+  
   React.useEffect(() => {
     if (route.params.update) {
       setWeatherItem(propstoweather(route.params.weather));
@@ -98,8 +98,6 @@ function AddScreen({ navigation, route }) {
     }
   }, []);
 
-
- 
 
   const takeImage = async () => {
     const permission = await ImagePicker.requestCameraPermissionsAsync();
@@ -197,6 +195,27 @@ function AddScreen({ navigation, route }) {
 
   const update_handler = () => {
     
+     //If user gives no image 
+     if(!image){
+      console.log("here")
+      Alert.alert("No image selected")
+      return
+    }
+    //If user does not select a clothing type
+    if(!type){
+      Alert.alert("No Clothing Type Selected")
+      return
+    }
+    //If user does not select a weather
+    if(weatherSelected.length == 0){
+      Alert.alert("No Weather selected")
+      return
+    }
+    //If user does not provide an occassion
+    if(occasionSelected.length == 0){
+      Alert.alert("No Occassion selected")
+      return
+    }
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
 
@@ -246,27 +265,52 @@ function AddScreen({ navigation, route }) {
       image: image,
     };
 
-    to_change = wardrobe.filter((value) => value.pieceid === route.params.pieceid);
+    to_change = a.filter((value) => value.pieceid === route.params.pieceid);
 
     if (to_change.length > 0) {
-      wardrobe[wardrobe.indexOf(to_change[0])] = tochange;
+      a[a.indexOf(to_change[0])] = tochange;
     }
     navigation.navigate("Wardrobe", { name: clothName });
   };
-
+  
+  /*
+  save_handler(): Saves all data entered by user and sends data to backend. Warns user if required fields are not 
+  filled out
+  
+  */
   const save_handler = () => {
+    //list of weathers chosen by user in weather picker
     ws = mapWeatherToBin(weatherSelected);
+    //list of occassions chosen by user in occasion picker
     ocs = mapOccasionToBin(occasionSelected);
-    if (wardrobe.length === 0) {
+    if (a.length === 0) {
       id = 0;
     } else {
-      id = wardrobe[0].pieceid;
+      id = a[0].pieceid;
     }
-    // If no image is selected, do not allow add to happen
+
+    //If user gives no image 
     if(!image){
+      console.log("here")
       Alert.alert("No image selected")
       return
     }
+    //If user does not select a clothing type
+    if(!type){
+      Alert.alert("No Clothing Type Selected")
+      return
+    }
+    //If user does not select a weather
+    if(weatherSelected.length == 0){
+      Alert.alert("No Weather selected")
+      return
+    }
+    //If user does not provide an occassion
+    if(occasionSelected.length == 0){
+      Alert.alert("No Occassion selected")
+      return
+    }
+    //data to send to the backend
     toadd = {
       PIECEID: id + 1,
       COLOR: color,
@@ -288,9 +332,10 @@ function AddScreen({ navigation, route }) {
       DIRTY: isEnabled ? 1 : 0,
       IMAGE: image,
     };
-
+    //send data to the backend so it can be stored/used by model to train
     addItem(toadd, uid);
-
+    
+    //data to send back to the homescreen so user can view/edit clothing item details
     topush = {
       pieceid: id + 1,
       color: color,
@@ -312,7 +357,7 @@ function AddScreen({ navigation, route }) {
       dirty: isEnabled ? 1 : 0,
       image: image,
     };
-    wardrobe.unshift(topush);
+    a.unshift(topush);
     navigation.navigate("Wardrobe", { name: clothName });
   };
 
@@ -388,7 +433,6 @@ function AddScreen({ navigation, route }) {
                   color: colors.text,
                 },
               ]}
-              //CHECK: how userinput is stored in a variable
               value={clothName}
               onChangeText={(text) => setClothName(text)}
             />
