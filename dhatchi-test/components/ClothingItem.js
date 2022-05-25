@@ -1,3 +1,9 @@
+/*
+Component: ClothingItem
+Purpose: Defines a clothing item from wardrobe as an object so that it can be rendered on the list  
+*/
+
+// imports
 import React from "react";
 import {
   View,
@@ -9,9 +15,6 @@ import {
 } from "react-native";
 import "react-native-gesture-handler";
 import { Swipeable } from "react-native-gesture-handler";
-import { API, NODEPORT } from "../context/API";
-import { ClothesContext } from "../context/AppContext";
-import { UserContext } from "../context/UserIDContext";
 import { useNavigation } from "@react-navigation/native";
 import {
   useFonts, 
@@ -28,25 +31,36 @@ import {
 } from '@expo-google-fonts/open-sans'
 import Spinner from "react-native-loading-spinner-overlay";
 
+// local imports
+import { API, NODEPORT } from "../context/API";
+import { ClothesContext } from "../context/AppContext";
+import { UserContext } from "../context/UserIDContext";
+
+// 
 function ClothingItem(props) {
+  // Load contexts
+  const wardrobe = React.useContext(ClothesContext);
+  const uid = React.useContext(UserContext);
+  
+  // Tell component to access navigation methods
+  const navigation = useNavigation();
+  
+  // Load font
   let[fontsLoaded, error] = useFonts({
     "OpenSans":OpenSans_400Regular,
   });
-  if (!fontsLoaded) {
-    <Spinner/>
-  }
-  const a = React.useContext(ClothesContext);
-  const uid = React.useContext(UserContext);
+  
+  /*
+   Function: DeleteItem
+   Purpose: Handles removal of an item from the wardrobe
+  */
+  const deleteItem = (key, setWD) => {
+    // Find item in context using ID of the object
+    to_del = wardrobe.findIndex((item) => item.pieceid === key);
+    wardrobe.splice(to_del, 1);
 
-  const deleteItem = (key, set) => {
-    to_del = a.findIndex((item) => item.pieceid === key);
-    a.splice(to_del, 1);
-
-    const requestOptions = {
-      method: "POST",
-    };
-
-    fetch(`http://${API}:${NODEPORT}/delete/${uid}/` + key, requestOptions)
+    // Post to the Node server with the item to delete
+    fetch(`http://${API}:${NODEPORT}/delete/${uid}/` + key, {method: "POST"})
       .then((response) => {
         if (!response.ok) {
           throw response;
@@ -54,14 +68,20 @@ function ClothingItem(props) {
         return response.json();
       })
       .then((json) => {
-        set(json);
+        // set wardrobe to new one with deleted item
+        setWD(json);
       });
     return true;
   };
 
+  /*
+  Function: rightActions
+  Purpose: Defines the delete button that renders when an item is swiped right in wardrobe
+  */
   const rightActions = (key, set) => {
     return (
       <>
+        {/* Defines button that calls delete function on press */}
         <TouchableOpacity onPress={() => deleteItem(key, set)}>
           <View style={styles.delSquare}>
             <Animated.Text
@@ -79,13 +99,11 @@ function ClothingItem(props) {
       </>
     );
   };
-
-  const navigation = useNavigation();
-
-  return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("Add", {
+  const leftActions = () => {
+    return (
+      <>
+        {/* Defines button that calls delete function on press */}
+        <TouchableOpacity onPress={() => navigation.navigate("Add", {
           update: true,
           clothName : null,
           color : props.color,
@@ -95,11 +113,29 @@ function ClothingItem(props) {
           dirty : props.dirty,
           image : props.image,
           pieceid : props.id
-        })
-      }
-    >
+        })}>
+          <View style={styles.updateSquare}>
+            <Animated.Text
+              style={{
+                color: "white",
+                paddingHorizontal: 10,
+                fontWeight: "600",
+                paddingVertical: 50,
+              }}
+            >
+              Update
+            </Animated.Text>
+          </View>
+        </TouchableOpacity>
+      </>
+    );
+  }
+  // Defines clothing item object as it is displayed and the swiping functionality
+  return (
+
       <Swipeable
         renderRightActions={() => rightActions(props.id, props.update)}
+        renderLeftActions={() => leftActions()}
       >
         <View style={props.dirty ? styles.dirtyitem : styles.item}>
           <View style={styles.itemLeft}>
@@ -119,7 +155,7 @@ function ClothingItem(props) {
           <View style={styles.circular}></View>
         </View>
       </Swipeable>
-    </TouchableOpacity>
+  
   );
 }
 
@@ -156,6 +192,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
 
     backgroundColor: "red",
+    padding: 10,
+    borderRadius: 7,
+    marginBottom: 10,
+  },
+  updateSquare: {
+    flexDirection: "row",
+
+    alignItems: "center",
+    justifyContent: "space-between",
+
+    backgroundColor: "green",
     padding: 10,
     borderRadius: 7,
     marginBottom: 10,
