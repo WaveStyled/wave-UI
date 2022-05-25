@@ -1,3 +1,10 @@
+/*
+
+Screen: AddScreen
+Purpose: Screen that handles the ability to enter information about new clothing item. User can: take a photo, add name, choose color, choose weather, occasion and indicate
+whether it is dirty or not 
+*/
+
 // imports
 import "react-native-gesture-handler";
 import React, { useState } from "react";
@@ -12,11 +19,9 @@ import {
   Switch,
   Alert,
 } from "react-native";
-
 import { useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
 import * as ImagePicker from "expo-image-picker";
@@ -33,34 +38,54 @@ import { UserContext } from "../../../context/UserIDContext";
 import { addItem, updateItem } from "../../utils/Fetches";
 import { propstooccasion, propstoweather, mapOccasionToBin, mapWeatherToBin } from "./AddComponents/AddFormHelpers";
 
+/*
+Function: AddScreen
+Purpose: Main function that handles functionaility and rendering of the screen
+*/
 
 function AddScreen({ navigation, route }) {
   
+  // Initiate Context's 
   const uid = React.useContext(UserContext);
+  const wardrobe = React.useContext(ClothesContext);
 
+  // Initiate colors
   const { colors } = useTheme();
+
+  // Initiation of state variables used throughout the screen
+  
+  // Name Selected 
   const [clothName, setClothName] = useState();
-
+  // color selected
   const [color, setColor] = useState();
-
+  // Current weather selected 
   const [weatherSelected, setWeatherItem] = useState([]);
+  // Whether the weather picker is open
   const [weather_picker_open, setWeatherPickerOpen] = useState(false);
+  
   const [weat, setItems] = useState(weather);
-
+  // Current occasion selected 
   const [occasionSelected, setOccasion] = useState([]);
+  // whether occasion picker is open
   const [occasion_open, setOccasionPickerOpen] = useState(false);
   const [occa, setOccasions] = useState(occasion);
-
+  // Type selected
   const [type, setType] = useState();
+  // Whether type menu is open
   const [type_open, setClothPickerOpen] = useState(false);
-
+  // Image and dirty boolean
+  const [image, setImage, isDirty, setDirty] = useState(image);
+  // Whether dirty is turned on or not
   const [isEnabled, setIsEnabled] = useState(
     route.params.dirty == null ? false : Boolean(route.params.dirty)
   );
+  
+  // Not sure lol @jaysan6
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-  const a = React.useContext(ClothesContext);
-  const [image, setImage, isDirty, setDirty] = useState(image);
+  // Ensures permissions to access camera
+  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
+  
 
   React.useEffect(() => {
     if (route.params.update) {
@@ -74,7 +99,7 @@ function AddScreen({ navigation, route }) {
   }, []);
 
 
-  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
+ 
 
   const takeImage = async () => {
     const permission = await ImagePicker.requestCameraPermissionsAsync();
@@ -221,10 +246,10 @@ function AddScreen({ navigation, route }) {
       image: image,
     };
 
-    to_change = a.filter((value) => value.pieceid === route.params.pieceid);
+    to_change = wardrobe.filter((value) => value.pieceid === route.params.pieceid);
 
     if (to_change.length > 0) {
-      a[a.indexOf(to_change[0])] = tochange;
+      wardrobe[wardrobe.indexOf(to_change[0])] = tochange;
     }
     navigation.navigate("Wardrobe", { name: clothName });
   };
@@ -232,10 +257,10 @@ function AddScreen({ navigation, route }) {
   const save_handler = () => {
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
-    if (a.length === 0) {
+    if (wardrobe.length === 0) {
       id = 0;
     } else {
-      id = a[0].pieceid;
+      id = wardrobe[0].pieceid;
     }
     // If no image is selected, do not allow add to happen
     if(!image){
@@ -287,7 +312,7 @@ function AddScreen({ navigation, route }) {
       dirty: isEnabled ? 1 : 0,
       image: image,
     };
-    a.unshift(topush);
+    wardrobe.unshift(topush);
     navigation.navigate("Wardrobe", { name: clothName });
   };
 
