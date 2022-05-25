@@ -306,9 +306,16 @@ function AddScreen({ navigation, route }) {
     }
     navigation.navigate("Wardrobe", { name: clothName });
   };
-
+  
+  /*
+  save_handler(): Saves all data entered by user and sends data to backend. Warns user if required fields are not 
+  filled out
+  
+  */
   const save_handler = () => {
+    //list of weathers chosen by user in weather picker
     ws = mapWeatherToBin(weatherSelected);
+    //list of occassions chosen by user in occasion picker
     ocs = mapOccasionToBin(occasionSelected);
     if (a.length === 0) {
       id = 0;
@@ -337,6 +344,7 @@ function AddScreen({ navigation, route }) {
       Alert.alert("No Occassion selected")
       return
     }
+    //data to send to the backend
     toadd = {
       PIECEID: id + 1,
       COLOR: color,
@@ -358,9 +366,10 @@ function AddScreen({ navigation, route }) {
       DIRTY: isEnabled ? 1 : 0,
       IMAGE: image,
     };
-
+    //send data to the backend so it can be stored/used by model to train
     addItem(toadd, uid);
-
+    
+    //data to send back to the homescreen so user can view/edit clothing item details
     topush = {
       pieceid: id + 1,
       color: color,
@@ -458,7 +467,6 @@ function AddScreen({ navigation, route }) {
                   color: colors.text,
                 },
               ]}
-              //CHECK: how userinput is stored in a variable
               value={clothName}
               onChangeText={(text) => setClothName(text)}
             />
