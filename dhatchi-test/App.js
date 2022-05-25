@@ -24,43 +24,41 @@ the application.
 */
 
 export default function App() {
-
   // Screens defined and load screen rendered
   return (
-    
-      <NavigationContainer>
-        {/* Display load screen first */}
-        <Stack.Navigator
-          initialRouteName="LoadScreen"
-          screenOptions={{
-            headerTitleAlign: "center",
-            headerStyle: {
-              backgroundColor: "#0080ff",
-            },
-            headerTintColor: "#ffffff",
-            headerTitleStyle: {
-              fontSize: 25,
-              fontWeight: "bold",
-            },
-          }}
-        >
-          {/* Defines screen in the stack navigator */}
-          <Stack.Screen
-            name="LoadScreen"
-            component={LoadScreen}
-            options={{ headerShown: false, gestureEnabled: false }}
-          />
-          <Stack.Screen
-            name="LogIn"
-            component={AuthScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="MainApp"
-            component={MainContainer}
-            options={{ headerShown: false, gestureEnabled: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+    <NavigationContainer>
+      {/* Display load screen first */}
+      <Stack.Navigator
+        initialRouteName="LoadScreen"
+        screenOptions={{
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: "#0080ff",
+          },
+          headerTintColor: "#ffffff",
+          headerTitleStyle: {
+            fontSize: 25,
+            fontWeight: "bold",
+          },
+        }}
+      >
+        {/* Defines screen in the stack navigator */}
+        <Stack.Screen
+          name="LoadScreen"
+          component={LoadScreen}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name="LogIn"
+          component={AuthScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MainApp"
+          component={MainContainer}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

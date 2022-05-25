@@ -1,3 +1,9 @@
+/*
+ SwiperTransition.js handles the swiping animation used in Recommend 
+ and Calibrate. Defines the transition animations
+*/
+
+// Imports
 import { Transition } from "react-native-reanimated";
 
 const ANIMATION_DURATION = 200;
