@@ -161,12 +161,13 @@ export default function App({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      
       <MaterialCommunityIcons
         name="crop-square"
         size={width}
         color={colors.blue}
         style={{
-          opacity: 0.05,
+          opacity: 0.00,
           transform: [{ rotate: "45deg" }, { scale: 1.6 }],
           position: "absolute",
           left: -15,
@@ -174,6 +175,11 @@ export default function App({ route, navigation }) {
         }}
       />
       <StatusBar hidden={true} />
+      <Text>
+              {" "}
+              Weather: {weather_mapping[curWeather]} Occasion:{" "}
+              {occasion_mapping[curOccasion]}
+            </Text>
       <View style={styles.swiperContainer}>
         <Swiper
           ref={swiperRef}
@@ -238,7 +244,7 @@ export default function App({ route, navigation }) {
           }}
         />
       </View>
-
+      
       <View style={styles.bottomContainer}>
         <Transitioning.View
           ref={transitionRef}
@@ -253,16 +259,9 @@ export default function App({ route, navigation }) {
         <Text> Weather: {weather_mapping[curWeather]}, Occasion: {occasion_mapping[curOccasion]}</Text>
         </View> */}
 
-          <View>
-            <Text>
-              {" "}
-              Weather: {weather_mapping[curWeather]} Occasion:{" "}
-              {occasion_mapping[curOccasion]}
-            </Text>
-          </View>
           <MaterialCommunityIcons.Button
             name="close"
-            size={94}
+            size={30}
             backgroundColor="transparent"
             underlayColor="transparent"
             activeOpacity={0.3}
@@ -273,7 +272,7 @@ export default function App({ route, navigation }) {
           />
           <MaterialCommunityIcons.Button
             name="check"
-            size={94}
+            size={30}
             backgroundColor="transparent"
             underlayColor="transparent"
             activeOpacity={0.3}
