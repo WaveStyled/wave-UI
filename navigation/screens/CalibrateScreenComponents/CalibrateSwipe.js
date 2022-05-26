@@ -161,6 +161,9 @@ export default function App({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View>
+      <Text>        Weather: {weather_mapping[curWeather]}   Occasion: {occasion_mapping[curOccasion]}</Text>
+      </View>
       <MaterialCommunityIcons
         name="crop-square"
         size={width}
@@ -259,12 +262,10 @@ export default function App({ route, navigation }) {
      
 
 
-     <View>
-      <Text>        Weather: {weather_mapping[curWeather]}   Occasion: {occasion_mapping[curOccasion]}</Text>
-      </View>
+     
           <MaterialCommunityIcons.Button
             name="close"
-            size={94}
+            size={30}
             backgroundColor="transparent"
             underlayColor="transparent"
             activeOpacity={0.3}
@@ -275,7 +276,7 @@ export default function App({ route, navigation }) {
           />
           <MaterialCommunityIcons.Button
             name="check"
-            size={94}
+            size={30}
             backgroundColor="transparent"
             underlayColor="transparent"
             activeOpacity={0.3}
