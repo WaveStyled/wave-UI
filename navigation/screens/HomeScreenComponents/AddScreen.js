@@ -315,7 +315,7 @@ const takeImage = async () => {
       wardrobe[wardrobe.indexOf(to_change[0])] = tochange;
     }
     // Return to the wardrobe screen
-    navigation.navigate("Wardrobe");
+    navigation.navigate("Wardrobe", {name : ""});
   };
 
   /*

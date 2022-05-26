@@ -1,8 +1,20 @@
+/*
+ RecomendContainerScreen.js is the base structure of the Recommend components
+ which involves the weather/occasion selection and the actual fits display
+*/
+
+// Imports
 import * as React from "react";
-import RecommendMainScreen from "./RecommendScreenComponents/RecommendScreen";
-import FitScreen from "./RecommendScreenComponents/FitScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+// Local Imports
+import RecommendMainScreen from "./RecommendScreenComponents/RecommendScreen";
+import FitScreen from "./RecommendScreenComponents/FitScreen";
+
+/*
+Function: RecommendContainer
+Purpose: Framework for the recommend screens
+*/
 function RecommendContainerScreen({ navigation, route }) {
   const Stack = createNativeStackNavigator();
   return (
@@ -12,4 +24,5 @@ function RecommendContainerScreen({ navigation, route }) {
     </Stack.Navigator>
   );
 }
+
 export default RecommendContainerScreen;

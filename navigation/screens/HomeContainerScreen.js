@@ -1,8 +1,20 @@
+/*
+ HomeContainerScreen.js is the base structure of the Home screen, which 
+ involves the wardrobe and the add screen
+*/
+
+// Imports
 import * as React from "react";
-import HomeScreen from "./HomeScreenComponents/HomeScreen";
-import AddScreen from "./HomeScreenComponents/AddScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+// Local Imports
+import HomeScreen from "./HomeScreenComponents/HomeScreen";
+import AddScreen from "./HomeScreenComponents/AddScreen";
+
+/*
+Function: HomeContainerScreen
+Purpose: Framework for the Home screens
+*/
 function HomeContainerScreen({ route, navigation }) {
   const Stack = createNativeStackNavigator();
 
@@ -17,4 +29,5 @@ function HomeContainerScreen({ route, navigation }) {
     </Stack.Navigator>
   );
 }
+
 export default HomeContainerScreen;

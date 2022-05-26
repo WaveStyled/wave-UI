@@ -1,5 +1,5 @@
 /*
- MainConainer.js is the base structure of the home, recommend, ootd, and calibrate screens.
+ MainContainer.js is the base structure of the home, recommend, ootd, and calibrate screens.
  Contains all the stack, tabs and context initialization
 */
 

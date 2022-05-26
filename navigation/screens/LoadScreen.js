@@ -1,22 +1,26 @@
+/*
+ LoadScreen.js is first screen users see on app boot-up before
+ the login page. Includes logo and title.
+*/
+
+// Imports
 import React, { useEffect } from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
-// s
 import GlobalStyle from "../utils/GlobalStyle";
 
+/*
+ Function: Load Screen
+ Purpose: Render the bootup page of the app
+ Navigates to the login page
+*/
 export default function LoadScreen({ navigation }) {
+
+  // after the timeout passes, moves to login
   useEffect(() => {
-    // createChannels();
     setTimeout(() => {
       navigation.replace("LogIn");
     }, 100);
   }, []);
-
-  const createChannels = () => {
-    PushNotification.createChannel({
-      channelId: "task-channel",
-      channelName: "Task Channel",
-    });
-  };
 
   return (
     <View style={styles.body}>

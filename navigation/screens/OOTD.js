@@ -1,23 +1,26 @@
+/*
+ OOTD.js is the screen that shows the User's outfit of the day
+*/
+
+// Imports
 import React from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   StatusBar,
   StyleSheet,
-  Text,
   View,
   SafeAreaView,
   Dimensions,
-  TouchableOpacity,
 } from "react-native";
 
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+// Local Imports
 import { ClothesContext } from "../../context/AppContext";
 import { UserContext } from "../../context/UserIDContext";
-
-import {getOOTD } from "../utils/Fetches";
-import { Card, CardDetails } from "../utils/OutfitRender";
+import { getOOTD } from "../utils/Fetches";
+import { Card } from "../utils/OutfitRender";
+import {styles} from '../../assets/StyleSheets/OOTDStyle';
 
 const { width } = Dimensions.get("window");
-
 
 const colors = {
   red: "#EC2379",
@@ -28,39 +31,52 @@ const colors = {
   green: "green",
 };
 
-function outfittoJSX(ids, a){
+/*
+Function: outfittoJSX
+
+Purpose: Convert an array of pieceids to JSON representations
+  using the ClothesContext
+
+Input : ids : Arrays of outfits to be converted
+        context : the clothes context that stores item representations in the app
+*/
+function outfittoJSX(ids, context) {
   console.log("IDS", ids);
-  //var keys = item.filter((value) => value !== 0);
   const test = ids.map(function (value) {
-    if (value === 0){
-      return {image : " ", type : " ", color : " "}
+    if (value === 0) {
+      return { image: " ", type: " ", color: " " };
     } else {
-      var val = a.find((element) => element.pieceid === value);
+      var val = context.find((element) => element.pieceid === value);
       return val;
     }
   });
   return test;
 }
 
-
+/**
+ * Function : OOTD
+ * Purpose : displays the user's outfit of the day if available
+ */
 export default function OOTD({ route, navigation }) {
   const uid = React.useContext(UserContext);
-  const a = React.useContext(ClothesContext);
+  const context = React.useContext(ClothesContext);
+
   const [ootd, setOOTD] = React.useState([]);
   const [renderedootd, setOutfits] = React.useState([]);
 
+  // update the OOTD everytime the user navigates on the screen
   React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       getOOTD(uid, setOOTD);
-    })
+    });
     return unsubscribe;
-  }, [navigation])
+  }, [navigation]);
 
   React.useEffect(() => {
-    if (ootd.length > 0){
-      setOutfits(outfittoJSX(ootd, a));
+    if (ootd.length > 0) {
+      setOutfits(outfittoJSX(ootd, context));
     }
-  }, [ootd])
+  }, [ootd]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -76,61 +92,21 @@ export default function OOTD({ route, navigation }) {
           top: 30,
         }}
       />
-      <StatusBar hidden={true} />
+      <StatusBar hidden={false} />
+      {/* renders the OOTD if available */}
       <View style={styles.swiperContainer}>
-        {renderedootd.length > 0 ? <Card card={renderedootd}/> : <CardDetails index={"No OOTD Available"} />/* <Card card={true} /> */}
+        {renderedootd.length > 0 ? (
+          <Card card={renderedootd} />
+        ) : (
+          <View style={{ alignItems: "center" }}>
+            <Text style={[styles.text, styles.heading]} numberOfLines={2}>
+              <Text style={[styles.text, styles.price]}>
+                {"No Outfit of the Day Available"}
+              </Text>
+            </Text>
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.yellow,
-    paddingTop: 250,
-    paddingBottom: 200,
-  },
-  swiperContainer: {
-    flex: 0.55,
-    paddingTop: 140,
-  },
-  bottomContainer: {
-    flex: 0.45,
-    justifyContent: "space-evenly",
-  },
-  bottomContainerMeta: { alignContent: "flex-end", alignItems: "center" },
-  bottomContainerButtons: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    paddingTop: 100,
-  },
-  text: {
-    textAlign: "center",
-    fontSize: 50,
-    backgroundColor: "transparent",
-  },
-  done: {
-    textAlign: "center",
-    fontSize: 30,
-    color: colors.white,
-    backgroundColor: "transparent",
-  },
-  heading: { fontSize: 24, marginBottom: 10, color: colors.gray },
-  price: { color: colors.blue, fontSize: 32, fontWeight: "500" },
-  itemText: {
-    maxWidth: "80%",
-  },
-  panelButtonTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "white",
-  },
-  commandButton: {
-    padding: 10,
-    borderRadius: 20,
-    backgroundColor: "#2874A6",
-    alignItems: "center",
-    marginTop: 15,
-  },
-});
