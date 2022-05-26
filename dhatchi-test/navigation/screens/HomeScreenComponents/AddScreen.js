@@ -94,41 +94,55 @@ function AddScreen({ navigation, route }) {
   // Ensures permissions to access camera
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
-  // If Update version of screen is being used, load in the already set details about the clothing item
-  React.useEffect(() => {
-    if (route.params.update) {
-      setWeatherItem(propstoweather(route.params.weather));
-      setOccasion(propstooccasion(route.params.occasion));
-      setColor(route.params.color);
-      setClothName(route.params.clothName);
-      setImage(route.params.image);
-      setType(route.params.type);
-    }
-  }, []);
+ // If Update version of screen is being used, load in the already set details about the clothing item
+ React.useEffect(() => {
+  if (route.params.update) {
+    setWeatherItem(propstoweather(route.params.weather));
+    setOccasion(propstooccasion(route.params.occasion));
+    setColor(route.params.color);
+    setClothName(route.params.clothName);
+    setImage(route.params.image);
+    setType(route.params.type);
+  }
+}, []);
 
-  // Function: TakeImage
-  // Purpose:
-  const takeImage = async () => {
-    const permission = await ImagePicker.requestCameraPermissionsAsync();
-    if (permission === true || true) {
-      let image = await ImagePicker.launchCameraAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      }).then((image) => {
-        if (!image.cancelled) {
-          setImage(image.uri);
-        }
-        this.bs.current.snapTo(1);
-      });
-    } else {
-      console.log("denied permission. Please go to settings");
+/* Function: TakeImage 
+ Purpose: Funtionality for taking a photo when adding an item. Calls library functions to open camera and saves image to state
+ Input: None
+ Ouput: No return but sets images state
+ */
+const takeImage = async () => {
+  // Check permissions
+  const permission = await ImagePicker.requestCameraPermissionsAsync();
+  if (permission === true) {
+    // Launch camera
+    let image = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    }).then((image) => {
+      if (!image.cancelled) {
+        // Save to state
+        setImage(image.uri);
+      }
       this.bs.current.snapTo(1);
-    }
-  };
+    });
+  } 
+  // Permissions not given
+  else {
+    Alert.alert("Do not have permission to open camera. Please check app settings.")
+    this.bs.current.snapTo(1);
+  }
+};
 
+  /*Function: adjustImage
+    Purpose: Functionality for selecting the eregion of a photo to include. 
+    Input: Initially selected image
+    Ouput: New state set for image
+   */
   const adjustImage = async (im) => {
+    // Launch image editing functionality
     let manipResult = await manipulateAsync(
       im.uri,
       [
@@ -141,13 +155,21 @@ function AddScreen({ navigation, route }) {
       ],
       { compress: 0, format: SaveFormat.JPEG, base64: true }
     );
+    // Set updated image
     setImage(manipResult.base64);
     return null;
   };
-
+  /* 
+     Function: pickImage
+     Purpose: Functionality for selecting photo from image library
+     Input: None
+     Output: No return, but image state set
+  */
   const pickImage = async () => {
+    // Check permissions
     const permission = await ImagePicker.requestCameraPermissionsAsync();
     if (permission.granted === true) {
+      // Open photo library
       let image = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
@@ -156,28 +178,34 @@ function AddScreen({ navigation, route }) {
         base64: true,
       }).then((image) => {
         if (!image.cancelled) {
+          // Adjut photo call
           adjustImage(image);
         }
         this.bs.current.snapTo(1);
       });
     } else {
-      console.log("denied permission. Please go to settings");
+      Alert.alert("Do not have permission to open camera. Please check app settings.")
       this.bs.current.snapTo(1);
     }
   };
-
+  /* Function: renderInner
+     Purpose: handles the rendering of the popup menu when selecting an image
+     Input/Ouput: None
+  */
   renderInner = () => (
     <View style={styles.panel}>
       <View style={{ alignItems: "center" }}>
         <Text style={styles.panelTitle}>Upload Photo</Text>
         <Text style={styles.panelSubtitle}>Choose your Item Picture</Text>
       </View>
+      {/* Three different buttons for taking photo, choosing and cancel */}
       <TouchableOpacity style={styles.panelButton} onPress={takeImage}>
         <Text style={styles.panelButtonTitle}>Take Photo</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.panelButton} onPress={pickImage}>
         <Text style={styles.panelButtonTitle}>Choose From Library</Text>
       </TouchableOpacity>
+      {/* On cancel get rid of slide up menu */}
       <TouchableOpacity
         style={styles.panelButton}
         onPress={() => this.bs.current.snapTo(1)}
@@ -186,7 +214,11 @@ function AddScreen({ navigation, route }) {
       </TouchableOpacity>
     </View>
   );
-
+  /* 
+    Function: readerHeader
+    Purpose: Handles rendering for header of the screen
+    Input/Output: None
+  */
   renderHeader = () => (
     <View style={styles.header}>
       <View style={styles.panelHeader}>
@@ -197,11 +229,12 @@ function AddScreen({ navigation, route }) {
 
   bs = React.createRef();
   var fall = new Animated.Value(1);
-
-  const submit_handler = () => {
-    navigation.navigate("Wardrobe", { name: clothName });
-  };
-
+  /*
+  Function: update_handler
+  Purpose: Handles updating the wardrobe after a user has edited the details of an item. Sends the update to the users wardrobe database
+  Input: None
+  Output: Updates entire wardrobe with change
+  */
   const update_handler = () => {
     //If user gives no image
     if (!image) {
@@ -224,9 +257,10 @@ function AddScreen({ navigation, route }) {
       Alert.alert("No Occassion selected");
       return;
     }
+    // Convert selected weathers and occasions to bit array of selected values
     ws = mapWeatherToBin(weatherSelected);
     ocs = mapOccasionToBin(occasionSelected);
-
+    // Defines item dictionary to be sent to backend with updates
     toupdate = {
       PIECEID: route.params.pieceid,
       COLOR: color,
@@ -248,9 +282,10 @@ function AddScreen({ navigation, route }) {
       DIRTY: isEnabled ? 1 : 0,
       IMAGE: image,
     };
-
+    // Update Post to backend
     updateItem(toupdate, uid);
 
+  
     tochange = {
       pieceid: route.params.pieceid,
       color: color,
@@ -272,21 +307,22 @@ function AddScreen({ navigation, route }) {
       dirty: isEnabled ? 1 : 0,
       image: image,
     };
-
+    // Make changes to the loaded wardrobe to reflect the updates 
     to_change = wardrobe.filter(
       (value) => value.pieceid === route.params.pieceid
     );
-
     if (to_change.length > 0) {
       wardrobe[wardrobe.indexOf(to_change[0])] = tochange;
     }
-    navigation.navigate("Wardrobe", { name: clothName });
+    // Return to the wardrobe screen
+    navigation.navigate("Wardrobe");
   };
 
   /*
-  save_handler(): Saves all data entered by user and sends data to backend. Warns user if required fields are not 
-  filled out
-  
+  Function: save_handler
+  Purpose: Handles saving a new clothing item to the database and to the apps context
+  Input: None
+  Output: Updates wardrobe 
   */
   const save_handler = () => {
     //list of weathers chosen by user in weather picker
@@ -367,10 +403,11 @@ function AddScreen({ navigation, route }) {
       dirty: isEnabled ? 1 : 0,
       image: image,
     };
+    //Update wardrobe context
     wardrobe.unshift(topush);
     navigation.navigate("Wardrobe", { name: clothName });
   };
-
+  // Render of the main screen
   return (
     <View style={styles.container}>
       <BottomSheet
@@ -384,6 +421,7 @@ function AddScreen({ navigation, route }) {
       />
       <View style={styles.container1}>
         <View style={{ alignItems: "center" }}>
+          {/* Opens Photo Slide Up Menu*/}
           <TouchableOpacity onPress={() => this.bs.current.snapTo(0)}>
             <View
               style={{
@@ -408,6 +446,7 @@ function AddScreen({ navigation, route }) {
                     alignItems: "center",
                   }}
                 >
+                  {/* Camera Image */}
                   <Icon
                     name="camera"
                     size={35}
@@ -431,8 +470,10 @@ function AddScreen({ navigation, route }) {
               : "Add Item to Wardrobe"}
           </Text>
         </View>
+        
         <ScrollView nestedScrollEnabled={true}>
           <View style={styles.action}>
+            {/*Name Text Input*/}
             <TextInput
               placeholder="Name"
               placeholderTextColor="#666666"
@@ -443,13 +484,14 @@ function AddScreen({ navigation, route }) {
                   color: colors.text,
                 },
               ]}
-              value={clothName}
+              value={clothName} /* Update clothing name state */
               onChangeText={(text) => setClothName(text)}
             />
           </View>
           <View style={styles.action}>
             <Ionicons name="shirt-outline" color={colors.text} size={26} />
             <View style={styles_multi.container}>
+              {/* Clothing Type Drop Down */}
               <DropDownPicker
                 placeholder="Select Clothing Item"
                 searchable={true}
@@ -493,6 +535,7 @@ function AddScreen({ navigation, route }) {
           </View>
           <View style={styles.action}>
             <Ionicons name="images-outline" color={colors.text} size={26} />
+            {/* Clothing Color Text Input */}
             <TextInput
               placeholder="Color"
               placeholderTextColor="#666666"
@@ -510,6 +553,7 @@ function AddScreen({ navigation, route }) {
           <View style={styles.action}>
             <Ionicons name="rainy-outline" color={colors.text} size={26} />
             <View style={styles_multi.container}>
+              {/* Weather Drop Down Picker */}
               <DropDownPicker
                 placeholder="Select the Weather"
                 open={weather_picker_open}
@@ -518,7 +562,7 @@ function AddScreen({ navigation, route }) {
                 setOpen={setWeatherPickerOpen}
                 setValue={setWeatherItem}
                 setItems={setItems}
-                multiple={true}
+                multiple={true} /* Multiple Selections allowed */
                 min={0}
                 max={weather.length}
                 itemSeparator={true}
@@ -541,15 +585,16 @@ function AddScreen({ navigation, route }) {
           <View style={styles.action}>
             <Ionicons name="wine-outline" color={colors.text} size={26} />
             <View style={styles_multi.container}>
+              {/* Occasion Drop Down Picker */}
               <DropDownPicker
                 placeholder="Select the Occasion"
                 open={occasion_open}
                 value={occasionSelected}
                 items={occasion}
-                setOpen={setOccasionPickerOpen}
+                setOpen={setOccasionPickerOpen} 
                 setValue={setOccasion}
                 setItems={setOccasions}
-                multiple={true}
+                multiple={true} /* Multiple Selections allowed */
                 min={0}
                 max={occasion.length}
                 itemSeparator={true}
@@ -572,8 +617,9 @@ function AddScreen({ navigation, route }) {
           <View style={styles.action}>
             <Ionicons name="eye-off-outline" color={colors.text} size={26} />
             <View style={styles.action2}>
+              {/* Dirty Check */}
               <Text style={styles.dirtyTitle}>Dirty?</Text>
-
+              {/* Switch is an on off button */}
               <Switch
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
@@ -584,9 +630,11 @@ function AddScreen({ navigation, route }) {
             </View>
           </View>
         </ScrollView>
+        {/* Save Button */}
         <TouchableOpacity
           style={styles.commandButton}
-          onPress={route.params.update ? update_handler : save_handler}
+          
+          onPress={route.params.update ? update_handler : save_handler} /* Determines what mode to save in(update or add)*/
         >
           <Text style={styles.panelButtonTitle}>
             {route.params.update ? "Update" : "Save"}
