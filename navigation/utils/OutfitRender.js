@@ -4,7 +4,7 @@
 */
 
 // Imports
-import { Image, Text, View, StyleSheet } from "react-native";
+import { Image, Text, View} from "react-native";
 import type_mapping from "../../components/type_mapping";
 
 //Local Imports

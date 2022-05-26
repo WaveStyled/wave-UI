@@ -1,15 +1,28 @@
+/*
+  Screen: HomeScreen
+  Purpose: Displays the users wardrobe as a scolling list, has button to add and logout
+*/
+// Imports
 import * as React from "react";
-import { View, StyleSheet, ScrollView, Button } from "react-native";
+import { View, ScrollView, Button } from "react-native";
 
+// Local Imports
 import ClothingItem from "../../../components/ClothingItem";
 import { ClothesContext } from "../../../context/AppContext";
 import type_mapping from "../../../components/type_mapping";
 import { auth } from "../login/FireBaseData";
-
+import Styles from "../../../assets/StyleSheets/HomeScreenStyle"
+/*
+Function: update
+Purpose: Update list of items being rendered on the list when some sort of information change has happened(add, delete, update)
+Input: Json data from backend, set state funtion of the main wardrobe state
+Output: List of Clothing Item objects ready for rendering on HomeScreen
+*/
 function update(json, set) {
   var list;
   if (Object.keys(json).length !== 0) {
     list = json.map((clothes) => (
+      // Define a clothing item with information from rach json object
       <ClothingItem
         key={clothes.pieceid}
         id={clothes.pieceid}
@@ -36,14 +49,22 @@ function update(json, set) {
         type={clothes.type}
       />
     ));
+    // Return compiled list of Clothing Items
     return list;
   }
 }
+/*
+Function: addHeaderButton
+Purpose: Implements the Add button on top right of homescreen
+Input: navigation -> object that controls the apps screens
+Output: none
 
+*/
 function addHeaderButton(navigation) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
+        // Navigates to Add screen
         <Button
           onPress={() => navigation.navigate("Add", { update: false })}
           title="Add Item"
@@ -52,11 +73,17 @@ function addHeaderButton(navigation) {
     });
   });
 }
-
+/*
+Function: addLogoutButton
+Purpose: Implenets the logout button on the top left of homescreen
+Input: navigation -> object that controls the apps screens
+Output: none
+*/
 function addLogoutButton(navigation) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
+        // Triggers an auth sign out and navigates to login screen
         <Button
           onPress={() => {
             auth.signOut().then(() => {
@@ -69,12 +96,21 @@ function addLogoutButton(navigation) {
     });
   });
 }
-
+/*
+Function: HomeScreen
+Purpose: Rendering and main functionality of the home screen
+Input: None
+Ouput: None
+*/
 export default function HomeScreen({ navigation, route }) {
+  
+  // Utilizes the Clothes context
   var context = React.useContext(ClothesContext);
+  
   const [wd, setWd] = React.useState(context);
-
+  
   const x = wd;
+
   const updateWD = React.useCallback(
     (val) => {
       setWd(val);
@@ -88,66 +124,27 @@ export default function HomeScreen({ navigation, route }) {
   }
 
   const value = update(x, updateWD);
-
+  
+  // Implements header buttons
   addHeaderButton(navigation);
   addLogoutButton(navigation);
 
+  // Home Screen render
   return (
-    <View style={styles.container}>
+    <View style={Styles.container}>
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={styles.clothsWrapper}>
-          {/* <TouchableOpacity onPress={() => navigation.navigate("Details")}> */}
-          <View style={styles.items}>{value != null ? value : true}</View>
-          {/* </TouchableOpacity> */}
+        <View style={Styles.clothsWrapper}>
+          
+          {/* Renders the list of clothing items */}
+          <View style={Styles.items}>{value != null ? value : true}</View>
+  
         </View>
       </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#E8EAED",
-  },
-  clothsWrapper: {
-    paddingTop: 30,
-    paddingHorizontal: 10,
-  },
-  items: {
-    marginTop: 0,
-  },
-  writeClothWrapper: {
-    position: "absolute",
-    bottom: 60,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-  },
-  input: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    backgroundColor: "#FFF",
-    borderRadius: 60,
-    borderColor: "#C0C0C0",
-    borderWidth: 1,
-    width: 250,
-  },
-  addWrapper: {
-    width: 60,
-    height: 60,
-    backgroundColor: "#FFF",
-    borderRadius: 60,
-    justifyContent: "center",
-    alignItems: "center",
-    borderColor: "#C0C0C0",
-    borderWidth: 1,
-  },
-  addText: {},
-});
