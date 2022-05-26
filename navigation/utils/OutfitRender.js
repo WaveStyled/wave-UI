@@ -1,9 +1,3 @@
-/*
- OutfitRender.js contains all the outfit and outfit description text rendering
- that will be used throughout the app
-*/
-
-// Imports
 import { Image, Text, View, StyleSheet } from "react-native";
 import type_mapping from "../../components/type_mapping";
 
@@ -16,16 +10,6 @@ const colors = {
   green: "green",
 };
 
-/*
-Function : Card
-
-Purpose : Renders the Card for the outfit display
-
-Input : card --> JSON form of the outfits, which are extracted
-  from the ClothesContext variable. Maps the JSON components
-  image, type, color to JSX render objects
-*/
-
 export const Card = ({ card }) => {
   var outfit;
   if (card != null) {
@@ -36,17 +20,14 @@ export const Card = ({ card }) => {
             {/* <View key={idx} style={styles.cardImage}> */}
             <Image
               style={{ width: 100, height: 50, paddingTop: 60 }}
-              source={
-                value.image.length !== 0
-                  ? { uri: "data:image/jpeg;base64," + value.image }
-                  : require("../../assets/white_item.jpeg")
-              }
+              source={value.image.length !== 0 ? { uri: "data:image/jpeg;base64," + value.image} : require("../../assets/white_item.jpeg")}
             />
-            <Text key={idx} style={styles.itemText}>
-              {type_mapping[value.type] + " " + value.color}
-            </Text>
+             <Text key={idx} style={styles.itemText}>
+            {type_mapping[value.type] + " " + value.color}
+          </Text>
             {/* </View> */}
           </View>
+         
         </View>
       </View>
     ));
@@ -54,18 +35,12 @@ export const Card = ({ card }) => {
   return <View style={styles.card}>{outfit}</View>;
 };
 
-/*
-Function : CardDetails
-
-Purpose : Renders the details for a Card
-
-Input : index --> text representation of the card details to be displayed
-*/
-
 export const CardDetails = ({ index }) => (
-  <View style={{ alignItems: "center" }}>
+  <View key={testing[index].pieceid} style={{ alignItems: "center" }}>
     <Text style={[styles.text, styles.heading]} numberOfLines={2}>
-      <Text style={[styles.text, styles.price]}>{index}</Text>
+      <Text style={[styles.text, styles.price]}>
+        {fits[0][index].toString()}
+      </Text>
     </Text>
   </View>
 );
@@ -77,7 +52,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "contain",
     paddingLeft: 130,
-    paddingTop: 10,
+    paddingTop: 10
   },
   card: {
     flex: 0.45,
@@ -88,9 +63,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: 'white',
     paddingTop: 100,
-    paddingBottom: 100,
+    paddingBottom: 100
   },
   text: {
     textAlign: "center",

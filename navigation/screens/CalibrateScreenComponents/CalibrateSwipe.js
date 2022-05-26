@@ -93,7 +93,7 @@ export default function App({ route, navigation }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-
+      
       // headerRight: () => <Text> Weather: {weather_mapping[curWeather]}</Text>,
       // headerLeft: () => <Text> Occasion: {occasion_mapping[curOccasion]}</Text>,
     });
@@ -141,7 +141,7 @@ export default function App({ route, navigation }) {
       refreshBuffer();
     } else {
       var y = fits;
-
+      
       setOccasion(y[1][index][0]);
       setWeather(y[1][index][1]);
     }
@@ -161,13 +161,12 @@ export default function App({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      
       <MaterialCommunityIcons
         name="crop-square"
         size={width}
         color={colors.blue}
         style={{
-          opacity: 0.00,
+          opacity: 0.05,
           transform: [{ rotate: "45deg" }, { scale: 1.6 }],
           position: "absolute",
           left: -15,
@@ -175,11 +174,6 @@ export default function App({ route, navigation }) {
         }}
       />
       <StatusBar hidden={true} />
-      <Text>
-              {" "}
-              Weather: {weather_mapping[curWeather]} Occasion:{" "}
-              {occasion_mapping[curOccasion]}
-            </Text>
       <View style={styles.swiperContainer}>
         <Swiper
           ref={swiperRef}
@@ -243,9 +237,13 @@ export default function App({ route, navigation }) {
             },
           }}
         />
+     
       </View>
+     
       
+  
       <View style={styles.bottomContainer}>
+     
         <Transitioning.View
           ref={transitionRef}
           transition={transition}
@@ -253,15 +251,20 @@ export default function App({ route, navigation }) {
         >
           {/* <CardDetails index={index} /> */}
         </Transitioning.View>
-
+       
         <View style={styles.bottomContainerButtons}>
-          {/* <View>
+        {/* <View>
         <Text> Weather: {weather_mapping[curWeather]}, Occasion: {occasion_mapping[curOccasion]}</Text>
         </View> */}
+     
 
+
+     <View>
+      <Text>        Weather: {weather_mapping[curWeather]}   Occasion: {occasion_mapping[curOccasion]}</Text>
+      </View>
           <MaterialCommunityIcons.Button
             name="close"
-            size={30}
+            size={94}
             backgroundColor="transparent"
             underlayColor="transparent"
             activeOpacity={0.3}
@@ -272,7 +275,7 @@ export default function App({ route, navigation }) {
           />
           <MaterialCommunityIcons.Button
             name="check"
-            size={30}
+            size={94}
             backgroundColor="transparent"
             underlayColor="transparent"
             activeOpacity={0.3}
@@ -299,11 +302,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.yellow,
     paddingTop: 250,
-    paddingBottom: 200,
+    paddingBottom: 200
   },
   swiperContainer: {
     flex: 0.55,
-    paddingTop: 140,
+    paddingTop: 140
   },
   bottomContainer: {
     flex: 0.45,
@@ -313,7 +316,7 @@ const styles = StyleSheet.create({
   bottomContainerButtons: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    paddingTop: 100,
+    paddingTop: 100
   },
   text: {
     textAlign: "center",
