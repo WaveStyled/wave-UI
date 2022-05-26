@@ -24,15 +24,6 @@ import { UserContext } from "../../../context/UserIDContext";
 import { transition } from "../../utils/SwiperTransition";
 import { Card } from "../../utils/OutfitRender";
 import { styles } from "../../../assets/StyleSheets/FitScreenStyle";
-import {
-  IDtoJSX,
-  fetchEndCalibration,
-  fetchRecommenderTrain,
-  OOTD,
-  getRecommendations,
-} from "../../utils/Fetches";
-
-const { width } = Dimensions.get("window");
 
 const colors = {
   red: "#EC2379",
@@ -42,6 +33,16 @@ const colors = {
   black: "#000000",
   green: "green",
 };
+
+import {
+  IDtoJSX,
+  fetchEndCalibration,
+  fetchRecommenderTrain,
+  OOTD,
+  getRecommendations,
+} from "../../utils/Fetches";
+
+const { width } = Dimensions.get("window");
 
 // swiper and transition references for the swiping animation
 const swiperRef = React.createRef();
@@ -63,12 +64,12 @@ export default function Recommender({ route, navigation }) {
   const [curOccasion] = React.useState(route.params.occasion);
 
   const [change, setChange] = React.useState(false); // this determines whether the fits need to be fetched again
-  
+
   // convert the initial fits to JSX objects
   const [testing, setOutfits] = React.useState(
     IDtoJSX(route.params.initial, wardrobe)
-  );                                            
-  const [loaded, setLoad] = React.useState(true);  // boolean that indicates if fits have actually been loaded
+  );
+  const [loaded, setLoad] = React.useState(true); // boolean that indicates if fits have actually been loaded
 
   // only get new fits if the buffer runs out (or change is true) and if the fits have been rendered
   React.useEffect(() => {

@@ -36,10 +36,10 @@ export const Card = ({ card }) => {
 };
 
 export const CardDetails = ({ index }) => (
-  <View key={testing[index].pieceid} style={{ alignItems: "center" }}>
+  <View style={{ alignItems: "center" }}>
     <Text style={[styles.text, styles.heading]} numberOfLines={2}>
       <Text style={[styles.text, styles.price]}>
-        {fits[0][index].toString()}
+        {index}
       </Text>
     </Text>
   </View>
