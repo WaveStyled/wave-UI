@@ -1,3 +1,4 @@
+// imports
 import React from "react";
 import {
   StatusBar,
@@ -12,12 +13,12 @@ import {
 import Swiper from "react-native-deck-swiper";
 import { Transitioning } from "react-native-reanimated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+// Local Imports 
 import { ClothesContext } from "../../../context/AppContext";
 import { UserContext } from "../../../context/UserIDContext";
 import weather_mapping from "../../../components/weather_mapping";
 import occasion_mapping from "../../../components/occasion_mapping";
 import { transition } from "../../utils/SwiperTransition";
-
 import {
   getFits,
   fetchEndCalibration,
