@@ -11,6 +11,7 @@ import {
   View,
   SafeAreaView,
   Dimensions,
+  Text
 } from "react-native";
 
 // Local Imports

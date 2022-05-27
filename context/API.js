@@ -5,7 +5,7 @@ Purpose: Points to the ip and port of the backend server. Used ip does not need 
 be changed at every instance of communcation between app and backend.
 */
 
-const API = "192.168.1.70";
+const API = "172.20.10.2";
 const NODEPORT = 5000;
 
 // Exports definitions
