@@ -31,6 +31,8 @@ import {
   OOTD,
   getRecommendations,
 } from "../../utils/Fetches";
+import weather_mapping from "../../../components/weather_mapping";
+import occasion_mapping from "../../../components/occasion_mapping";
 
 const { width } = Dimensions.get("window");
 
@@ -98,13 +100,13 @@ export default function Recommender({ route, navigation }) {
   // displays weather and occasion on the top of the screen
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerShown: true,
-      headerRight: () => (
-        <Text style={styles.panelButtonTitle2}>{curWeather}</Text>
-      ),
-      headerLeft: () => (
-        <Text style={styles.panelButtonTitle2}>{curOccasion}</Text>
-      ),
+      headerShown: true
+      // headerRight: () => (
+      //   <Text style={styles.panelButtonTitle2}>{weather_mapping[curWeather]}</Text>
+      // ),
+      // headerLeft: () => (
+      //   <Text style={styles.panelButtonTitle2}>{occasion_mapping[curOccasion]}</Text>
+      // ),
     });
   });
 
@@ -211,6 +213,11 @@ export default function Recommender({ route, navigation }) {
           top: 30,
         }}
       />
+       <Text>
+              {" "}
+              Weather: {weather_mapping[curWeather]}                 Occasion:{" "}
+              {occasion_mapping[curOccasion]}
+            </Text>
       <StatusBar hidden={true} />
       {/* renders the swiper with the outfits on the Cards */}
       <View style={styles.swiperContainer}>

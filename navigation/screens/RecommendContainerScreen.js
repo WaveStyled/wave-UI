@@ -20,7 +20,7 @@ function RecommendContainerScreen({ navigation, route }) {
   return (
     <Stack.Navigator>
       <Stack.Screen name="RecommendMain" component={RecommendMainScreen} />
-      <Stack.Screen name="Get" component={FitScreen} options={{ title: "" }} />
+      <Stack.Screen name="Get" component={FitScreen} options={{ title: "Recommendations" }} />
     </Stack.Navigator>
   );
 }
