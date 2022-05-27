@@ -1,4 +1,14 @@
 import { StyleSheet } from "react-native";
+
+const colors = {
+  red: "#EC2379",
+  blue: "#0070FF",
+  gray: "#777777",
+  white: "#ffffff",
+  black: "#000000",
+  green: "green",
+};
+
 export default Styles = StyleSheet.create({
     container: {
       flex: 1,

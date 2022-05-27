@@ -9,6 +9,7 @@ import type_mapping from "../../components/type_mapping";
 
 //Local Imports
 import Styles from "../../assets/StyleSheets/OutfitRenderStyle"
+import { useSharedValue } from "react-native-reanimated";
 const colors = {
   red: "#EC2379",
   blue: "#0070FF",
@@ -67,3 +68,27 @@ export const CardDetails = ({ index }) => (
     </Text>
   </View>
 );
+
+export const OutfitOfTheDay = ({ card }) => {
+  var outfit;
+  if (card != null) {
+    outfit = card.map((value, idx) => (
+      <View key={idx} style={Styles.item}>
+        <View style={Styles.itemLeft}>
+          <View style={Styles.ootdimage}>
+            {/* <View key={idx} style={styles.cardImage}> */}
+            <Image
+              style={{ width: 100, height: 90, paddingTop:10 }}
+              source={{ uri: "data:image/jpeg;base64," + value.image }}
+            />
+            <Text style={Styles.itemText}>
+              {type_mapping[value.type] + " " + value.color}
+            </Text>
+            {/* </View> */}
+          </View>
+        </View>
+      </View>
+    ));
+  }
+  return <View style={Styles.card}>{outfit}</View>;
+};

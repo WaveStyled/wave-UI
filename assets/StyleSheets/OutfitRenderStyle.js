@@ -8,6 +8,14 @@ export default Styles = StyleSheet.create({
       paddingLeft: 130,
       paddingTop: 10,
     },
+    ootdimage: {
+      width: 160,
+      height: 110,
+      flex: 1,
+      resizeMode: "contain",
+      paddingLeft: 130,
+      paddingTop: 5,
+    },
     card: {
       flex: 0.45,
       borderRadius: 8,

@@ -11,15 +11,15 @@ import {
   View,
   SafeAreaView,
   Dimensions,
-  Text
+  Text,
 } from "react-native";
 
 // Local Imports
 import { ClothesContext } from "../../context/AppContext";
 import { UserContext } from "../../context/UserIDContext";
 import { getOOTD } from "../utils/Fetches";
-import { Card } from "../utils/OutfitRender";
-import {styles} from '../../assets/StyleSheets/OOTDStyle';
+import { OutfitOfTheDay } from "../utils/OutfitRender";
+import { styles } from "../../assets/StyleSheets/OOTDStyle";
 
 const { width } = Dimensions.get("window");
 
@@ -75,12 +75,19 @@ export default function OOTD({ route, navigation }) {
 
   React.useEffect(() => {
     if (ootd.length > 0) {
-      setOutfits(outfittoJSX(ootd, context));
+      setOutfits(
+        outfittoJSX(
+          ootd.filter((value) => value !== 0),
+          context
+        )
+      );
     }
   }, [ootd]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={{ flex: 1, justifyContent: "center" }}
+    >
       <MaterialCommunityIcons
         name="crop-square"
         size={width}
@@ -97,7 +104,7 @@ export default function OOTD({ route, navigation }) {
       {/* renders the OOTD if available */}
       <View style={styles.swiperContainer}>
         {renderedootd.length > 0 ? (
-          <Card card={renderedootd} />
+          <OutfitOfTheDay card={renderedootd.filter((value) => value !== 0)} />
         ) : (
           <View style={{ alignItems: "center" }}>
             <Text style={[styles.text, styles.heading]} numberOfLines={2}>
