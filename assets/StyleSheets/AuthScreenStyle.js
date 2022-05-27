@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
       flex: 1,
       width: "100%",
       alignItems: "center",
-      backgroundColor: "rgba(0,0,238,0.5)",
+      backgroundColor: "rgba(216,222,240,1)",
     },
     card: {
       flex: 1,
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
     },
     inputView: {
       flexDirection: "row",
-      backgroundColor: "#CCCCFF",
+      backgroundColor: "#d8def0",
       borderRadius: 30,
       width: "80%",
       height: 45,
