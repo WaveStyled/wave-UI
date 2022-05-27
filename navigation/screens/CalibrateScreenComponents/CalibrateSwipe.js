@@ -1,3 +1,8 @@
+/*
+ Component: CalibrateSwipe
+ Purpose: Handles loading and swiping of outfits on the screen
+ */
+
 // imports
 import React from "react";
 import {
@@ -26,9 +31,8 @@ import {
   IDtoJSX,
 } from "../../utils/Fetches";
 import { Card } from "../../utils/OutfitRender";
-
+import Styles from "../../../assets/StyleSheets/CalibrateSwipeStyle"
 const { width } = Dimensions.get("window");
-
 const stackSize = 4;
 const colors = {
   red: "#EC2379",
@@ -39,13 +43,15 @@ const colors = {
   green: "green",
 };
 
+// Create ref's
 const swiperRef = React.createRef();
 const transitionRef = React.createRef();
 
 export default function App({ route, navigation }) {
+  // Load contexts
   const a = React.useContext(ClothesContext);
   const uid = React.useContext(UserContext);
-
+  //setup states
   const [index, setIndex] = React.useState(0);
   const [fits, setFits] = React.useState(route.params.initial);
   const [likes, setLikes] = React.useState([]);
@@ -59,21 +65,19 @@ export default function App({ route, navigation }) {
   const [loaded, setLoad] = React.useState(true);
 
   React.useEffect(() => {
-    console.log("HAPPENS");
     if (!loaded) {
-      console.log("UPDATE");
       getFits(setFits, uid);
     } else {
-      console.log("HERE");
       setLoad(false);
     }
   }, [change]);
-
+ // Set current occasion and weather for the given outfit
   React.useEffect(() => {
     setOccasion(fits[1][index][0]);
     setWeather(fits[1][index][1]);
   }, [index, fits[0]]); // updates these fields only when fits[0] has fnished init (NOTE this has to be in a separate hook)
 
+  // Process the outfits to a way that is ready for rendering
   React.useEffect(() => {
     if (!loaded) {
       maps = [];
@@ -89,38 +93,45 @@ export default function App({ route, navigation }) {
     }
   }, [fits[0], change]); // updates only when a new fetch comes
 
-  console.log(fits[0]);
-
+  // Deprecated?
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-
-      // headerRight: () => <Text> Weather: {weather_mapping[curWeather]}</Text>,
-      // headerLeft: () => <Text> Occasion: {occasion_mapping[curOccasion]}</Text>,
     });
   });
-
+  /*
+  Function: refreshBuffer
+  Purpose: Refresh the buffer with new outfits to be rendered. Sends the old ones to the backend with likes/dislikes.
+  */
   const refreshBuffer = () => {
     setChange(!change);
     setLoad(false);
     setIndex(0);
     setLikes([]);
     var send = [];
+    // Push lists to a single list
     send.push(likes.slice(0, index + 1));
     send.push(fits[0].slice(0, index + 1));
     send.push(fits[1].slice(0, index + 1));
-
+    // Send post
     fetchEndCalibration(send, uid);
   };
 
+  /* Function: onSwipedLeft
+     Purpose: Processing for after a swipe has ocurred.
+     Input: None
+     Output: None
+  */
   const onSwipedLeft = () => {
     transitionRef.current.animateNextTransition();
-    console.log("Left");
 
+    // Push disliked to list
     var x = likes;
     x.push(0);
     setLikes(x);
+    // Increment index
     setIndex((index + 1) % testing.length);
+    // check if refresh is needed
     if (index + 1 == testing.length) {
       refreshBuffer();
     } else {
@@ -130,14 +141,23 @@ export default function App({ route, navigation }) {
     }
   };
 
+    /* 
+     Function: onSwipedRight
+     Purpose: Processing for after a swipe has ocurred.
+     Input: None
+     Output: None
+  */
   const onSwipedRight = () => {
     transitionRef.current.animateNextTransition();
-    console.log("Right");
-
-    setIndex((index + 1) % testing.length);
+    // Update with like
     var x = likes;
     x.push(1);
     setLikes(x);
+    
+    // Update index
+    setIndex((index + 1) % testing.length);
+    
+    // Check for refresh
     if (index + 1 == testing.length) {
       refreshBuffer();
     } else {
@@ -147,21 +167,29 @@ export default function App({ route, navigation }) {
       setWeather(y[1][index][1]);
     }
   };
-
+  /*
+  Function: endCalibration
+  Purpose: finish calibration and send the loaded fits to the backend
+  Input: None
+  Output: None
+  */
   const endCalibration = () => {
+    // Load lists
     var send = [];
     send.push(likes.slice(0, index));
     send.push(fits[0].slice(0, index));
     send.push(fits[1].slice(0, index));
 
+    // Send to backend
     fetchEndCalibration(send, uid);
     fetchRecommenderTrain(uid);
 
+    // Navigate back to Base calibrate screen
     navigation.navigate("Screening");
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={Styles.container}>
       <MaterialCommunityIcons
         name="crop-square"
         size={width}
@@ -180,7 +208,7 @@ export default function App({ route, navigation }) {
               {occasion_mapping[curOccasion]}
             </Text>
       <StatusBar hidden={true} />
-      <View style={styles.swiperContainer}>
+      <View style={Styles.swiperContainer}>
         <Swiper
           ref={swiperRef}
           cards={testing}
@@ -245,16 +273,16 @@ export default function App({ route, navigation }) {
         />
       </View>
 
-      <View style={styles.bottomContainer}>
+      <View style={Styles.bottomContainer}>
         <Transitioning.View
           ref={transitionRef}
           transition={transition}
-          style={styles.bottomContainerMeta}
+          style={Styles.bottomContainerMeta}
         >
           {/* <CardDetails index={index} /> */}
         </Transitioning.View>
 
-        <View style={styles.bottomContainerButtons}>
+        <View style={Styles.bottomContainerButtons}>
           {/* <View>
         <Text> Weather: {weather_mapping[curWeather]}, Occasion: {occasion_mapping[curOccasion]}</Text>
         </View> */}
@@ -286,63 +314,12 @@ export default function App({ route, navigation }) {
         </View>
       </View>
       <TouchableOpacity
-        style={styles.commandButton}
+        style={Styles.commandButton}
         onPress={endCalibration}
         disabled={false}
       >
-        <Text style={styles.panelButtonTitle}>End Calibration</Text>
+        <Text style={Styles.panelButtonTitle}>End Calibration</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.yellow,
-    paddingTop: 250,
-    paddingBottom: 200,
-  },
-  swiperContainer: {
-    flex: 0.55,
-    paddingTop: 140,
-  },
-  bottomContainer: {
-    flex: 0.45,
-    justifyContent: "space-evenly",
-  },
-  bottomContainerMeta: { alignContent: "flex-end", alignItems: "center" },
-  bottomContainerButtons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingTop: 120,
-  },
-  text: {
-    textAlign: "center",
-    fontSize: 50,
-    backgroundColor: "transparent",
-  },
-  done: {
-    textAlign: "center",
-    fontSize: 30,
-    color: colors.white,
-    backgroundColor: "transparent",
-  },
-  heading: { fontSize: 24, marginBottom: 10, color: colors.gray },
-  price: { color: colors.blue, fontSize: 32, fontWeight: "500" },
-  itemText: {
-    maxWidth: "80%",
-  },
-  panelButtonTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "white",
-  },
-  commandButton: {
-    padding: 10,
-    borderRadius: 20,
-    backgroundColor: "#2874A6",
-    alignItems: "center",
-    marginTop: 15,
-  },
-});
