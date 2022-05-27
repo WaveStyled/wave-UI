@@ -12,7 +12,7 @@ export default Styles = StyleSheet.create({
       flex: 0.45,
       borderRadius: 8,
       shadowRadius: 25,
-      shadowColor: colors.black,
+      shadowColor: 'black',
       shadowOpacity: 0.08,
       shadowOffset: { width: 0, height: 0 },
       justifyContent: "center",

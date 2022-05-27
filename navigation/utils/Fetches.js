@@ -223,17 +223,13 @@ Input : ids : Arrays of outfits to be converted
         context : the clothes context that stores item representations in the app
 */
 
-export function IDtoJSX(ids, context) {
+export function IDtoJSX(ids, a) {
   maps = [];
   ids.forEach(function (item, i) {
-    //var keys = item.filter((value) => value !== 0);
-    const test = item.map(function (value) {
-      if (value === 0){
-        return {image : " ", type : " ", color : " "}
-      } else {
-        var val = context.find((element) => element.pieceid === value);
-        return val;
-      }
+    var keys = item.filter((value) => value !== 0);
+    const test = keys.map(function (value) {
+      var val = a.find((element) => element.pieceid === value);
+      return val;
     });
     maps.push(test);
   });

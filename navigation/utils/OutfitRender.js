@@ -38,11 +38,7 @@ export const Card = ({ card }) => {
             {/* <View key={idx} style={styles.cardImage}> */}
             <Image
               style={{ width: 100, height: 50, paddingTop: 60 }}
-              source={
-                value.image.length !== 0
-                  ? { uri: "data:image/jpeg;base64," + value.image }
-                  : require("../../assets/white_item.jpeg")
-              }
+              source={{ uri: "data:image/jpeg;base64," + value.image }}
             />
             <Text key={idx} style={Styles.itemText}>
               {type_mapping[value.type] + " " + value.color}
