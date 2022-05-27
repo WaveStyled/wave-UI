@@ -173,6 +173,11 @@ export default function App({ route, navigation }) {
           top: 30,
         }}
       />
+      <Text>
+              {" "}
+              Weather: {weather_mapping[curWeather]} Occasion:{" "}
+              {occasion_mapping[curOccasion]}
+            </Text>
       <StatusBar hidden={true} />
       <View style={styles.swiperContainer}>
         <Swiper
@@ -254,11 +259,6 @@ export default function App({ route, navigation }) {
         </View> */}
 
           <View>
-            <Text>
-              {" "}
-              Weather: {weather_mapping[curWeather]} Occasion:{" "}
-              {occasion_mapping[curOccasion]}
-            </Text>
           </View>
           <MaterialCommunityIcons.Button
             name="close"
@@ -313,8 +313,8 @@ const styles = StyleSheet.create({
   bottomContainerMeta: { alignContent: "flex-end", alignItems: "center" },
   bottomContainerButtons: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
-    paddingTop: 100,
+    justifyContent: "center",
+    paddingTop: 120,
   },
   text: {
     textAlign: "center",
