@@ -175,7 +175,7 @@ export default function App({ route, navigation }) {
       />
       <Text>
               {" "}
-              Weather: {weather_mapping[curWeather]} Occasion:{" "}
+              Weather: {weather_mapping[curWeather]}                 Occasion:{" "}
               {occasion_mapping[curOccasion]}
             </Text>
       <StatusBar hidden={true} />
