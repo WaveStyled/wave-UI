@@ -21,11 +21,19 @@ export const styles = StyleSheet.create({
     bottomContainer: {
       flex: 0.45,
       justifyContent: "space-evenly",
+      
     },
     bottomContainerMeta: { alignContent: "flex-end", alignItems: "center" },
     bottomContainerButtons: {
       flexDirection: "row",
       justifyContent: "space-evenly",
+      paddingTop: 80
+
+    },
+    bottomContainerButtonCaptions: {
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+
     },
     cardImage: {
       width: 160,

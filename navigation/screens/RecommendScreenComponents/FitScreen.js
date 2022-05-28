@@ -327,12 +327,13 @@ export default function Recommender({ route, navigation }) {
             }}
           />
         </View>
-        <View style={styles.bottomContainerButtons}>
-          <Text style={styles.text}>Dislike</Text>
+        <View  style={styles.bottomContainerButtonCaptions}>
+          <Text style={styles.text}>    Dislike</Text>
 
-          <Text>Outfit of the Day</Text>
+          <Text style={styles.text}>    Outfit of the Day</Text>
 
-          <Text>Like</Text>
+          <Text style={styles.text}>Like</Text>
+          <Text style={styles.text}></Text>
         </View>
         <View style={{ alignItems: "center" }}>
           <TouchableOpacity
