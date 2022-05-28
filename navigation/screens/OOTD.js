@@ -20,6 +20,7 @@ import {
 // Local Imports
 import { ClothesContext } from "../../context/AppContext";
 import { UserContext } from "../../context/UserIDContext";
+import { OutfitContext } from "../../context/OOTDContext";
 import { getOOTD } from "../utils/Fetches";
 import { OutfitOfTheDay } from "../utils/OutfitRender";
 import { styles } from "../../assets/StyleSheets/OOTDStyle";
@@ -69,6 +70,7 @@ export default function OOTD({ route, navigation }) {
   const [renderedootd, setOutfits] = React.useState([]);
 
   const [loading, setLoad] = React.useState(true);
+
 
   // update the OOTD everytime the user navigates on the screen
   React.useEffect(() => {

@@ -16,6 +16,7 @@ import RecommendScreen from "./screens/RecommendContainerScreen";
 import CalibrateScreen from "./screens/CalibrateContainerScreen";
 import HomeContainerScreen from "./screens/HomeContainerScreen";
 import OOTD from "./screens/OOTD";
+import { getOOTD } from "./utils/Fetches/";
 import { ClothesContext } from "../context/AppContext";
 import { UserContext } from "../context/UserIDContext";
 import { OutfitContext } from "../context/OOTDContext";
@@ -161,7 +162,6 @@ function MainContainer({ route, navigation }) {
   }, [userid]);
 
   return (
-    <OutfitContext.Provider value={[]}>
       <UserContext.Provider value={userid}>
         <ClothesContext.Provider value={wardrobeContext}>
           <Stack.Navigator>
@@ -183,7 +183,6 @@ function MainContainer({ route, navigation }) {
           </Stack.Navigator>
         </ClothesContext.Provider>
       </UserContext.Provider>
-    </OutfitContext.Provider>
   );
 }
 
