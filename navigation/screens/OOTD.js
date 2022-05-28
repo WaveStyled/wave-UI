@@ -5,6 +5,8 @@
 // Imports
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Spinner from "react-native-loading-spinner-overlay";
+
 import {
   StatusBar,
   StyleSheet,
@@ -12,6 +14,7 @@ import {
   SafeAreaView,
   Dimensions,
   Text,
+  ActivityIndicator,
 } from "react-native";
 
 // Local Imports
@@ -65,6 +68,8 @@ export default function OOTD({ route, navigation }) {
   const [ootd, setOOTD] = React.useState([]);
   const [renderedootd, setOutfits] = React.useState([]);
 
+  const [loading, setLoad] = React.useState(true);
+
   // update the OOTD everytime the user navigates on the screen
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -84,34 +89,50 @@ export default function OOTD({ route, navigation }) {
     }
   }, [ootd]);
 
+  /*
+  Once the getFits button is pressed, renders
+  Output : Spins until the recommendation comes through
+  */
+  const renderAlert = () => (
+    <MaterialCommunityIcons
+      name="alert"
+      size={width}
+      color={colors.blue}
+      style={{
+        opacity: 0.05,
+        top: 30,
+        alignItems: "center",
+        position: "relative",
+        paddingTop: 200,
+      }}
+    />
+  );
+
+  const renderNone = () => (
+    <View style={{ alignItems: "center" }}>
+      <Text style={[styles.text, styles.heading]} numberOfLines={2}>
+        <Text style={[styles.text, styles.price]}>
+          {"No Outfit of the Day Available"}
+        </Text>
+      </Text>
+    </View>
+  );
+
   return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center" }}
-    >
-      <MaterialCommunityIcons
-        name="crop-square"
-        size={width}
-        color={colors.blue}
-        style={{
-          opacity: 0.05,
-          transform: [{ rotate: "45deg" }, { scale: 1.6 }],
-          position: "absolute",
-          left: -15,
-          top: 30,
-        }}
-      />
-      <StatusBar hidden={false} />
+    <SafeAreaView style={{ flex: 1, justifyContent: "center", backgroundColor : "white" }}>
       {/* renders the OOTD if available */}
+      <StatusBar hidden={false} />
+      {renderedootd.length === 0 && renderAlert()}
+      {renderedootd.length === 0 && renderNone()}
       <View style={styles.swiperContainer}>
-        {renderedootd.length > 0 ? (
-          <OutfitOfTheDay card={renderedootd.filter((value) => value !== 0)} />
-        ) : (
-          <View style={{ alignItems: "center" }}>
-            <Text style={[styles.text, styles.heading]} numberOfLines={2}>
-              <Text style={[styles.text, styles.price]}>
-                {"No Outfit of the Day Available"}
-              </Text>
+        {renderedootd.length > 0 && (
+          <View style={{ position: "absolute", zindex: 100 }}>
+            <Text style={[styles.text, styles.price]}>
+              {"Outfit of the Day"}
             </Text>
+            <OutfitOfTheDay
+              card={renderedootd.filter((value) => value !== 0)}
+            />
           </View>
         )}
       </View>

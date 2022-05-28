@@ -26,8 +26,8 @@ export default Styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: "white",
-      paddingTop: 100,
-      paddingBottom: 100,
+      paddingTop: 50,
+      paddingBottom: 75,
     },
     text: {
       textAlign: "center",

@@ -17,9 +17,12 @@ export const styles = StyleSheet.create({
     paddingTop: 250,
     paddingBottom: 200,
   },
+  spinnerTextStyle: {
+    color: "#FFF",
+  },
   swiperContainer: {
     flex: 0.55,
-    paddingTop: 140,
+    paddingTop: 450,
   },
   bottomContainer: {
     flex: 0.45,
@@ -45,7 +48,8 @@ export const styles = StyleSheet.create({
   heading: { fontSize: 24, marginBottom: 10, color: colors.gray },
   price: { color: colors.blue, fontSize: 32, fontWeight: "500" },
   itemText: {
-    maxWidth: "80%",
+    maxWidth: "70%",
+    alignSelf : 'center',
   },
   panelButtonTitle: {
     fontSize: 17,

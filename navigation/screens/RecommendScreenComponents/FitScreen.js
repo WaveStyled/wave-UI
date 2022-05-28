@@ -21,6 +21,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 // Local Imports
 import { ClothesContext } from "../../../context/AppContext";
 import { UserContext } from "../../../context/UserIDContext";
+import { OutfitContext } from "../../../context/OOTDContext";
 import { transition } from "../../utils/SwiperTransition";
 import { Card } from "../../utils/OutfitRender";
 import { styles } from "../../../assets/StyleSheets/FitScreenStyle";
@@ -196,6 +197,7 @@ export default function Recommender({ route, navigation }) {
       occasion: curOccasion,
     };
     OOTD(data, uid);
+
   };
 
   return (

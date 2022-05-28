@@ -18,6 +18,7 @@ import HomeContainerScreen from "./screens/HomeContainerScreen";
 import OOTD from "./screens/OOTD";
 import { ClothesContext } from "../context/AppContext";
 import { UserContext } from "../context/UserIDContext";
+import { OutfitContext } from "../context/OOTDContext";
 import { API, NODEPORT } from "../context/API";
 
 //Screen Names
@@ -160,27 +161,29 @@ function MainContainer({ route, navigation }) {
   }, [userid]);
 
   return (
-    <UserContext.Provider value={userid}>
-      <ClothesContext.Provider value={wardrobeContext}>
-        <Stack.Navigator>
-          <Stack.Screen
-            name={"HomeScreen"}
-            component={HomeTabs}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name={"RecommendScreen"}
-            component={HomeTabs}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name={"CalibrateScreen"}
-            component={HomeTabs}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </ClothesContext.Provider>
-    </UserContext.Provider>
+    <OutfitContext.Provider value={[]}>
+      <UserContext.Provider value={userid}>
+        <ClothesContext.Provider value={wardrobeContext}>
+          <Stack.Navigator>
+            <Stack.Screen
+              name={"HomeScreen"}
+              component={HomeTabs}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name={"RecommendScreen"}
+              component={HomeTabs}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name={"CalibrateScreen"}
+              component={HomeTabs}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </ClothesContext.Provider>
+      </UserContext.Provider>
+    </OutfitContext.Provider>
   );
 }
 

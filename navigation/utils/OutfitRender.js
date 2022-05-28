@@ -82,7 +82,7 @@ export const OutfitOfTheDay = ({ card }) => {
               source={{ uri: "data:image/jpeg;base64," + value.image }}
             />
             <Text style={Styles.itemText}>
-              {type_mapping[value.type] + " " + value.color}
+              {value.color.toUpperCase() + " " + type_mapping[value.type].toUpperCase()}
             </Text>
             {/* </View> */}
           </View>
