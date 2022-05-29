@@ -12,6 +12,11 @@ import { ClothesContext } from "../../../context/AppContext";
 import type_mapping from "../../../components/type_mapping";
 import { auth } from "../login/FireBaseData";
 import Styles from "../../../assets/StyleSheets/HomeScreenStyle"
+import useFonts from "../../../assets/fonts/fonts.js"
+import { useState } from 'react';
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+
 /*
 Function: update
 Purpose: Update list of items being rendered on the list when some sort of information change has happened(add, delete, update)
@@ -103,6 +108,12 @@ Input: None
 Ouput: None
 */
 export default function HomeScreen({ navigation, route }) {
+  const [IsReady, SetIsReady] = useState(false);
+    
+  const LoadFonts = async () => {
+    await useFonts();
+  };
+    
   
   // Utilizes the Clothes context
   var context = React.useContext(ClothesContext);
@@ -128,7 +139,15 @@ export default function HomeScreen({ navigation, route }) {
   // Implements header buttons
   addHeaderButton(navigation);
   addLogoutButton(navigation);
-
+  if (!IsReady) {
+    return (
+      <AppLoading
+        startAsync={LoadFonts}
+        onFinish={() => SetIsReady(true)}
+        onError={() => {}}
+      />
+     );
+  }
   // Home Screen render
   return (
     <View style={Styles.container}>
