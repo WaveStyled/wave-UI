@@ -213,11 +213,16 @@ export default function Recommender({ route, navigation }) {
           top: 30,
         }}
       />
-       <Text>
+      <View>
+      <Text  style = {styles.text2}>
               {" "}
               Weather: {weather_mapping[curWeather]}                 Occasion:{" "}
               {occasion_mapping[curOccasion]}
             </Text>
+
+
+      </View>
+    
       <StatusBar hidden={true} />
       {/* renders the swiper with the outfits on the Cards */}
       <View style={styles.swiperContainer}>
@@ -295,7 +300,7 @@ export default function Recommender({ route, navigation }) {
         <View style={styles.bottomContainerButtons}>
           <MaterialCommunityIcons.Button
             name="close"
-            size={50}
+            size={30}
             backgroundColor="transparent"
             underlayColor="transparent"
             activeOpacity={0.3}
@@ -306,7 +311,7 @@ export default function Recommender({ route, navigation }) {
           />
           <MaterialCommunityIcons.Button
             name="hanger"
-            size={50}
+            size={30}
             backgroundColor="transparent"
             underlayColor="transparent"
             activeOpacity={0.3}
@@ -317,7 +322,7 @@ export default function Recommender({ route, navigation }) {
           />
           <MaterialCommunityIcons.Button
             name="check"
-            size={50}
+            size={30}
             backgroundColor="transparent"
             underlayColor="transparent"
             activeOpacity={0.3}

@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     bottomContainerButtons: {
       flexDirection: "row",
       justifyContent: "space-evenly",
-      paddingTop: 80
+      paddingTop: 118
 
     },
     bottomContainerButtonCaptions: {
@@ -56,6 +56,13 @@ export const styles = StyleSheet.create({
       fontSize: 15,
       backgroundColor: "transparent",
     },
+    text2: {
+      textAlign: "center",
+      fontSize: 15,
+      backgroundColor: "transparent",
+      paddingTop: 40,
+      backgroundColor: '#dcdcdc'
+    },
     done: {
       textAlign: "center",
       fontSize: 30,
@@ -80,7 +87,7 @@ export const styles = StyleSheet.create({
       maxWidth: "80%",
     },
     panelButtonTitle: {
-      fontSize: 17,
+      fontSize: 13,
       fontWeight: "bold",
       color: "white",
       justifyContent: "center",
