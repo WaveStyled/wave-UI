@@ -57,5 +57,9 @@ export default Styles = StyleSheet.create({
       backgroundColor: "#2874A6",
       alignItems: "center",
       marginTop: 15,
+      marginBottom: 5,
+      width: 300,
+      marginLeft: 'auto',
+      marginRight: 'auto',
     },
   });
