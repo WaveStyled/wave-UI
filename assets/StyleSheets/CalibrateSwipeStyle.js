@@ -35,6 +35,13 @@ export default Styles = StyleSheet.create({
       fontSize: 50,
       backgroundColor: "transparent",
     },
+    text2: {
+      textAlign: "center",
+      fontSize: 15,
+      backgroundColor: "transparent",
+      paddingTop: 40,
+      backgroundColor: '#dcdcdc'
+    },
     done: {
       textAlign: "center",
       fontSize: 30,

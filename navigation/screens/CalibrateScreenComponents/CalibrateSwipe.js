@@ -202,7 +202,7 @@ export default function App({ route, navigation }) {
           top: 30,
         }}
       />
-      <Text>
+      <Text style = {Styles.text2}>
               {" "}
               Weather: {weather_mapping[curWeather]}                 Occasion:{" "}
               {occasion_mapping[curOccasion]}
