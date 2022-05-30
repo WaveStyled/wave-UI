@@ -72,7 +72,7 @@ function AuthScreen({ route, navigation }) {
 
   useEffect(() => {
     isValid(emailchecker(email));
-  }, [email]);
+  }, [email, password]);
 
   useEffect(() => {
     isFilled(name.length > 0);

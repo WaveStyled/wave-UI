@@ -555,7 +555,7 @@ const takeImage = async () => {
             <View style={styles_multi.container}>
               {/* Weather Drop Down Picker */}
               <DropDownPicker
-                placeholder="Select the Weather"
+                placeholder="Select the Weather You Wear This In"
                 open={weather_picker_open}
                 value={weatherSelected}
                 items={weather}
@@ -587,7 +587,7 @@ const takeImage = async () => {
             <View style={styles_multi.container}>
               {/* Occasion Drop Down Picker */}
               <DropDownPicker
-                placeholder="Select the Occasion"
+                placeholder="Select the Occasion You Wear This In"
                 open={occasion_open}
                 value={occasionSelected}
                 items={occasion}

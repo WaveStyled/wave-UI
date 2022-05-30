@@ -14,7 +14,6 @@ import { auth } from "../login/FireBaseData";
 import Styles from "../../../assets/StyleSheets/HomeScreenStyle"
 import useFonts from "../../../assets/fonts/fonts.js"
 import { useState } from 'react';
-import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
 
 /*
