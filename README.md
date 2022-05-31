@@ -4,6 +4,10 @@ React-Native based App that serves as the front end for WaveStyled: Clothing Rec
 
 
 
+# 
+
+
+
 ### Requirements
 
 - Need Expo Go installed on machine and on mobile
