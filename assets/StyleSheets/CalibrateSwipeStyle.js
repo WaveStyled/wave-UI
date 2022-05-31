@@ -57,7 +57,7 @@ export default Styles = StyleSheet.create({
     },
     panelButtonTitle: {
       fontSize: 17,
-      fontWeight: "bold",
+      fontFamily: "OpenSansBold",
       color: "white",
     },
     commandButton: {

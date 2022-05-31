@@ -13,6 +13,8 @@ export const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    fontFamily: "OpenSansBold",
+
   },
   commandButton: {
     padding: 10,
@@ -70,10 +72,11 @@ export const styles = StyleSheet.create({
     backgroundColor: "#45B39D",
     alignItems: "center",
     marginVertical: 7,
+    
   },
   panelButtonTitle: {
     fontSize: 17,
-    fontWeight: "bold",
+    fontFamily: "OpenSansBold",
     color: "white",
   },
   action: {

@@ -127,7 +127,7 @@ function DetailsScreen({ navigation }) {
           paddingBottom: 15,
           marginTop: 15,
           fontSize: 16,
-          fontWeight: "bold",
+          fontFamily: "OpenSansBold",
         }}
       >
         Select desired Weather and Occasion
@@ -219,7 +219,8 @@ function DetailsScreen({ navigation }) {
             paddingBottom: 15,
             marginTop: 15,
             fontSize: 11,
-            fontWeight: "bold",
+            fontFamily: "OpenSansBold",
+            textAlign: "center"
           }}
         >
           More calibrations, the better the recommendations

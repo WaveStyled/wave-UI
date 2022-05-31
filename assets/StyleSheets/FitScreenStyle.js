@@ -27,13 +27,13 @@ export const styles = StyleSheet.create({
     bottomContainerButtons: {
       flexDirection: "row",
       justifyContent: "space-evenly",
-      paddingTop: 118
+      paddingTop: 118,
+      alignContent: "center"
 
     },
     bottomContainerButtonCaptions: {
       flexDirection: "row",
       justifyContent: "space-evenly",
-
     },
     cardImage: {
       width: 160,
@@ -53,7 +53,6 @@ export const styles = StyleSheet.create({
     },
     text: {
       fontFamily: "OpenSans",
-      textAlign: "center",
       fontSize: 15,
       backgroundColor: "transparent",
     },
@@ -90,7 +89,7 @@ export const styles = StyleSheet.create({
     },
     panelButtonTitle: {
       fontSize: 13,
-      fontWeight: "bold",
+      fontFamily: "OpenSansBold",
       color: "white",
       justifyContent: "center",
     },

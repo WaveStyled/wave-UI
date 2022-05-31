@@ -48,7 +48,6 @@ export const styles = StyleSheet.create({
   heading: { fontSize: 24, marginBottom: 10, color: colors.gray },
   price: { color: colors.blue, fontSize: 32, fontWeight: "500" },
   itemText: {
-    fontFamily: "OpenSans",
     maxWidth: "70%",
     alignSelf : 'center',
   },

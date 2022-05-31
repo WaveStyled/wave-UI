@@ -50,7 +50,7 @@ export default function SettingsScreen({ navigation }) {
   // Render Screen
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 26, fontWeight: "bold" }}>Calibrate Screen</Text>
+      <Text style={{ fontSize: 26, fontFamily: "OpenSansBold" }}>Calibrate Screen</Text>
       {/* Start Clibration button, disabled when not enough clothes to load */}
       <TouchableOpacity
         style={Styles.commandButton}

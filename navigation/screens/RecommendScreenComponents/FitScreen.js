@@ -333,11 +333,11 @@ export default function Recommender({ route, navigation }) {
           />
         </View>
         <View  style={styles.bottomContainerButtonCaptions}>
-          <Text style={styles.text}>    Dislike</Text>
+          <Text style={styles.text}>   Dislike</Text>
 
-          <Text style={styles.text}>    Outfit of the Day</Text>
+          <Text style={styles.text}>       OOTD</Text>
 
-          <Text style={styles.text}>Like</Text>
+          <Text style={styles.text}>        Like</Text>
           <Text style={styles.text}></Text>
         </View>
         <View style={{ alignItems: "center" }}>

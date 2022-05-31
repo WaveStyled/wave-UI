@@ -9,8 +9,8 @@ export default Styles = StyleSheet.create({
       marginTop: 15,
     },
     panelButtonTitle: {
+      fontFamily: "OpenSansBold",
       fontSize: 17,
-      fontWeight: "bold",
       color: "white",
     },
   });
