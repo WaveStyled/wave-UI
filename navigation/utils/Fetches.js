@@ -156,7 +156,6 @@ export function getRecommendations(occasion, weather, set, userid) {
       return response.json();
     })
     .then((json) => {
-      console.log("BUH", json);
       set(json);
     });
 }

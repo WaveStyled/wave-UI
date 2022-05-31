@@ -152,7 +152,6 @@ to be accessed throughout the app
 function MainContainer({ route, navigation }) {
   const id = route.params.id;
 
-  console.log("ID: ", id);
   const [wardrobeContext, setWardrobeContext] = React.useState([]);
   const [userid, setuserid] = React.useState(id);
 

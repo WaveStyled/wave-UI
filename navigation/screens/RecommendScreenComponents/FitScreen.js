@@ -135,7 +135,6 @@ export default function Recommender({ route, navigation }) {
   */
   const onSwipedLeft = () => {
     transitionRef.current.animateNextTransition();
-    console.log("Left");
 
     var x = likes;
     x.push(0);
@@ -152,7 +151,6 @@ export default function Recommender({ route, navigation }) {
   */
   const onSwipedRight = () => {
     transitionRef.current.animateNextTransition();
-    console.log("Right");
 
     setIndex((index + 1) % testing.length);
     var x = likes;

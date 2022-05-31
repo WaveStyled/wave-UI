@@ -106,7 +106,6 @@ function AuthScreen({ route, navigation }) {
         const errorMessage = error.message;
         setError(errorMessage);
         tryAgain(true);
-        console.log(errorMessage);
       });
   };
 
@@ -131,7 +130,6 @@ function AuthScreen({ route, navigation }) {
         const errorCode = error.code;
         const errorMessage = error.message;
         setError(errorMessage);
-        console.log(errorMessage);
       });
   };
 

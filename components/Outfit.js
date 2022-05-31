@@ -11,10 +11,7 @@ import "react-native-gesture-handler";
 import { OutfitComponent } from "./OutfitComponent";
 
 function Outfit(props) {
-  console.log("HEHEHEHEHEHE")
-  console.log(props.data);
   
-
   const value = update(props.data);
 
   return (  // for now this is a copy paste until we get something on the screen

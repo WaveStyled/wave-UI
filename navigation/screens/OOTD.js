@@ -46,7 +46,6 @@ Input : ids : Arrays of outfits to be converted
         context : the clothes context that stores item representations in the app
 */
 function outfittoJSX(ids, context) {
-  console.log("IDS", ids);
   const test = ids.map(function (value) {
     if (value === 0) {
       return { image: " ", type: " ", color: " " };

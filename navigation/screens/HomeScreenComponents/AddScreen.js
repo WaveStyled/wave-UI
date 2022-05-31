@@ -238,7 +238,6 @@ const takeImage = async () => {
   const update_handler = () => {
     //If user gives no image
     if (!image) {
-      console.log("here");
       Alert.alert("No image selected");
       return;
     }
@@ -337,7 +336,6 @@ const takeImage = async () => {
 
     //If user gives no image
     if (!image) {
-      console.log("here");
       Alert.alert("No image selected");
       return;
     }
