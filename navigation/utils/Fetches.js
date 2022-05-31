@@ -199,14 +199,12 @@ export function getOOTD(userid, set) {
   const props = {weather : "", occasion : "", date : ""};
   const chooseOutfit = {
     method: "GET",
-    headers: { "Content-Type": "application/json" },
   };
-  const ootd = fetch(`http://${API}:${NODEPORT}/OOTD/${userid}/`, chooseOutfit).then(
+  return fetch(`http://${API}:${NODEPORT}/OOTD/${userid}/`, chooseOutfit).then(
     (response) => {
       if (!response.ok) {
         throw response;
       }
-      console.log("RETURNS", response);
       return response.json();
     }
   ).then((json) => {
