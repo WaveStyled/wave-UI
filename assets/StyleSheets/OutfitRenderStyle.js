@@ -47,6 +47,7 @@ export default Styles = StyleSheet.create({
       flexWrap: "wrap",
     },
     itemText: {
+      fontFamily: "OpenSans",
       maxWidth: "80%",
     },
   });

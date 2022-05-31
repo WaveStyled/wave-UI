@@ -52,11 +52,13 @@ export const styles = StyleSheet.create({
       backgroundColor: colors.white,
     },
     text: {
+      fontFamily: "OpenSans",
       textAlign: "center",
       fontSize: 15,
       backgroundColor: "transparent",
     },
     text2: {
+      fontFamily: "OpenSans",
       textAlign: "center",
       fontSize: 15,
       backgroundColor: "transparent",

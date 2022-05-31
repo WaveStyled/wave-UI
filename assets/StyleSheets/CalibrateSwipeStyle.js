@@ -31,11 +31,13 @@ export default Styles = StyleSheet.create({
       paddingTop: 120,
     },
     text: {
+      //fontFamily: "OpenSans",
       textAlign: "center",
       fontSize: 50,
       backgroundColor: "transparent",
     },
     text2: {
+      fontFamily: "OpenSans",
       textAlign: "center",
       fontSize: 15,
       backgroundColor: "transparent",

@@ -107,6 +107,7 @@ Input: None
 Ouput: None
 */
 export default function HomeScreen({ navigation, route }) {
+  //importing the OpenSans font from fonts.js
   const [IsReady, SetIsReady] = useState(false);
     
   const LoadFonts = async () => {
